@@ -1,4 +1,3 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import Configuration from '../../config';
 import { Sellers } from '../../repositories';
 import OrderService from '../OrderService';

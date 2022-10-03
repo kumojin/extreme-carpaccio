@@ -1,4 +1,3 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import UrlAssembler from 'url-assembler';
 import Configuration, { Settings } from '../config';
 import { Seller, Sellers } from '../repositories';
@@ -13,6 +12,8 @@ describe('Seller Service', () => {
   let configurationData: Settings;
 
   beforeEach(() => {
+    jest.spyOn(utils, 'post').mockImplementation(jest.fn());
+
     bob = {
       name: 'bob',
       hostname: 'localhost',
@@ -136,7 +137,6 @@ describe('Seller Service', () => {
   });
 
   it('should send notification to seller', () => {
-    jest.spyOn(utils, 'post').mockImplementation(jest.fn());
     const message = { type: 'INFO' as const, content: 'test' };
 
     sellerService.notify(bob, message);
