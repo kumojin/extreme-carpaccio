@@ -1,5 +1,4 @@
 import http, { ClientRequest } from 'node:http';
-import { describe, expect, it, jest } from '@jest/globals';
 import utils from './utils';
 
 describe('Utils', () => {

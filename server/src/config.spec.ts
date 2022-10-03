@@ -1,5 +1,4 @@
-import fs from 'fs';
-import { beforeEach, describe, expect, it } from '@jest/globals';
+import fs from 'node:fs';
 import Configuration from './config';
 
 const TIMEOUT_1000_MILLIS = 1000;
