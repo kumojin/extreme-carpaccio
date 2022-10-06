@@ -1,5 +1,7 @@
 # Extreme Carpaccio
 
+> This is a fork from [dlresende/extreme-carpaccio](https://github.com/dlresende/extreme-carpaccio).
+
 French version [here](./README-FR.md).
 
 Extreme Carpaccio is a coding game designed to encourage and favour incremental development and Continuous Delivery best practices.
@@ -8,7 +10,7 @@ During a Extreme Carpaccio session, the facilitator uses his/her computer as a s
 
 This workshop, kata, or coding game is intented to help teams to practice concepts like Continuous Delivery, Lean Startup, eXtreme Programming, Agile Development, and more.
 
-Ready for the challenge? 
+Ready for the challenge?
 
 If you are a **participant**, go to [clients/](./clients/README.md) to get more instructions and start playing.
 
