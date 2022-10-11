@@ -1,5 +1,7 @@
 # Extreme Carpaccio
 
+[![CI](https://github.com/kumojin/extreme-carpaccio/actions/workflows/ci.yml/badge.svg)](https://github.com/kumojin/extreme-carpaccio/actions/workflows/ci.yml)
+
 > This is a fork from [dlresende/extreme-carpaccio](https://github.com/dlresende/extreme-carpaccio).
 
 French version [here](./README-FR.md).

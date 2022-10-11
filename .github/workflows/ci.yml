@@ -24,9 +24,5 @@ jobs:
           node-version: '16'
       - name: Install dependencies
         run: npm ci
-      - name: Check format
-        run: npm run format:check
-      - name: Check lint
-        run: npm run lint:check
-      - name: Run tests
-        run: npm run test
+      - name: Build
+        run: npx turbo format:check lint:check test build
