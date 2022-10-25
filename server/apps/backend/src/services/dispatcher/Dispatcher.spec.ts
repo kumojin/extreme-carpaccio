@@ -56,15 +56,14 @@ describe('Dispatcher', () => {
         false
       );
     });
-    it('should randomly send one of the reduction strategies when using an array', () => {
+    it('should send one of the reduction strategies when using an array', () => {
       jest.spyOn(configuration, 'all').mockReturnValue({
-        reduction: ['HALF PRICE', 'PAY THE PRICE'],
+        reduction: ['PAY THE PRICE'],
         badRequest: {
           active: false,
         },
         active: true,
       });
-      jest.spyOn(global.Math, 'random').mockReturnValue(0.5);
       jest
         .spyOn(dispatcher, 'sendOrderToSellers')
         .mockImplementation(jest.fn());
