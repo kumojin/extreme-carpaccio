@@ -128,9 +128,7 @@ class Dispatcher {
   private getReductionStrategy(): string | undefined {
     const reductionStrategy = this.getConfiguration(this).reduction;
     if (Array.isArray(reductionStrategy)) {
-      return reductionStrategy[
-        Math.floor(Math.random() * reductionStrategy.length)
-      ];
+      return _.sample(reductionStrategy);
     }
     return reductionStrategy;
   }
