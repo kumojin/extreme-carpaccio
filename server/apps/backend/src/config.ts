@@ -19,7 +19,7 @@ export enum BadRequestMode {
 export type Settings = {
   active?: boolean;
   cashFreeze?: boolean;
-  reduction?: string;
+  reduction?: string | string[];
   offlinePenalty?: number;
   badRequest?: {
     active?: boolean;
