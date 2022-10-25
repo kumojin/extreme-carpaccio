@@ -75,7 +75,7 @@ class Dispatcher {
   }
 
   public startBuying(iteration: number) {
-    const reductionStrategy = this.getConfiguration(this).reduction;
+    const reductionStrategy = this.getReductionStrategy();
     const period = this.getReductionPeriodFor(reductionStrategy);
     const badRequest = this.badRequest.shouldSendBadRequest(iteration);
     let message = `>>> Shopping iteration ${iteration}`;
@@ -123,6 +123,14 @@ class Dispatcher {
 
       self.sellerService.setOffline(seller, offlinePenalty, currentIteration);
     };
+  }
+
+  private getReductionStrategy(): string | undefined {
+    const reductionStrategy = this.getConfiguration(this).reduction;
+    if (Array.isArray(reductionStrategy)) {
+      return _.sample(reductionStrategy);
+    }
+    return reductionStrategy;
   }
 
   private getReductionPeriodFor(reductionStrategy?: string): Period {
