@@ -76,7 +76,11 @@ Les possibles stratégies de réduction sont:
 - `HALF PRICE`
 - `PAY THE PRICE`
 
-Le facilitateur peut en spécifier une seule (ex. `"STANDARD"`), ou un tableau de stratégies possibles (ex. `["HALF PRICE, "PAY THE PRICE"]`) via le fichier [configuration.json](https://github.com/dlresende/extreme-carpaccio/blob/master/server/configuration.json).
+Via le fichier [configuration.json](https://github.com/dlresende/extreme-carpaccio/blob/master/server/configuration.json), le facilitateur peut spécifier:
+
+- une seule (ex. `"STANDARD"`)
+- un tableau de stratégies possibles (ex. `["HALF PRICE, "PAY THE PRICE"]`)
+- un tableau de réductions et pondération (entre 0 et 1) (ex. `[{"reduction":"HALF PRICE, "weight":0.1}, {"reduction":"PAY THE PRICE", "weight":0.5}]`)
 
 ### Conclusion et rétrospective
 

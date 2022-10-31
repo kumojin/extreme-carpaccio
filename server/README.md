@@ -76,7 +76,11 @@ Available reduction strategies are:
 - `HALF PRICE`
 - `PAY THE PRICE`
 
-You can specify either only one of them (e.g. `"STANDARD"`), or an array of them (e.g. `["HALF PRICE, "PAY THE PRICE"]`) in the [configuration.json file](https://github.com/dlresende/extreme-carpaccio/blob/master/server/configuration.json).
+In the [configuration.json file](https://github.com/dlresende/extreme-carpaccio/blob/master/server/configuration.json), you can specify either:
+
+- only one of them (e.g. `"STANDARD"`),
+- an array of them (e.g. `["HALF PRICE, "PAY THE PRICE"]`)
+- an array of reductions and weights (between 0 and 1) (e.g. `[{"reduction":"HALF PRICE, "weight":0.1}, {"reduction":"PAY THE PRICE", "weight":0.5}]`)
 
 ### Conclusion and retrospective
 
