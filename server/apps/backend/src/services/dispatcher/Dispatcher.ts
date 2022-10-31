@@ -1,6 +1,6 @@
 import colors from 'colors';
 import _ from 'lodash';
-import Configuration from '../../config';
+import Configuration, { WeightedReduction } from '../../config';
 import logger from '../../logger';
 import { Seller } from '../../repositories';
 import utils from '../../utils';
@@ -128,9 +128,29 @@ class Dispatcher {
   private getReductionStrategy(): string | undefined {
     const reductionStrategy = this.getConfiguration(this).reduction;
     if (Array.isArray(reductionStrategy)) {
+      if (this.isWeightedReduction(reductionStrategy)) {
+        return this.getWeightedReduction(reductionStrategy);
+      }
       return _.sample(reductionStrategy);
     }
     return reductionStrategy;
+  }
+
+  private isWeightedReduction(
+    reduction: string[] | WeightedReduction[]
+  ): reduction is WeightedReduction[] {
+    return (reduction as WeightedReduction[]).every(
+      (strategy) => strategy.weight !== undefined
+    );
+  }
+
+  private getWeightedReduction(reductionStrategy: WeightedReduction[]): string {
+    const weightedReductionStrat = reductionStrategy
+      .map((strategy) =>
+        Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction)
+      )
+      .flat();
+    return _.sample(weightedReductionStrat);
   }
 
   private getReductionPeriodFor(reductionStrategy?: string): Period {
