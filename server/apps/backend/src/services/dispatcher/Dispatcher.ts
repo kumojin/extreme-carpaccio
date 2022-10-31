@@ -126,10 +126,10 @@ class Dispatcher {
   }
 
   private getReductionStrategy(): string | undefined {
-    const reductionStrategy = this.getConfiguration(this).reduction;
+    let reductionStrategy = this.getConfiguration(this).reduction;
     if (Array.isArray(reductionStrategy)) {
       if (this.isWeightedReduction(reductionStrategy)) {
-        return this.getWeightedReduction(reductionStrategy);
+        reductionStrategy = this.getWeightedReduction(reductionStrategy);
       }
       return _.sample(reductionStrategy);
     }
@@ -144,13 +144,14 @@ class Dispatcher {
     );
   }
 
-  private getWeightedReduction(reductionStrategy: WeightedReduction[]): string {
-    const weightedReductionStrat = reductionStrategy
+  private getWeightedReduction(
+    reductionStrategy: WeightedReduction[]
+  ): string[] {
+    return reductionStrategy
       .map((strategy) =>
         Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction)
       )
       .flat();
-    return _.sample(weightedReductionStrat);
   }
 
   private getReductionPeriodFor(reductionStrategy?: string): Period {
