@@ -131,7 +131,7 @@ class Dispatcher {
       if (this.isWeightedReduction(reductionStrategy)) {
         reductionStrategy = this.getWeightedReduction(reductionStrategy);
       }
-      return _.sample(reductionStrategy);
+      reductionStrategy = _.sample(reductionStrategy);
     }
     return reductionStrategy;
   }
