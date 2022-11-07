@@ -76,6 +76,21 @@ describe('Dispatcher', () => {
         false
       );
     });
+    it('should create a weighted array of reduction strategies when using a weight', () => {
+      const reductionStrategy = [
+        { reduction: 'PAY THE PRICE', weight: 0.03 },
+        { reduction: 'STANDARD', weight: 0.01 },
+      ];
+      const weightedArray = [
+        'PAY THE PRICE',
+        'PAY THE PRICE',
+        'PAY THE PRICE',
+        'STANDARD',
+      ];
+      const returnedArray = dispatcher.getWeightedReduction(reductionStrategy);
+
+      expect(returnedArray).toEqual(weightedArray);
+    });
     it('should send one of the reduction strategies when using a weight', () => {
       jest.spyOn(configuration, 'all').mockReturnValue({
         reduction: [{ reduction: 'PAY THE PRICE', weight: 0.1 }],

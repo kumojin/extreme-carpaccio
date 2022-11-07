@@ -101,6 +101,27 @@ class Dispatcher {
     return nextIteration;
   }
 
+  public getReductionStrategy(): string | undefined {
+    let reductionStrategy = this.getConfiguration(this).reduction;
+    if (Array.isArray(reductionStrategy)) {
+      if (this.isWeightedReduction(reductionStrategy)) {
+        reductionStrategy = this.getWeightedReduction(reductionStrategy);
+      }
+      reductionStrategy = _.sample(reductionStrategy);
+    }
+    return reductionStrategy;
+  }
+
+  public getWeightedReduction(
+    reductionStrategy: WeightedReduction[]
+  ): string[] {
+    return reductionStrategy
+      .map((strategy) =>
+        Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction)
+      )
+      .flat();
+  }
+
   private putSellerOffline(
     self: Dispatcher,
     seller: Seller,
@@ -125,33 +146,12 @@ class Dispatcher {
     };
   }
 
-  private getReductionStrategy(): string | undefined {
-    let reductionStrategy = this.getConfiguration(this).reduction;
-    if (Array.isArray(reductionStrategy)) {
-      if (this.isWeightedReduction(reductionStrategy)) {
-        reductionStrategy = this.getWeightedReduction(reductionStrategy);
-      }
-      reductionStrategy = _.sample(reductionStrategy);
-    }
-    return reductionStrategy;
-  }
-
   private isWeightedReduction(
     reduction: string[] | WeightedReduction[]
   ): reduction is WeightedReduction[] {
     return (reduction as WeightedReduction[]).every(
       (strategy) => strategy.weight !== undefined
     );
-  }
-
-  private getWeightedReduction(
-    reductionStrategy: WeightedReduction[]
-  ): string[] {
-    return reductionStrategy
-      .map((strategy) =>
-        Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction)
-      )
-      .flat();
   }
 
   private getReductionPeriodFor(reductionStrategy?: string): Period {
