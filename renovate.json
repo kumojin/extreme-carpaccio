@@ -1,9 +1,20 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:base",
+    "group:all"
   ],
   "ignorePaths": [
     "clients/**"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["eslint"],
+      "groupName": "ESLint packages"
+    },
+    {
+      "matchPackagePatterns": ["jest"],
+      "groupName": "Jest packages"
+    }
   ]
 }
