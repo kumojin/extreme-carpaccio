@@ -66,7 +66,7 @@ Next, the facilitator starts the server and makes sure all the teams are able to
 
 ### Constraints
 
-During the session, the facilitator can activate some "constraints" via the [configuration.json file](https://github.com/dlresende/extreme-carpaccio/blob/master/server/configuration.json), in order to bring some chaos to the game and shake the score. Some examples are: send bad requests (**in which case participants should respond 400 - bad request**); change reduction strategies; change tax rules; charge downtime; etc. Any change to this file is automatically taken into account, no need to restart the server. It is up to the facilitator to announce when he/she triggers a constraint, based on how he/she wants to conduct the session.
+During the session, the facilitator can activate some "constraints" via the [configuration.json file](server/apps/backend/configuration.json), in order to bring some chaos to the game and shake the score. Some examples are: send bad requests (**in which case participants should respond 400 - bad request**); change reduction strategies; change tax rules; charge downtime; etc. Any change to this file is automatically taken into account, no need to restart the server. It is up to the facilitator to announce when he/she triggers a constraint, based on how he/she wants to conduct the session.
 
 ### Reduction Strategies
 
@@ -76,7 +76,11 @@ Available reduction strategies are:
 - `HALF PRICE`
 - `PAY THE PRICE`
 
-You can specify either only one of them (e.g. `"STANDARD"`), or an array of them (e.g. `["HALF PRICE, "PAY THE PRICE"]`) in the [configuration.json file](https://github.com/dlresende/extreme-carpaccio/blob/master/server/configuration.json).
+In the [configuration.json file](server/configuration.json), you can specify either:
+
+- only one reduction strategy (e.g. `"STANDARD"`),
+- an array of reduction strategie (e.g. `["HALF PRICE, "PAY THE PRICE"]`)
+- an array of reductions and weights (between 0 and 1) (e.g. `[{"reduction":"HALF PRICE, "weight":0.1}, {"reduction":"PAY THE PRICE", "weight":0.5}]`)
 
 ### Conclusion and retrospective
 

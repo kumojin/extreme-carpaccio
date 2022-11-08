@@ -3,6 +3,11 @@ import colors from 'colors';
 import logger from './logger';
 import utils from './utils';
 
+export type WeightedReduction = {
+  reduction: string;
+  weight: number;
+};
+
 export enum BadRequestMode {
   EMPTY_OBJECT = 0,
   ARRAY_BOOLEANS = 1,
@@ -19,7 +24,7 @@ export enum BadRequestMode {
 export type Settings = {
   active?: boolean;
   cashFreeze?: boolean;
-  reduction?: string | string[];
+  reduction?: string | string[] | WeightedReduction[];
   offlinePenalty?: number;
   badRequest?: {
     active?: boolean;

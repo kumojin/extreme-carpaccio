@@ -66,7 +66,7 @@ Ensuite le facilitateur démarre le serveur et fait en sorte que toutes les équ
 
 ### Contraintes
 
-Durant la session, le facilitateur peut activer des "contraintes" depuis le fichier [configuration.json file](https://github.com/dlresende/extreme-carpaccio/blob/master/server/configuration.json), de façon à pimenter un peu le jeu et rajouter un peu de chaos. Quelques exemples : envoyer de mauvaises requêtes (**les participants doivent alors renvoyer une 400 - bad request**), changer la stratégie de réduction, changer le calcul des taxes, pénaliser le downtime etc. Tout changement au fichier de configuration est automatiquement pris en compte, sans nécessité de redémarrage du serveur. C'est à la discrétion du facilitateur d'annoncer ou pas les changements, dépendant de comment il souhaite mener la session.
+Durant la session, le facilitateur peut activer des "contraintes" depuis le fichier [configuration.json file](server/apps/backend/configuration.json), de façon à pimenter un peu le jeu et rajouter un peu de chaos. Quelques exemples : envoyer de mauvaises requêtes (**les participants doivent alors renvoyer une 400 - bad request**), changer la stratégie de réduction, changer le calcul des taxes, pénaliser le downtime etc. Tout changement au fichier de configuration est automatiquement pris en compte, sans nécessité de redémarrage du serveur. C'est à la discrétion du facilitateur d'annoncer ou pas les changements, dépendant de comment il souhaite mener la session.
 
 ### Stratégies de réduction
 
@@ -76,7 +76,11 @@ Les possibles stratégies de réduction sont:
 - `HALF PRICE`
 - `PAY THE PRICE`
 
-Le facilitateur peut en spécifier une seule (ex. `"STANDARD"`), ou un tableau de stratégies possibles (ex. `["HALF PRICE, "PAY THE PRICE"]`) via le fichier [configuration.json](https://github.com/dlresende/extreme-carpaccio/blob/master/server/configuration.json).
+Via le fichier [configuration.json](server/configuration.json), le facilitateur peut spécifier:
+
+- une seule stratégie (ex. `"STANDARD"`)
+- un tableau de stratégies possibles (ex. `["HALF PRICE, "PAY THE PRICE"]`)
+- un tableau de réductions et pondération (entre 0 et 1) (ex. `[{"reduction":"HALF PRICE, "weight":0.1}, {"reduction":"PAY THE PRICE", "weight":0.5}]`)
 
 ### Conclusion et rétrospective
 
