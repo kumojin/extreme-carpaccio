@@ -2,7 +2,6 @@ import { Request, Response } from 'express-serve-static-core';
 import { StatusCodes } from 'http-status-codes';
 import { when } from 'jest-when';
 import httpMocks, { MockRequest, MockResponse } from 'node-mocks-http';
-import UrlAssembler from 'url-assembler';
 import Configuration from './config';
 import { Sellers } from './repositories';
 import {
@@ -32,7 +31,6 @@ describe('Seller Controller', () => {
           hostname: 'http://localhost',
           path: '',
           password: 'password',
-          url: new UrlAssembler('http://localhost'),
           port: '8080',
         },
       ]);

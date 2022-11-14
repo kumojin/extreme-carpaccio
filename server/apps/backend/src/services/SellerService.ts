@@ -1,6 +1,5 @@
 import url from 'node:url';
 import _ from 'lodash';
-import UrlAssembler from 'url-assembler';
 import Configuration from '../config';
 import { messageFromError } from '../error-utils';
 import logger from '../logger';
@@ -75,7 +74,6 @@ export default class SellerService {
       path: parsedUrl.pathname,
       cash: 0.0,
       online: false,
-      url: new UrlAssembler(sellerUrl),
     };
     this.sellers.save(seller);
     logger.info(`New seller registered: ${utils.stringify(seller)}`);
