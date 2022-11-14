@@ -1,4 +1,5 @@
 import http, { IncomingMessage } from 'node:http';
+import url from "node:url";
 
 class Utils {
   public stringify(value: any) {
@@ -45,6 +46,15 @@ class Utils {
     request.on('error', onError || (() => {}));
     request.write(bodyStringified);
     request.end();
+  }
+}
+
+export const isValidUrl = (value: string): boolean => {
+  try {
+    const validUrl = new url.URL(value);
+    return validUrl.protocol === 'http:' || validUrl.protocol === 'https:';
+  } catch {
+    return false;
   }
 }
 

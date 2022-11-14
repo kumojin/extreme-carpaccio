@@ -8,6 +8,10 @@ import { Seller, Sellers } from '../repositories';
 import utils from '../utils';
 import { Bill } from './Bill';
 
+export type CashHistory = {
+  history: Record<string, number[]>;
+  lastIteration: number;
+}
 type Message = {
   type: 'ERROR' | 'INFO';
   content: string;
@@ -18,18 +22,18 @@ export default class SellerService {
     private readonly configuration: Configuration
   ) {}
 
-  public addCash(seller: Seller, amount: number, currentIteration: number) {
+  public addCash(seller: Seller, amount: number, currentIteration: number): void {
     this.sellers.updateCash(seller.name, amount, currentIteration);
   }
 
-  public deductCash(seller: Seller, amount: number, currentIteration: number) {
+  public deductCash(seller: Seller, amount: number, currentIteration: number): void {
     this.sellers.updateCash(seller.name, -amount, currentIteration);
   }
 
-  public getCashHistory(chunk: number) {
+  public getCashHistory(chunk: number): CashHistory {
     const { cashHistory } = this.sellers;
     const cashHistoryReduced: Record<string, number[]> = {};
-    let lastIteration;
+    let lastIteration: number = 0;
 
     Object.keys(cashHistory).forEach((seller) => {
       cashHistoryReduced[seller] = [];
@@ -51,7 +55,7 @@ export default class SellerService {
     return { history: cashHistoryReduced, lastIteration };
   }
 
-  public isAuthorized(name: string, password: string) {
+  public isAuthorized(name: string, password: string): boolean {
     const seller = this.sellers.get(name);
     if (seller) {
       const samePwd = seller.password === password;
@@ -61,7 +65,7 @@ export default class SellerService {
     return true;
   }
 
-  public register(sellerUrl: string, name: string, password?: string) {
+  public register(sellerUrl: string, name: string, password?: string): void {
     const parsedUrl = new url.URL(sellerUrl);
     const seller: Seller = {
       name,
@@ -77,7 +81,7 @@ export default class SellerService {
     logger.info(`New seller registered: ${utils.stringify(seller)}`);
   }
 
-  public allSellers() {
+  public allSellers(): Seller[] {
     return this.sellers.all();
   }
 
@@ -86,7 +90,7 @@ export default class SellerService {
     expectedBill: Bill,
     actualBill: Bill | undefined,
     currentIteration: number
-  ) {
+  ): void {
     if (this.configuration.all().cashFreeze) {
       logger.info(
         'Cash was not updated because cashFreeze config parameter is true'
@@ -127,7 +131,7 @@ export default class SellerService {
     }
   }
 
-  public notify(seller: Seller, message: Message) {
+  public notify(seller: Seller, message: Message): void {
     utils.post(
       seller.hostname,
       seller.port,
@@ -146,7 +150,7 @@ export default class SellerService {
     seller: Seller,
     offlinePenalty: number,
     currentIteration: number
-  ) {
+  ): void {
     this.sellers.setOffline(seller.name);
 
     if (offlinePenalty !== 0) {
@@ -157,7 +161,7 @@ export default class SellerService {
     }
   }
 
-  public setOnline(seller: Seller) {
+  public setOnline(seller: Seller): void {
     this.sellers.setOnline(seller.name);
   }
 }

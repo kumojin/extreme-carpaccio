@@ -1,5 +1,5 @@
 import http, { ClientRequest } from 'node:http';
-import utils from './utils';
+import utils, { isValidUrl } from './utils';
 
 describe('Utils', () => {
   it('should fix precision for numbers', () => {
@@ -49,5 +49,28 @@ describe('Utils', () => {
     );
     expect(fakeRequest.write).toHaveBeenCalledWith(bodyStringified);
     expect(fakeRequest.end).toHaveBeenCalled();
+  });
+
+  describe('isValidUrl', () => {
+    describe.each([
+        ['missing protocol', 'localhost'],
+        ['invalid protocol', 'foo://localhost'],
+    ])('when url is %s', (_, url) => {
+      it('should return false', () => {
+        expect(isValidUrl(url)).toBe(false);
+      });
+    });
+
+    describe.each([
+      ['http protocol', 'http://localhost'],
+      ['https protocol', 'https://localhost'],
+      ['url with port', 'https://localhost:3000'],
+      ['url with path', 'https://localhost/path'],
+      ['url with port and path', 'https://localhost:3000/path'],
+    ])('when url is %s', (_, url) => {
+      it('should return true', () => {
+        expect(isValidUrl(url)).toBe(true);
+      });
+    });
   });
 });

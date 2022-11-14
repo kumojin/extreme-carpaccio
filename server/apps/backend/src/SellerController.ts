@@ -1,9 +1,7 @@
 import { Request, Response } from 'express-serve-static-core';
+import { StatusCodes } from 'http-status-codes';
 import { SellerService } from './services';
-
-const OK = 200;
-const BAD_REQUEST = 400;
-const UNAUTHORIZED = 401;
+import { isValidUrl } from './utils';
 
 export const listSellers =
   (sellerService: SellerService) => (_: Request, response: Response) => {
@@ -12,7 +10,7 @@ export const listSellers =
       name: seller.name,
       online: seller.online,
     }));
-    response.status(OK).send(sellerViews);
+    response.status(StatusCodes.OK).send(sellerViews);
   };
 
 export const sellersHistory =
@@ -23,25 +21,27 @@ export const sellersHistory =
     } else {
       chunk = 10;
     }
-    response.status(OK).send(sellerService.getCashHistory(chunk));
+    response.status(StatusCodes.OK).send(sellerService.getCashHistory(chunk));
   };
 
 export const registerSeller =
   (sellerService: SellerService) => (request: Request, response: Response) => {
-    const sellerName = request.body.name;
-    const sellerUrl = request.body.url;
-    const sellerPwd = request.body.password;
+    const {
+      name: sellerName,
+      url: sellerUrl,
+      password: sellerPwd,
+    } = request.body;
 
-    if (!sellerName || !sellerUrl || !sellerPwd) {
+    if (!sellerName || !sellerUrl || !sellerPwd || !isValidUrl(sellerUrl)) {
       response
-        .status(BAD_REQUEST)
+        .status(StatusCodes.BAD_REQUEST)
         .send({ message: 'missing name, password or url' });
     } else if (sellerService.isAuthorized(sellerName, sellerPwd)) {
       sellerService.register(sellerUrl, sellerName, sellerPwd);
-      response.status(OK).end();
+      response.status(StatusCodes.OK).end();
     } else {
       response
-        .status(UNAUTHORIZED)
+        .status(StatusCodes.UNAUTHORIZED)
         .send({ message: 'invalid name or password' });
     }
   };
