@@ -1,5 +1,5 @@
 import http, { IncomingMessage } from 'node:http';
-import url from "node:url";
+import url from 'node:url';
 
 class Utils {
   public stringify(value: any) {
@@ -56,6 +56,6 @@ export const isValidUrl = (value: string): boolean => {
   } catch {
     return false;
   }
-}
+};
 
 export default new Utils();

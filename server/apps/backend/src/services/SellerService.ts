@@ -8,9 +8,9 @@ import utils from '../utils';
 import { Bill } from './Bill';
 
 export type CashHistory = {
-  history: Record<string, number[]>;
+  history: Record<Seller['name'], Seller['cash'][]>;
   lastIteration: number;
-}
+};
 type Message = {
   type: 'ERROR' | 'INFO';
   content: string;
@@ -21,11 +21,19 @@ export default class SellerService {
     private readonly configuration: Configuration
   ) {}
 
-  public addCash(seller: Seller, amount: number, currentIteration: number): void {
+  public addCash(
+    seller: Seller,
+    amount: number,
+    currentIteration: number
+  ): void {
     this.sellers.updateCash(seller.name, amount, currentIteration);
   }
 
-  public deductCash(seller: Seller, amount: number, currentIteration: number): void {
+  public deductCash(
+    seller: Seller,
+    amount: number,
+    currentIteration: number
+  ): void {
     this.sellers.updateCash(seller.name, -amount, currentIteration);
   }
 

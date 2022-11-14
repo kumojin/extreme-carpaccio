@@ -53,8 +53,8 @@ describe('Utils', () => {
 
   describe('isValidUrl', () => {
     describe.each([
-        ['missing protocol', 'localhost'],
-        ['invalid protocol', 'foo://localhost'],
+      ['missing protocol', 'localhost'],
+      ['invalid protocol', 'foo://localhost'],
     ])('when url is %s', (_, url) => {
       it('should return false', () => {
         expect(isValidUrl(url)).toBe(false);
@@ -67,6 +67,7 @@ describe('Utils', () => {
       ['url with port', 'https://localhost:3000'],
       ['url with path', 'https://localhost/path'],
       ['url with port and path', 'https://localhost:3000/path'],
+      ['IP with port and path', 'https://192.168.0.0:3000/path'],
     ])('when url is %s', (_, url) => {
       it('should return true', () => {
         expect(isValidUrl(url)).toBe(true);

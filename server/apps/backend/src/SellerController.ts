@@ -24,11 +24,12 @@ export const sellersHistory =
     response.status(StatusCodes.OK).send(sellerService.getCashHistory(chunk));
   };
 
-type RegisterSellerRequest = {
-  name: string;
-  password: string;
-  url: string;
+export type MaybeRegisterSellerRequest = {
+  name?: string;
+  password?: string;
+  url?: string;
 };
+export type RegisterSellerRequest = Required<MaybeRegisterSellerRequest>;
 const registerSellerValidator = Joi.object<RegisterSellerRequest>({
   name: Joi.string().required(),
   password: Joi.string().required(),

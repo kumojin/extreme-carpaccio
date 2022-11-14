@@ -3,8 +3,17 @@ import { StatusCodes } from 'http-status-codes';
 import { when } from 'jest-when';
 import httpMocks, { MockRequest, MockResponse } from 'node-mocks-http';
 import Configuration from './config';
+import {
+  cashHistory,
+  missingNameSellerRequest,
+  missingPasswordSellerRequest,
+  missingUrlSellerRequest,
+  sellers,
+  validSellerRequestWithUrl,
+} from './fixtures';
 import { Sellers } from './repositories';
 import {
+  MaybeRegisterSellerRequest,
   listSellers,
   registerSeller,
   sellersHistory,
@@ -23,38 +32,26 @@ describe('Seller Controller', () => {
       const request = httpMocks.createRequest({});
       const response = httpMocks.createResponse();
 
-      jest.spyOn(sellerService, 'allSellers').mockReturnValue([
-        {
-          name: 'John',
-          cash: 123,
-          online: true,
-          hostname: 'http://localhost',
-          path: '',
-          password: 'password',
-          port: '8080',
-        },
-      ]);
+      jest.spyOn(sellerService, 'allSellers').mockReturnValue(sellers);
 
       listSellers(sellerService)(request, response);
 
       expect(response._getData()).toEqual([
         {
           name: 'John',
-          cash: 123,
+          cash: 1000,
           online: true,
+        },
+        {
+          name: 'Alex',
+          cash: 1500,
+          online: false,
         },
       ]);
     });
   });
 
   describe('sellersHistory', () => {
-    const CASH_HISTORY = {
-      history: {
-        John: [1, 2, 3],
-      },
-      lastIteration: 3,
-    };
-
     describe('when chunk is present in query and is a string', () => {
       it('should call getCashHistory with specified chunk', () => {
         const request = httpMocks.createRequest({
@@ -65,29 +62,29 @@ describe('Seller Controller', () => {
         const response = httpMocks.createResponse();
         when(jest.spyOn(sellerService, 'getCashHistory'))
           .calledWith(42)
-          .mockReturnValue(CASH_HISTORY);
+          .mockReturnValue(cashHistory);
 
         sellersHistory(sellerService)(request, response);
 
-        expect(response._getData()).toEqual(CASH_HISTORY);
+        expect(response._getData()).toEqual(cashHistory);
       });
     });
 
-    describe('when chunk is present in query but is not a string', () => {
+    describe('when chunk is present in query but is not a number', () => {
       it('should call getCashHistory with default chunk', () => {
         const request = httpMocks.createRequest({
           query: {
-            chunk: { foo: 'bar' },
+            chunk: 'xxx',
           },
         });
         const response = httpMocks.createResponse();
         when(jest.spyOn(sellerService, 'getCashHistory'))
           .calledWith(10)
-          .mockReturnValue(CASH_HISTORY);
+          .mockReturnValue(cashHistory);
 
         sellersHistory(sellerService)(request, response);
 
-        expect(response._getData()).toEqual(CASH_HISTORY);
+        expect(response._getData()).toEqual(cashHistory);
       });
     });
 
@@ -99,23 +96,19 @@ describe('Seller Controller', () => {
         const response = httpMocks.createResponse();
         when(jest.spyOn(sellerService, 'getCashHistory'))
           .calledWith(10)
-          .mockReturnValue(CASH_HISTORY);
+          .mockReturnValue(cashHistory);
 
         sellersHistory(sellerService)(request, response);
 
-        expect(response._getData()).toEqual(CASH_HISTORY);
+        expect(response._getData()).toEqual(cashHistory);
       });
     });
   });
 
   describe('registerSeller', () => {
+    let body: MaybeRegisterSellerRequest;
     let request: MockRequest<Request>;
     let response: MockResponse<Response>;
-    const SELLER = {
-      name: 'John',
-      password: 'password',
-      url: 'http://localhost:3000',
-    };
     const registerMock = jest.fn();
 
     beforeEach(() => {
@@ -123,84 +116,94 @@ describe('Seller Controller', () => {
       jest.spyOn(sellerService, 'register').mockImplementation(registerMock);
     });
 
-    describe('when body has no name', () => {
-      it('should return a bad request', () => {
-        const { name, ...bodyWithoutName } = SELLER;
-        request = httpMocks.createRequest({
-          body: bodyWithoutName,
+    describe('when invalid input body', () => {
+      describe('when body has no name', () => {
+        beforeEach(() => {
+          body = missingNameSellerRequest;
         });
 
-        registerSeller(sellerService)(request, response);
+        it('should return a bad request', () => {
+          request = httpMocks.createRequest({
+            body,
+          });
 
-        expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-        expect(registerMock).not.toHaveBeenCalled();
+          registerSeller(sellerService)(request, response);
+
+          expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
+          expect(registerMock).not.toHaveBeenCalled();
+        });
       });
-    });
 
-    describe('when body has no password', () => {
-      it('should return a bad request', () => {
-        const { password, ...bodyWithoutPassword } = SELLER;
-        request = httpMocks.createRequest({
-          body: bodyWithoutPassword,
+      describe('when body has no password', () => {
+        beforeEach(() => {
+          body = missingPasswordSellerRequest;
         });
 
-        registerSeller(sellerService)(request, response);
+        it('should return a bad request', () => {
+          request = httpMocks.createRequest({
+            body,
+          });
 
-        expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-        expect(registerMock).not.toHaveBeenCalled();
+          registerSeller(sellerService)(request, response);
+
+          expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
+          expect(registerMock).not.toHaveBeenCalled();
+        });
       });
-    });
 
-    describe('when body has no url', () => {
-      it('should return a bad request', () => {
-        const { url, ...bodyWithoutUrl } = SELLER;
-        request = httpMocks.createRequest({
-          body: bodyWithoutUrl,
+      describe('when body has no url', () => {
+        beforeEach(() => {
+          body = missingUrlSellerRequest;
         });
 
-        registerSeller(sellerService)(request, response);
+        it('should return a bad request', () => {
+          request = httpMocks.createRequest({
+            body,
+          });
 
-        expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-        expect(registerMock).not.toHaveBeenCalled();
+          registerSeller(sellerService)(request, response);
+
+          expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
+          expect(registerMock).not.toHaveBeenCalled();
+        });
       });
-    });
 
-    describe.each([
-      ['missing protocol', 'localhost'],
-      ['invalid protocol', 'foo://localhost'],
-    ])('when body has all required fields but invalid url (%s)', (_, url) => {
-      it('should return a bad request', () => {
-        request = httpMocks.createRequest({
-          body: {
-            ...SELLER,
-            url,
-          },
+      describe.each([
+        ['missing protocol', 'localhost'],
+        ['invalid protocol', 'foo://localhost'],
+      ])('when body has all required fields but invalid url (%s)', (_, url) => {
+        beforeEach(() => {
+          body = validSellerRequestWithUrl(url);
         });
 
-        registerSeller(sellerService)(request, response);
+        it('should return a bad request', () => {
+          request = httpMocks.createRequest({
+            body,
+          });
 
-        expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-        expect(registerMock).not.toHaveBeenCalled();
+          registerSeller(sellerService)(request, response);
+
+          expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
+          expect(registerMock).not.toHaveBeenCalled();
+        });
       });
     });
 
     describe.each([
       ['http', 'http://localhost'],
       ['https', 'https://localhost'],
-    ])('when body has all required fields but and valid url (%s)', (_, url) => {
+    ])('when body has all required fields and valid url (%s)', (_, url) => {
       beforeEach(() => {
+        body = validSellerRequestWithUrl(url);
         request = httpMocks.createRequest({
-          body: {
-            ...SELLER,
-            url,
-          },
+          body,
         });
       });
 
       describe('when seller is not authorized', () => {
         beforeEach(() => {
           when(jest.spyOn(sellerService, 'isAuthorized'))
-            .calledWith(SELLER.name, SELLER.password)
+            .calledWith(body.name!, body.password!)
             .mockReturnValue(false);
         });
 
@@ -215,7 +218,7 @@ describe('Seller Controller', () => {
       describe('when seller is authorized', () => {
         beforeEach(() => {
           when(jest.spyOn(sellerService, 'isAuthorized'))
-            .calledWith(SELLER.name, SELLER.password)
+            .calledWith(body.name!, body.password!)
             .mockReturnValue(true);
         });
 
@@ -223,9 +226,9 @@ describe('Seller Controller', () => {
           registerSeller(sellerService)(request, response);
 
           expect(registerMock).toHaveBeenCalledWith(
-            url,
-            SELLER.name,
-            SELLER.password
+            body.url,
+            body.name,
+            body.password
           );
           expect(response.statusCode).toBe(StatusCodes.OK);
         });
