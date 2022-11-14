@@ -1,6 +1,7 @@
 import { Request, Response } from 'express-serve-static-core';
 import { StatusCodes } from 'http-status-codes';
 import Joi from 'joi';
+import { messageFromValidationError } from './error-utils';
 import { SellerService } from './services';
 import { isValidUrl } from './utils';
 
@@ -46,17 +47,18 @@ export const registerSeller =
     if (error) {
       response
         .status(StatusCodes.BAD_REQUEST)
-        .send({ message: 'missing name, password or url' });
+        .send({ message: messageFromValidationError(error) });
       return;
     }
 
     const { name: sellerName, url: sellerUrl, password: sellerPwd } = value;
-    if (sellerService.isAuthorized(sellerName, sellerPwd)) {
-      sellerService.register(sellerUrl, sellerName, sellerPwd);
-      response.status(StatusCodes.OK).end();
-    } else {
+    if (!sellerService.isAuthorized(sellerName, sellerPwd)) {
       response
         .status(StatusCodes.UNAUTHORIZED)
         .send({ message: 'invalid name or password' });
+      return;
     }
+
+    sellerService.register(sellerUrl, sellerName, sellerPwd);
+    response.status(StatusCodes.OK).end();
   };
