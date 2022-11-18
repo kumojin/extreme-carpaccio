@@ -1,19 +1,17 @@
+import { URL } from 'node:url';
+
 export type Seller = {
   name: string;
   password?: string;
-  hostname: string;
-  port: string;
-  path?: string;
+  url: URL;
   cash: number;
   online?: boolean;
 };
 
-export const buildWithDefaults = (values: Partial<Seller>) => ({
+export const buildWithDefaults = (values: Partial<Seller>): Seller => ({
   name: 'John',
   password: '123456',
-  hostname: '192.168.0.1',
-  port: '3000',
-  path: '/',
+  url: new URL('https://192.168.0.1:3000'),
   cash: 0,
   online: true,
   ...values,

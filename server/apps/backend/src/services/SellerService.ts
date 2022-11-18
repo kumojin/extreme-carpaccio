@@ -1,4 +1,4 @@
-import url from 'node:url';
+import { URL } from 'node:url';
 import _ from 'lodash';
 import Configuration from '../config';
 import { messageFromError } from '../error-utils';
@@ -73,13 +73,11 @@ export default class SellerService {
   }
 
   public register(sellerUrl: string, name: string, password?: string): void {
-    const parsedUrl = new url.URL(sellerUrl);
+    const parsedUrl = new URL(sellerUrl);
     const seller: Seller = {
       name,
       password,
-      hostname: parsedUrl.hostname,
-      port: parsedUrl.port,
-      path: parsedUrl.pathname,
+      url: parsedUrl,
       cash: 0.0,
       online: false,
     };
@@ -138,12 +136,7 @@ export default class SellerService {
   }
 
   public notify(seller: Seller, message: Message): void {
-    utils.post(
-      seller.hostname,
-      seller.port,
-      `${seller.path}/feedback`,
-      message
-    );
+    utils.post(seller.url, '/feedback', message);
 
     if (message.type === 'ERROR') {
       logger.error(`Notifying ${seller.name}: ${message.content}`);

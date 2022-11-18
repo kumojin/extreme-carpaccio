@@ -29,14 +29,7 @@ export default class OrderService {
         )}`
       )
     );
-    utils.post(
-      seller.hostname,
-      seller.port,
-      `${seller.path}/order`,
-      order,
-      cashUpdater,
-      logError
-    );
+    utils.post(seller.url, '/order', order, cashUpdater, logError);
   }
 
   public createOrder(reduction: Reduction): Order {

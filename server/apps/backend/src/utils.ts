@@ -1,5 +1,17 @@
-import http, { IncomingMessage } from 'node:http';
-import url from 'node:url';
+import http, { IncomingMessage, RequestOptions } from 'node:http';
+import https from 'node:https';
+import { URL } from 'node:url';
+
+const isHttps = (url: URL): boolean => url.protocol === 'https:';
+const isHttp = (url: URL): boolean => url.protocol === 'http:';
+export const isValidUrl = (value: string): boolean => {
+  try {
+    const validUrl = new URL(value);
+    return isHttp(validUrl) || isHttps(validUrl);
+  } catch {
+    return false;
+  }
+};
 
 class Utils {
   public stringify(value: any) {
@@ -23,18 +35,15 @@ class Utils {
   }
 
   public post(
-    hostname: string,
-    port: string,
+    url: URL,
     path: string,
     body: any,
     onSuccess?: (res: IncomingMessage) => void,
     onError?: (err: Error) => void
   ) {
     const bodyStringified = this.stringify(body);
-    const options = {
-      hostname,
-      port,
-      path: (path || '').replace('//', '/'),
+    const options: RequestOptions = {
+      path,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,20 +51,13 @@ class Utils {
         'Content-Length': bodyStringified.length,
       },
     };
-    const request = http.request(options, onSuccess);
-    request.on('error', onError || (() => {}));
-    request.write(bodyStringified);
-    request.end();
+
+    const { request } = isHttps(url) ? https : http;
+    const clientRequest = request(url, options, onSuccess);
+    clientRequest.on('error', onError || (() => {}));
+    clientRequest.write(bodyStringified);
+    clientRequest.end();
   }
 }
-
-export const isValidUrl = (value: string): boolean => {
-  try {
-    const validUrl = new url.URL(value);
-    return validUrl.protocol === 'http:' || validUrl.protocol === 'https:';
-  } catch {
-    return false;
-  }
-};
 
 export default new Utils();

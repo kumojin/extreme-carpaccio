@@ -1,4 +1,5 @@
 import http, { ClientRequest } from 'node:http';
+import https from 'node:https';
 import utils, { isValidUrl } from './utils';
 
 describe('Utils', () => {
@@ -18,37 +19,41 @@ describe('Utils', () => {
     expect(() => utils.jsonify(null)).toThrow();
   });
 
-  it('should send post request to someone else', () => {
-    const fakeRequest = {
-      write() {},
-      on() {},
-      end() {},
-    } as unknown as ClientRequest;
-    jest.spyOn(http, 'request').mockReturnValue(fakeRequest);
-    jest.spyOn(fakeRequest, 'write');
-    jest.spyOn(fakeRequest, 'end');
-    const body = { content: 'some content' };
-    const callback = () => {};
+  describe.each([
+    ['https', new URL('https://localhost:3000'), https],
+    ['http', new URL('http://localhost:3000'), http],
+  ])('post when url is %s', (_, url, networkModule) => {
+    it('should send post request to someone else', () => {
+      const fakeRequest = {
+        write() {},
+        on() {},
+        end() {},
+      } as unknown as ClientRequest;
+      jest.spyOn(networkModule, 'request').mockReturnValue(fakeRequest);
+      jest.spyOn(fakeRequest, 'write');
+      jest.spyOn(fakeRequest, 'end');
+      const body = { content: 'some content' };
+      const callback = () => {};
 
-    utils.post('localhost', '3000', '/path', body, callback);
+      utils.post(url, '/path', body, callback);
 
-    const bodyStringified = utils.stringify(body);
-    expect(http.request).toHaveBeenCalledWith(
-      {
-        hostname: 'localhost',
-        port: '3000',
-        path: '/path',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'Content-Length': bodyStringified.length,
+      const bodyStringified = utils.stringify(body);
+      expect(networkModule.request).toHaveBeenCalledWith(
+        url,
+        {
+          path: '/path',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'Content-Length': bodyStringified.length,
+          },
         },
-      },
-      callback
-    );
-    expect(fakeRequest.write).toHaveBeenCalledWith(bodyStringified);
-    expect(fakeRequest.end).toHaveBeenCalled();
+        callback
+      );
+      expect(fakeRequest.write).toHaveBeenCalledWith(bodyStringified);
+      expect(fakeRequest.end).toHaveBeenCalled();
+    });
   });
 
   describe('isValidUrl', () => {
