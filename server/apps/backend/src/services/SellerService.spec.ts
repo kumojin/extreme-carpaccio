@@ -1,4 +1,3 @@
-import UrlAssembler from 'url-assembler';
 import Configuration, { Settings } from '../config';
 import { Seller, Sellers } from '../repositories';
 import { buildWithDefaults } from '../repositories/Seller';
@@ -39,8 +38,6 @@ describe('Seller Service', () => {
     expect(actual?.name).toBe('bob');
     expect(actual?.cash).toBe(0);
     expect(actual?.online).toBe(false);
-    expect(actual?.url instanceof UrlAssembler).toBeTruthy();
-    expect(actual?.url?.toString()).toBe('http://localhost:3000/path');
   });
 
   it('should register new seller with an empty path', () => {
@@ -52,8 +49,6 @@ describe('Seller Service', () => {
     expect(actual?.cash).toBe(0);
     expect(actual?.online).toBe(false);
     expect(actual?.path).toBe('/');
-    expect(actual?.url instanceof UrlAssembler).toBeTruthy();
-    expect(actual?.url?.toString()).toBe('http://localhost:3000');
   });
 
   it("should compute seller's cash based on the order's amount", () => {

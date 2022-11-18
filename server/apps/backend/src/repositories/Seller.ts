@@ -1,5 +1,3 @@
-import UrlAssembler from 'url-assembler';
-
 export type Seller = {
   name: string;
   password?: string;
@@ -8,7 +6,6 @@ export type Seller = {
   path?: string;
   cash: number;
   online?: boolean;
-  url?: UrlAssembler;
 };
 
 export const buildWithDefaults = (values: Partial<Seller>) => ({
@@ -19,6 +16,5 @@ export const buildWithDefaults = (values: Partial<Seller>) => ({
   path: '/',
   cash: 0,
   online: true,
-  url: new UrlAssembler(),
   ...values,
 });
