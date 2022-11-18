@@ -1,4 +1,10 @@
-export { cashHistory, seller1, seller2, sellers } from './sellers.fixture';
+export {
+  buildWithDefaults,
+  cashHistory,
+  seller1,
+  seller2,
+  sellers,
+} from './sellers.fixture';
 export {
   missingNameSellerRequest,
   missingPasswordSellerRequest,

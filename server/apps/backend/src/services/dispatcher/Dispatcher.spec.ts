@@ -1,6 +1,6 @@
 import Configuration from '../../config';
+import { buildWithDefaults } from '../../fixtures';
 import { Sellers } from '../../repositories';
-import { buildWithDefaults } from '../../repositories/Seller';
 import OrderService from '../OrderService';
 import Reductions from '../reduction';
 import SellerService from '../SellerService';

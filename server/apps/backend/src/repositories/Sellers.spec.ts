@@ -1,5 +1,5 @@
-import { URL } from "node:url";
-import { buildWithDefaults } from './Seller';
+import { URL } from 'node:url';
+import { buildWithDefaults } from '../fixtures';
 import Sellers from './Sellers';
 
 describe('Sellers', () => {

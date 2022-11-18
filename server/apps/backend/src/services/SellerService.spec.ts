@@ -1,7 +1,7 @@
 import { URL } from 'node:url';
 import Configuration, { Settings } from '../config';
+import { buildWithDefaults } from '../fixtures';
 import { Sellers } from '../repositories';
-import { buildWithDefaults } from '../repositories/Seller';
 import utils from '../utils';
 import SellerService from './SellerService';
 

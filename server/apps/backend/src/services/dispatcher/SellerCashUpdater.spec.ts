@@ -1,7 +1,7 @@
 import { IncomingMessage } from 'node:http';
 import Configuration from '../../config';
+import { buildWithDefaults } from '../../fixtures';
 import { Sellers } from '../../repositories';
-import { buildWithDefaults } from '../../repositories/Seller';
 import OrderService from '../OrderService';
 import SellerService from '../SellerService';
 import SellerCashUpdater from './SellerCashUpdater';
