@@ -1,26 +1,17 @@
+import { URL } from 'node:url';
 import Configuration, { Settings } from '../config';
-import { Seller, Sellers } from '../repositories';
-import { buildWithDefaults } from '../repositories/Seller';
+import { buildWithDefaults } from '../fixtures';
+import { Sellers } from '../repositories';
 import utils from '../utils';
 import SellerService from './SellerService';
 
 describe('Seller Service', () => {
   let sellersRepository: Sellers;
   let sellerService: SellerService;
-  let bob: Seller;
   let configurationData: Settings;
 
   beforeEach(() => {
     jest.spyOn(utils, 'post').mockImplementation(jest.fn());
-
-    bob = {
-      name: 'bob',
-      hostname: 'localhost',
-      port: '3000',
-      path: '/path',
-      cash: 0,
-      online: false,
-    };
     sellersRepository = new Sellers();
 
     configurationData = { cashFreeze: false } as Settings;
@@ -38,17 +29,7 @@ describe('Seller Service', () => {
     expect(actual?.name).toBe('bob');
     expect(actual?.cash).toBe(0);
     expect(actual?.online).toBe(false);
-  });
-
-  it('should register new seller with an empty path', () => {
-    sellerService.register('http://localhost:3000', 'bob');
-    const sellers = sellerService.allSellers();
-    expect(sellers.length).toBe(1);
-    const actual = sellers.shift();
-    expect(actual?.name).toBe('bob');
-    expect(actual?.cash).toBe(0);
-    expect(actual?.online).toBe(false);
-    expect(actual?.path).toBe('/');
+    expect(actual?.url.toString()).toBe('http://localhost:3000/path');
   });
 
   it("should compute seller's cash based on the order's amount", () => {
@@ -134,14 +115,16 @@ describe('Seller Service', () => {
   it('should send notification to seller', () => {
     const message = { type: 'INFO' as const, content: 'test' };
 
+    const url = new URL('https://localhost:3000/path');
+    const bob = buildWithDefaults({
+      name: 'bob',
+      url,
+      cash: 0,
+      online: false,
+    });
     sellerService.notify(bob, message);
 
-    expect(utils.post).toHaveBeenCalledWith(
-      'localhost',
-      '3000',
-      '/path/feedback',
-      message
-    );
+    expect(utils.post).toHaveBeenCalledWith(url, '/feedback', message);
   });
 
   it("should get seller's cash history reduced in chunks of N iterations", () => {

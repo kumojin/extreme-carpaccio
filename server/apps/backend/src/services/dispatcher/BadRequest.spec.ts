@@ -1,7 +1,7 @@
 import { IncomingMessage } from 'node:http';
 import Configuration, { BadRequestMode } from '../../config';
+import { buildWithDefaults } from '../../fixtures';
 import { Sellers } from '../../repositories';
-import { buildWithDefaults } from '../../repositories/Seller';
 import SellerService from '../SellerService';
 import BadRequest from './BadRequest';
 

@@ -1,4 +1,5 @@
 import Configuration from '../../config';
+import { buildWithDefaults } from '../../fixtures';
 import { Sellers } from '../../repositories';
 import OrderService from '../OrderService';
 import Reductions from '../reduction';
@@ -175,20 +176,12 @@ describe('Dispatcher', () => {
 
   it('should send the same order to each seller using reduction', () => {
     jest.spyOn(configuration, 'all').mockReturnValue({});
-    const alice = {
+    const alice = buildWithDefaults({
       name: 'alice',
-      hostname: 'seller',
-      port: '8080',
-      path: '/',
-      cash: 0,
-    };
-    const bob = {
+    });
+    const bob = buildWithDefaults({
       name: 'bob',
-      hostname: 'seller',
-      port: '8081',
-      path: '/',
-      cash: 0,
-    };
+    });
     jest.spyOn(sellerService, 'addCash').mockImplementation(jest.fn());
     jest.spyOn(sellerService, 'allSellers').mockReturnValue([alice, bob]);
     const order = {

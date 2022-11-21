@@ -1,7 +1,8 @@
+import { URL } from 'node:url';
 import _ from 'lodash';
 import Configuration from '../config';
+import { buildWithDefaults } from '../fixtures';
 import { Countries } from '../repositories';
-import { buildWithDefaults } from '../repositories/Seller';
 import utils from '../utils';
 import OrderService from './OrderService';
 import Reductions from './reduction';
@@ -28,17 +29,17 @@ describe('Order Service', () => {
     const cashUpdater = () => {};
     const onError = () => {};
 
+    const url = new URL('https://localhost:3000/test');
     orderService.sendOrder(
-      buildWithDefaults({ hostname: 'localhost', port: '3000', path: '/test' }),
+      buildWithDefaults({ url }),
       order,
       cashUpdater,
       onError
     );
 
     expect(utils.post).toHaveBeenCalledWith(
-      'localhost',
-      '3000',
-      '/test/order',
+      url,
+      '/order',
       order,
       cashUpdater,
       onError

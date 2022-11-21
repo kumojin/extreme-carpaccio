@@ -1,5 +1,6 @@
 import { IncomingMessage } from 'node:http';
 import Configuration from '../../config';
+import { buildWithDefaults } from '../../fixtures';
 import { Sellers } from '../../repositories';
 import OrderService from '../OrderService';
 import SellerService from '../SellerService';
@@ -19,13 +20,9 @@ describe("Seller's cash updater", () => {
   });
 
   it("should deduct a penalty when the sellers's response is neither 200 nor 404", () => {
-    const bob = {
+    const bob = buildWithDefaults({
       name: 'bob',
-      hostname: 'seller',
-      port: '8081',
-      path: '/',
-      cash: 0,
-    };
+    });
     jest.spyOn(sellerService, 'setOnline').mockImplementation(jest.fn());
     jest.spyOn(sellerService, 'updateCash').mockImplementation(jest.fn());
 
@@ -44,13 +41,9 @@ describe("Seller's cash updater", () => {
   });
 
   it("should NOT deduct a penalty when the sellers's response is 404", () => {
-    const bob = {
+    const bob = buildWithDefaults({
       name: 'bob',
-      hostname: 'seller',
-      port: '8081',
-      path: '/',
-      cash: 0,
-    };
+    });
     jest.spyOn(sellerService, 'setOnline').mockImplementation(jest.fn());
     jest.spyOn(sellerService, 'updateCash').mockImplementation(jest.fn());
 
