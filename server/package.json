@@ -18,7 +18,7 @@
     "lint:fix": "turbo run lint:fix"
   },
   "devDependencies": {
-    "prettier": "2.7.1",
+    "prettier": "2.8.0",
     "rimraf": "3.0.2",
     "turbo": "1.6.3"
   }
