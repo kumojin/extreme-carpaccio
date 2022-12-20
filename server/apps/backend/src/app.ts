@@ -6,23 +6,30 @@ import { Sellers } from './repositories';
 import routes from './routes';
 import { Dispatcher, OrderService, SellerService } from './services';
 
-const CONFIGURATION_FILE = '../configuration.json';
-const configuration = new Configuration(
-  path.join(__dirname, CONFIGURATION_FILE)
-);
-const sellers = new Sellers();
-const sellerService = new SellerService(sellers, configuration);
-const orderService = new OrderService(configuration);
-const dispatcher = new Dispatcher(sellerService, orderService, configuration);
+const startGame = (dispatcher: Dispatcher) => {
+  dispatcher.startBuying(1);
+}
 
-const app = express();
+export const setup = async () => {
+  const configuration = new Configuration(
+    path.join(__dirname, '..', process.env.CONFIGURATION_FILE ?? '')
+  );
+  const sellers = new Sellers();
+  const sellerService = new SellerService(sellers, configuration);
+  const orderService = new OrderService(configuration);
+  const dispatcher = new Dispatcher(sellerService, orderService, configuration);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/', routes(sellerService));
-app.use(express.static(path.join(__dirname, '../public')));
+  const app = express();
 
-configuration.watch(() => {}, false, 500);
-dispatcher.startBuying(1);
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use('/', routes(sellerService));
+  app.use(express.static(path.join(__dirname, '../public')));
 
-export default app;
+  configuration.watch(() => {}, false, 500);
+
+  return {
+    app,
+    start: () => startGame(dispatcher),
+  };
+};
