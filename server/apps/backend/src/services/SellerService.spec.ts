@@ -1,4 +1,5 @@
 import { URL } from 'node:url';
+import argon2 from 'argon2';
 import Configuration, { Settings } from '../config';
 import { buildWithDefaults } from '../fixtures';
 import { Sellers } from '../repositories';
@@ -22,7 +23,11 @@ describe('Seller Service', () => {
   });
 
   it('should register new seller', async () => {
-    await sellerService.register('http://localhost:3000/path', 'bob');
+    await sellerService.register(
+      'http://localhost:3000/path',
+      'bob',
+      'password'
+    );
     const sellers = await sellerService.allSellers();
     expect(sellers.length).toBe(1);
     const actual = sellers.shift();
@@ -173,7 +178,7 @@ describe('Seller Service', () => {
   it('should authorized seller if the same username and password are provided', async () => {
     const travis = buildWithDefaults({
       name: 'travis',
-      password: 'pacman',
+      password: await argon2.hash('pacman'),
       cash: 0,
     });
     await sellersRepository.save(travis);

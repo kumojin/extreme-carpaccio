@@ -1,3 +1,4 @@
+import argon2 from 'argon2';
 import bodyParser from 'body-parser';
 import express, { Express } from 'express';
 import request from 'supertest';
@@ -33,7 +34,10 @@ describe('Route', () => {
   });
 
   it('should register existing seller with same password', async () => {
-    const travis = buildWithDefaults({ name: 'john', password: 'doe' });
+    const travis = buildWithDefaults({
+      name: 'john',
+      password: await argon2.hash('doe'),
+    });
     await sellers.save(travis);
 
     await request(app)
@@ -43,7 +47,10 @@ describe('Route', () => {
   });
 
   it('should not register existing seller with different password', async () => {
-    const travis = buildWithDefaults({ name: 'john', password: 'doe' });
+    const travis = buildWithDefaults({
+      name: 'john',
+      password: await argon2.hash('doe'),
+    });
     await sellers.save(travis);
 
     await request(app)
