@@ -1,3 +1,4 @@
+import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
 import Configuration from '../config';
@@ -77,25 +78,26 @@ export default class Country {
     return this;
   }
 
-  applyTax(sum: number) {
-    let newRule;
+  applyTax(sum: Big): Big {
+    let newRule: ((price: number) => number) | null = null;
+
     if (this.configuration) {
       newRule = lookupForOverridenDefinition(this.configuration, this.name);
     }
 
     if (newRule == null) {
-      return this._taxRule(sum);
+      return new Big(this._taxRule(sum.toNumber()));
     }
 
     try {
-      return newRule(sum);
+      return new Big(newRule(sum.toNumber()));
     } catch (e) {
       logger.error(
         colors.red(
           `Failed to evaluate tax rule for country ${this.name} falling back to original value, got:${e}`
         )
       );
-      return this._taxRule(sum);
+      return new Big(this._taxRule(sum.toNumber()));
     }
   }
 }

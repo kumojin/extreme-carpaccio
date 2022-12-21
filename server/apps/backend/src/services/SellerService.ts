@@ -1,5 +1,6 @@
 import { URL } from 'node:url';
 import argon2 from 'argon2';
+import Big from 'big.js';
 import _ from 'lodash';
 import Configuration from '../config';
 import { messageFromError } from '../error-utils';
@@ -24,7 +25,7 @@ export default class SellerService {
 
   public async addCash(
     seller: Seller,
-    amount: number,
+    amount: Big,
     currentIteration: number
   ): Promise<void> {
     await this.sellers.updateCash(seller.name, amount, currentIteration);
@@ -32,10 +33,14 @@ export default class SellerService {
 
   public async deductCash(
     seller: Seller,
-    amount: number,
+    amount: Big,
     currentIteration: number
   ): Promise<void> {
-    await this.sellers.updateCash(seller.name, -amount, currentIteration);
+    await this.sellers.updateCash(
+      seller.name,
+      amount.times(-1),
+      currentIteration
+    );
   }
 
   public async getCashHistory(chunk: number): Promise<CashHistory> {
@@ -109,10 +114,10 @@ export default class SellerService {
     try {
       const totalExpectedBill = utils.fixPrecision(expectedBill.total, 2);
       let message;
-      let loss;
+      let loss: Big;
 
       if (_.isEmpty(actualBill)) {
-        loss = utils.fixPrecision(totalExpectedBill * 0.5, 2);
+        loss = new Big(totalExpectedBill).times(0.5);
         await this.deductCash(seller, loss, currentIteration);
         message = `Goddamn, ${seller.name} has neither sent us a valid bill nor responded 404. ${loss} will be charged.`;
         this.notify(seller, { type: 'ERROR', content: message });
@@ -120,13 +125,17 @@ export default class SellerService {
         const totalActualBill = utils.fixPrecision(actualBill.total, 2);
 
         if (actualBill && totalExpectedBill === totalActualBill) {
-          await this.addCash(seller, totalExpectedBill, currentIteration);
+          await this.addCash(
+            seller,
+            new Big(totalExpectedBill),
+            currentIteration
+          );
           this.notify(seller, {
             type: 'INFO',
             content: `Hey, ${seller.name} earned ${totalExpectedBill}`,
           });
         } else {
-          loss = utils.fixPrecision(totalExpectedBill * 0.5, 2);
+          loss = new Big(totalExpectedBill).times(0.5);
           await this.deductCash(seller, loss, currentIteration);
           message = `Goddamn, ${seller.name} replied ${totalActualBill} but right answer was ${totalExpectedBill}. ${loss} will be charged.`;
           this.notify(seller, { type: 'ERROR', content: message });
@@ -161,7 +170,7 @@ export default class SellerService {
       logger.info(
         `Seller ${seller.name} is offline: a penalty of ${offlinePenalty} is applied.`
       );
-      await this.deductCash(seller, offlinePenalty, currentIteration);
+      await this.deductCash(seller, new Big(offlinePenalty), currentIteration);
     }
   }
 

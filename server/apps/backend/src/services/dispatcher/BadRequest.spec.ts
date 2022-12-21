@@ -1,4 +1,5 @@
 import { IncomingMessage } from 'node:http';
+import Big from 'big.js';
 import Configuration, { BadRequestMode } from '../../config';
 import { buildWithDefaults } from '../../fixtures';
 import { Sellers } from '../../repositories';
@@ -101,7 +102,7 @@ describe('BadRequest', () => {
 
     expect(sellerService.deductCash).toHaveBeenCalledWith(
       seller,
-      23.5,
+      new Big(23.5),
       currentIteration
     );
   });
@@ -124,7 +125,7 @@ describe('BadRequest', () => {
 
     expect(sellerService.addCash).toHaveBeenCalledWith(
       seller,
-      47,
+      new Big(47),
       currentIteration
     );
   });

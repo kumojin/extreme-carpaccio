@@ -1,3 +1,5 @@
+import Big from 'big.js';
+
 export const europeanCountries: Record<string, [number, number]> = {
   DE: [1.2, 190995],
   UK: [1.21, 152741],
@@ -29,4 +31,5 @@ export const europeanCountries: Record<string, [number, number]> = {
   MT: [1.2, 1],
 };
 
-export const scale = (factor: number) => (price: number) => price * factor;
+export const scale = (factor: number) => (price: number) =>
+  new Big(price).times(factor).toNumber();

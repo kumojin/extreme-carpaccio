@@ -1,4 +1,5 @@
 import { IncomingMessage } from 'node:http';
+import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
 import Configuration from '../config';
@@ -34,13 +35,13 @@ export default class OrderService {
 
   public createOrder(reduction: Reduction): Order {
     const items = _.random(1, 10);
-    const prices = new Array(items);
-    const quantities = new Array(items);
+    const prices = new Array<number>(items);
+    const quantities = new Array<number>(items);
     const country = this.countries.randomOne();
 
     for (let item = 0; item < items; item++) {
       const price = _.random(1, 100, true);
-      prices[item] = utils.fixPrecision(price, 2);
+      prices[item] = new Big(price).round(2).toNumber();
       quantities[item] = _.random(1, 10);
     }
 
@@ -55,13 +56,13 @@ export default class OrderService {
   public bill(order: Order, reduction: Reduction) {
     const { prices, quantities } = order;
     let sum = quantities
-      .map((quantity, i) => quantity * prices[i])
-      .reduce((total, current) => total + current, 0);
+      .map((quantity, i) => new Big(prices[i]).times(quantity))
+      .reduce((total, current) => total.add(current), new Big(0));
 
     const taxRule = this.countries.taxRule(order.country);
     sum = taxRule.applyTax(sum);
     sum = reduction.apply(sum);
-    return { total: utils.fixPrecision(sum, 2) };
+    return { total: sum.round(2).toNumber() };
   }
 
   public validateBill(bill: unknown) {

@@ -1,4 +1,5 @@
 import { URL } from 'node:url';
+import Big from 'big.js';
 import _ from 'lodash';
 import Configuration from '../config';
 import { buildWithDefaults } from '../fixtures';
@@ -86,8 +87,9 @@ describe('Order Service', () => {
 
     const bill = orderService.bill(order, Reductions.PAY_THE_PRICE);
 
+    const price = new Big(1000).add(new Big(50).times(2));
     expect(bill).toEqual({
-      total: countries.taxRule('IT').applyTax(1000 + 2 * 50),
+      total: countries.taxRule('IT').applyTax(price).toNumber(),
     });
   });
 
@@ -102,8 +104,14 @@ describe('Order Service', () => {
 
     const bill = orderService.bill(order, Reductions.STANDARD);
 
+    const price = new Big(1000).add(new Big(50).times(2));
+    const reduction = new Big(1).minus(new Big(0.03));
     expect(bill).toEqual({
-      total: countries.taxRule('IT').applyTax(1000 + 2 * 50) * (1 - 0.03),
+      total: countries
+        .taxRule('IT')
+        .applyTax(price)
+        .times(reduction)
+        .toNumber(),
     });
   });
 
@@ -118,8 +126,9 @@ describe('Order Service', () => {
 
     const bill = orderService.bill(order, Reductions.HALF_PRICE);
 
+    const price = new Big(1000).add(new Big(50).times(2));
     expect(bill).toEqual({
-      total: countries.taxRule('IT').applyTax(1000 + 2 * 50) / 2,
+      total: countries.taxRule('IT').applyTax(price).div(2).toNumber(),
     });
   });
 

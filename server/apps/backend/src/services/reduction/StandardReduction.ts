@@ -1,3 +1,4 @@
+import Big from 'big.js';
 import { Reduction } from './Reduction';
 
 type ReductionStep = {
@@ -24,13 +25,13 @@ class StandardReduction implements Reduction {
     ];
   }
 
-  public apply(amount: number): number {
-    return amount * (1 - this.reductionFor(amount));
+  public apply(amount: Big): Big {
+    return amount.times(new Big(1).minus(this.reductionFor(amount)));
   }
 
-  public reductionFor(total: number) {
-    const reduction = this.reductions.find((it) => it.sum <= total);
-    return !reduction ? 0 : reduction.reduction;
+  public reductionFor(total: Big) {
+    const reduction = this.reductions.find((it) => total.gte(it.sum));
+    return !reduction ? new Big(0) : new Big(reduction.reduction);
   }
 }
 
