@@ -10,9 +10,9 @@ describe('Seller Service', () => {
   let sellerService: SellerService;
   let configurationData: Settings;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.spyOn(utils, 'post').mockImplementation(jest.fn());
-    sellersRepository = new Sellers();
+    sellersRepository = await Sellers.create(true);
 
     configurationData = { cashFreeze: false } as Settings;
     const configuration = new Configuration();
@@ -21,9 +21,9 @@ describe('Seller Service', () => {
     sellerService = new SellerService(sellersRepository, configuration);
   });
 
-  it('should register new seller', () => {
-    sellerService.register('http://localhost:3000/path', 'bob');
-    const sellers = sellerService.allSellers();
+  it('should register new seller', async () => {
+    await sellerService.register('http://localhost:3000/path', 'bob');
+    const sellers = await sellerService.allSellers();
     expect(sellers.length).toBe(1);
     const actual = sellers.shift();
     expect(actual?.name).toBe('bob');
@@ -32,13 +32,14 @@ describe('Seller Service', () => {
     expect(actual?.url.toString()).toBe('http://localhost:3000/path');
   });
 
-  it("should compute seller's cash based on the order's amount", () => {
+  it("should compute seller's cash based on the order's amount", async () => {
     const alice = buildWithDefaults({ name: 'alice', cash: 0 });
-    sellersRepository.save(alice);
+    await sellersRepository.save(alice);
 
-    sellerService.updateCash(alice, { total: 100 }, { total: 100 }, 0);
+    await sellerService.updateCash(alice, { total: 100 }, { total: 100 }, 0);
 
-    expect(sellerService.allSellers()).toContainEqual(
+    const allSellers = await sellerService.allSellers();
+    expect(allSellers).toContainEqual(
       expect.objectContaining({
         name: 'alice',
         cash: 100,
@@ -46,13 +47,14 @@ describe('Seller Service', () => {
     );
   });
 
-  it("should deduct 50% of the bill amount from seller's cash when the seller's bill is missing", () => {
+  it("should deduct 50% of the bill amount from seller's cash when the seller's bill is missing", async () => {
     const alice = buildWithDefaults({ name: 'alice', cash: 0 });
-    sellersRepository.save(alice);
+    await sellersRepository.save(alice);
 
-    sellerService.updateCash(alice, { total: 100 }, undefined, 0);
+    await sellerService.updateCash(alice, { total: 100 }, undefined, 0);
 
-    expect(sellerService.allSellers()).toContainEqual(
+    const allSellers = await sellerService.allSellers();
+    expect(allSellers).toContainEqual(
       expect.objectContaining({
         name: 'alice',
         cash: -50,
@@ -60,13 +62,14 @@ describe('Seller Service', () => {
     );
   });
 
-  it("should deduct 50% of the bill amount from seller's cash when the seller's bill does not correspond with the expected one", () => {
+  it("should deduct 50% of the bill amount from seller's cash when the seller's bill does not correspond with the expected one", async () => {
     const alice = buildWithDefaults({ name: 'alice', cash: 0 });
-    sellersRepository.save(alice);
+    await sellersRepository.save(alice);
 
-    sellerService.updateCash(alice, { total: 100 }, { total: 50 }, 0);
+    await sellerService.updateCash(alice, { total: 100 }, { total: 50 }, 0);
 
-    expect(sellerService.allSellers()).toContainEqual(
+    const allSellers = await sellerService.allSellers();
+    expect(allSellers).toContainEqual(
       expect.objectContaining({
         name: 'alice',
         cash: -50,
@@ -87,24 +90,36 @@ describe('Seller Service', () => {
     });
   });
 
-  it('should deduct a penalty when a seller is offline', () => {
+  it('should deduct a penalty when a seller is offline', async () => {
     const alice = buildWithDefaults({ name: 'alice', cash: 200, online: true });
     const offlinePenalty = 100;
-    sellersRepository.save(alice);
+    await sellersRepository.save(alice);
 
-    sellerService.setOffline(alice, offlinePenalty, 0);
+    await sellerService.setOffline(alice, offlinePenalty, 0);
 
-    expect(alice.online).toBe(false);
-    expect(alice.cash).toBe(100);
+    const allSellers = await sellerService.allSellers();
+    expect(allSellers).toContainEqual(
+      expect.objectContaining({
+        name: 'alice',
+        cash: 100,
+        online: false,
+      })
+    );
   });
 
-  it("should compare seller's response with expected one using precision 2", () => {
+  it("should compare seller's response with expected one using precision 2", async () => {
     const alice = buildWithDefaults({ name: 'alice', cash: 0 });
-    sellersRepository.save(alice);
+    await sellersRepository.save(alice);
 
-    sellerService.updateCash(alice, { total: 100.12345 }, { total: 100.12 }, 0);
+    await sellerService.updateCash(
+      alice,
+      { total: 100.12345 },
+      { total: 100.12 },
+      0
+    );
 
-    expect(sellerService.allSellers()).toContainEqual(
+    const allSellers = await sellerService.allSellers();
+    expect(allSellers).toContainEqual(
       expect.objectContaining({
         name: 'alice',
         cash: 100.12,
@@ -127,18 +142,22 @@ describe('Seller Service', () => {
     expect(utils.post).toHaveBeenCalledWith(url, '/feedback', message);
   });
 
-  it("should get seller's cash history reduced in chunks of N iterations", () => {
-    sellersRepository.cashHistory = { bob: [0, 0, 10, 10, 10] };
+  it("should get seller's cash history reduced in chunks of N iterations", async () => {
+    jest
+      .spyOn(sellersRepository, 'getCashHistory')
+      .mockResolvedValue({ bob: [0, 0, 10, 10, 10] });
 
-    const cashHistory = sellerService.getCashHistory(5);
+    const cashHistory = await sellerService.getCashHistory(5);
 
     expect(cashHistory).toEqual({ history: { bob: [10] }, lastIteration: 5 });
   });
 
-  it("should get seller's cash history reduced in chunks of N iterations and add remaining iterations when last chunk is not completed", () => {
-    sellersRepository.cashHistory = { bob: [0, 0, 10, 10, 10, 10, 10] };
+  it("should get seller's cash history reduced in chunks of N iterations and add remaining iterations when last chunk is not completed", async () => {
+    jest
+      .spyOn(sellersRepository, 'getCashHistory')
+      .mockResolvedValue({ bob: [0, 0, 10, 10, 10, 10, 10] });
 
-    const cashHistory = sellerService.getCashHistory(3);
+    const cashHistory = await sellerService.getCashHistory(3);
 
     expect(cashHistory).toEqual({
       history: { bob: [10, 10, 10] },
@@ -146,19 +165,29 @@ describe('Seller Service', () => {
     });
   });
 
-  it('should authorized unknown seller', () => {
-    expect(sellerService.isAuthorized('carmen', 'mccallum')).toEqual(true);
+  it('should authorized unknown seller', async () => {
+    const isAuthorized = await sellerService.isAuthorized('carmen', 'mccallum');
+    expect(isAuthorized).toEqual(true);
   });
 
-  it('should authorized seller if the same username and password are provided', () => {
+  it('should authorized seller if the same username and password are provided', async () => {
     const travis = buildWithDefaults({
       name: 'travis',
       password: 'pacman',
       cash: 0,
     });
-    sellersRepository.save(travis);
+    await sellersRepository.save(travis);
 
-    expect(sellerService.isAuthorized('travis', 'pacman')).toEqual(true);
-    expect(sellerService.isAuthorized('travis', 'vlad')).toEqual(false);
+    const isAuthorizedWhenValidPassword = await sellerService.isAuthorized(
+      'travis',
+      'pacman'
+    );
+    expect(isAuthorizedWhenValidPassword).toEqual(true);
+
+    const isAuthorizedWhenInvalidPassword = await sellerService.isAuthorized(
+      'travis',
+      'vlad'
+    );
+    expect(isAuthorizedWhenInvalidPassword).toEqual(false);
   });
 });

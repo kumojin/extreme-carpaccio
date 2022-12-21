@@ -13,9 +13,9 @@ describe('Route', () => {
   let configuration: Configuration;
   let app: Express;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     configuration = new Configuration();
-    sellers = new Sellers();
+    sellers = await Sellers.create(true);
     sellerService = new SellerService(sellers, configuration);
 
     app = express();
@@ -34,7 +34,7 @@ describe('Route', () => {
 
   it('should register existing seller with same password', async () => {
     const travis = buildWithDefaults({ name: 'john', password: 'doe' });
-    sellers.save(travis);
+    await sellers.save(travis);
 
     await request(app)
       .post('/seller')
@@ -44,7 +44,7 @@ describe('Route', () => {
 
   it('should not register existing seller with different password', async () => {
     const travis = buildWithDefaults({ name: 'john', password: 'doe' });
-    sellers.save(travis);
+    await sellers.save(travis);
 
     await request(app)
       .post('/seller')

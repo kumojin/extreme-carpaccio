@@ -5,5 +5,5 @@ export type Seller = {
   password?: string;
   url: URL;
   cash: number;
-  online?: boolean;
+  online: boolean;
 };

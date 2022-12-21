@@ -6,8 +6,9 @@ import { SellerService } from './services';
 import { isValidUrl } from './utils';
 
 export const listSellers =
-  (sellerService: SellerService) => (_: Request, response: Response) => {
-    const sellerViews = sellerService.allSellers().map((seller) => ({
+  (sellerService: SellerService) => async (_: Request, response: Response) => {
+    const allSellers = await sellerService.allSellers();
+    const sellerViews = allSellers.map((seller) => ({
       cash: seller.cash,
       name: seller.name,
       online: seller.online,
@@ -17,12 +18,14 @@ export const listSellers =
 
 const sellersHistoryValidator = Joi.number().required();
 export const sellersHistory =
-  (sellerService: SellerService) => (request: Request, response: Response) => {
+  (sellerService: SellerService) =>
+  async (request: Request, response: Response) => {
     const { error, value } = sellersHistoryValidator.validate(
       request.query.chunk
     );
     const chunk = !error ? value : 10;
-    response.status(StatusCodes.OK).send(sellerService.getCashHistory(chunk));
+    const cashHistory = await sellerService.getCashHistory(chunk);
+    response.status(StatusCodes.OK).send(cashHistory);
   };
 
 export type MaybeRegisterSellerRequest = {
@@ -42,7 +45,8 @@ const registerSellerValidator = Joi.object<RegisterSellerRequest>({
   }).required(),
 });
 export const registerSeller =
-  (sellerService: SellerService) => (request: Request, response: Response) => {
+  (sellerService: SellerService) =>
+  async (request: Request, response: Response) => {
     const { error, value } = registerSellerValidator.validate(request.body);
     if (error) {
       response
@@ -52,13 +56,17 @@ export const registerSeller =
     }
 
     const { name: sellerName, url: sellerUrl, password: sellerPwd } = value;
-    if (!sellerService.isAuthorized(sellerName, sellerPwd)) {
+    const isAuthorized = await sellerService.isAuthorized(
+      sellerName,
+      sellerPwd
+    );
+    if (!isAuthorized) {
       response
         .status(StatusCodes.UNAUTHORIZED)
         .send({ message: 'invalid name or password' });
       return;
     }
 
-    sellerService.register(sellerUrl, sellerName, sellerPwd);
+    await sellerService.register(sellerUrl, sellerName, sellerPwd);
     response.status(StatusCodes.OK).end();
   };

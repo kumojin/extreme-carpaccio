@@ -19,8 +19,8 @@ export default class OrderService {
   public sendOrder(
     seller: Seller,
     order: Order,
-    cashUpdater: (response: IncomingMessage) => void,
-    logError: () => void
+    cashUpdater: (response: IncomingMessage) => Promise<void>,
+    onError: () => void
   ) {
     logger.info(
       colors.grey(
@@ -29,7 +29,7 @@ export default class OrderService {
         )}`
       )
     );
-    utils.post(seller.url, '/order', order, cashUpdater, logError);
+    utils.post(seller.url, '/order', order, cashUpdater, onError);
   }
 
   public createOrder(reduction: Reduction): Order {
@@ -61,7 +61,7 @@ export default class OrderService {
     const taxRule = this.countries.taxRule(order.country);
     sum = taxRule.applyTax(sum);
     sum = reduction.apply(sum);
-    return { total: sum };
+    return { total: utils.fixPrecision(sum, 2) };
   }
 
   public validateBill(bill: unknown) {

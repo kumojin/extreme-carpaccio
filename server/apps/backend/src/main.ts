@@ -1,6 +1,10 @@
-import http from 'http';
-import app from './app';
+import http from 'node:http';
+import * as dotenv from 'dotenv';
+import { setup } from './app';
 import logger from './logger';
+
+// Load .env configuration
+dotenv.config();
 
 /**
  * Normalize a port into a number, string, or false.
@@ -21,7 +25,9 @@ const normalizePort = (val: string) => {
   return false;
 };
 
-(() => {
+(async () => {
+  const { app, start } = await setup();
+
   /**
    * Get port from environment and store in Express.
    */
@@ -63,5 +69,6 @@ const normalizePort = (val: string) => {
     const bind =
       typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
     logger.debug(`Listening on ${bind}`);
+    start();
   });
 })();

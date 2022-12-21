@@ -5,122 +5,106 @@ import Sellers from './Sellers';
 describe('Sellers', () => {
   let sellers: Sellers;
 
-  beforeEach(() => {
-    sellers = new Sellers();
+  beforeEach(async () => {
+    sellers = await Sellers.create(true);
   });
 
-  it('should return all sellers sorted by cash in decreasing order', () => {
+  it('should return all sellers sorted by cash in decreasing order', async () => {
     const bob = buildWithDefaults({
       name: 'bob',
       cash: 0.0,
     });
-    sellers.save(bob);
+    await sellers.save(bob);
     const alice = buildWithDefaults({
       name: 'alice',
       cash: 10.0,
     });
-    sellers.save(alice);
+    await sellers.save(alice);
     const carol = buildWithDefaults({
       name: 'carol',
       cash: 5.0,
     });
-    sellers.save(carol);
+    await sellers.save(carol);
 
-    expect(sellers.all()[0]).toEqual(alice);
-    expect(sellers.all()[1]).toEqual(carol);
-    expect(sellers.all()[2]).toEqual(bob);
+    const allSellers = await sellers.all();
+    expect(allSellers[0]).toEqual(alice);
+    expect(allSellers[1]).toEqual(carol);
+    expect(allSellers[2]).toEqual(bob);
   });
 
-  it('should add sellers', () => {
+  it('should add sellers', async () => {
     const bob = buildWithDefaults({
       name: 'bob',
       cash: 0.0,
     });
-    sellers.save(bob);
+    await sellers.save(bob);
 
-    expect(sellers.all()).toContain(bob);
+    const allSellers = await sellers.all();
+    expect(allSellers).toContainEqual(bob);
   });
 
-  it('should update sellers data and preserve cash & cash history', () => {
+  it('should update sellers data and preserve cash & cash history', async () => {
     const bob = buildWithDefaults({
       name: 'bob',
       cash: 0.0,
       url: new URL('http://192.168.0.1:8080'),
     });
-    sellers.save(bob);
-    sellers.updateCash(bob.name, 42, 1);
+    await sellers.save(bob);
+    await sellers.updateCash(bob.name, 42, 1);
 
     const newBob = buildWithDefaults({
       name: bob.name,
       url: new URL('https://192.168.0.1:3000'),
     });
-    sellers.save(newBob);
+    await sellers.save(newBob);
 
-    expect(sellers.all().length).toBe(1);
-    const updatedBob = sellers.get(bob.name);
-    expect(updatedBob.url.toString()).toEqual('https://192.168.0.1:3000/');
-    expect(updatedBob.cash).toBe(42);
-    expect(sellers.cashHistory).toEqual({ bob: [0, 42] });
+    const allSellers = await sellers.all();
+    expect(allSellers.length).toBe(1);
+    const updatedBob = await sellers.get(bob.name);
+    expect(updatedBob!.url.toString()).toEqual('https://192.168.0.1:3000/');
+    expect(updatedBob!.cash).toBe(42);
+
+    const cashHistory = await sellers.getCashHistory();
+    expect(cashHistory).toEqual({ bob: [0, 42] });
   });
 
-  it('should count sellers', () => {
-    expect(sellers.count()).toBe(0);
-
+  it("should update seller's cash", async () => {
     const bob = buildWithDefaults({
       name: 'bob',
       cash: 0.0,
     });
-    sellers.save(bob);
+    await sellers.save(bob);
 
-    expect(sellers.count()).toBe(1);
+    await sellers.updateCash('bob', 100, 0);
+
+    const newBob = await sellers.get('bob');
+    expect(newBob!.cash).toBe(100);
   });
 
-  it('should say when there are sellers or not', () => {
-    expect(sellers.isEmpty()).toBeTruthy();
-
+  it('should track cash evolution on cash update by iteration', async () => {
     const bob = buildWithDefaults({
       name: 'bob',
       cash: 0.0,
     });
-    sellers.save(bob);
+    await sellers.save(bob);
 
-    expect(sellers.isEmpty()).toBeFalsy();
+    await sellers.updateCash('bob', 100, 0);
+
+    const cashHistory = await sellers.getCashHistory();
+    expect(cashHistory).toEqual({ bob: [100] });
   });
 
-  it("should update seller's cash", () => {
+  it('should track cash evolution on cash update by iteration and fill missing iterations with last value', async () => {
     const bob = buildWithDefaults({
       name: 'bob',
       cash: 0.0,
     });
-    sellers.save(bob);
+    await sellers.save(bob);
 
-    sellers.updateCash('bob', 100, 0);
+    await sellers.updateCash('bob', 100, 3);
+    await sellers.updateCash('bob', 100, 4);
 
-    expect(sellers.get('bob').cash).toBe(100);
-  });
-
-  it('should track cash evolution on cash update by iteration', () => {
-    const bob = buildWithDefaults({
-      name: 'bob',
-      cash: 0.0,
-    });
-    sellers.save(bob);
-
-    sellers.updateCash('bob', 100, 0);
-
-    expect(sellers.cashHistory).toEqual({ bob: [100] });
-  });
-
-  it('should track cash evolution on cash update by iteration and fill missing iterations with last value', () => {
-    const bob = buildWithDefaults({
-      name: 'bob',
-      cash: 0.0,
-    });
-    sellers.save(bob);
-
-    sellers.updateCash('bob', 100, 3);
-    sellers.updateCash('bob', 100, 4);
-
-    expect(sellers.cashHistory).toEqual({ bob: [0, 0, 0, 100, 200] });
+    const cashHistory = await sellers.getCashHistory();
+    expect(cashHistory).toEqual({ bob: [0, 0, 0, 100, 200] });
   });
 });

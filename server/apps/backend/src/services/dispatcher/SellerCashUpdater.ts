@@ -18,11 +18,11 @@ class SellerCashUpdater {
     seller: Seller,
     expectedBill: Bill,
     currentIteration: number
-  ) {
+  ): (response: IncomingMessage) => Promise<void> {
     const self = this;
-    return (response: IncomingMessage) => {
+    return async (response: IncomingMessage) => {
       if (response.statusCode === 200) {
-        self.sellerService.setOnline(seller);
+        await self.sellerService.setOnline(seller);
 
         response.on('error', (err) => {
           logger.error(err);
@@ -50,13 +50,13 @@ class SellerCashUpdater {
           }
         });
       } else if (response.statusCode === 404) {
-        self.sellerService.setOnline(seller);
+        await self.sellerService.setOnline(seller);
         logger.info(
           colors.grey(`${seller.name} replied 404. Everything is fine.`)
         );
       } else {
-        self.sellerService.setOnline(seller);
-        self.sellerService.updateCash(
+        await self.sellerService.setOnline(seller);
+        await self.sellerService.updateCash(
           seller,
           expectedBill,
           undefined,

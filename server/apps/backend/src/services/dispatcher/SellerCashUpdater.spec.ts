@@ -12,21 +12,22 @@ describe("Seller's cash updater", () => {
   let sellerService: SellerService;
   let orderService: OrderService;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     configuration = new Configuration();
-    sellerService = new SellerService(new Sellers(), configuration);
+    const sellers = await Sellers.create(true);
+    sellerService = new SellerService(sellers, configuration);
     orderService = new OrderService(configuration);
     sellerCashUpdater = new SellerCashUpdater(sellerService, orderService);
   });
 
-  it("should deduct a penalty when the sellers's response is neither 200 nor 404", () => {
+  it("should deduct a penalty when the sellers's response is neither 200 nor 404", async () => {
     const bob = buildWithDefaults({
       name: 'bob',
     });
     jest.spyOn(sellerService, 'setOnline').mockImplementation(jest.fn());
     jest.spyOn(sellerService, 'updateCash').mockImplementation(jest.fn());
 
-    sellerCashUpdater.doUpdate(
+    await sellerCashUpdater.doUpdate(
       bob,
       { total: 100 },
       -1
