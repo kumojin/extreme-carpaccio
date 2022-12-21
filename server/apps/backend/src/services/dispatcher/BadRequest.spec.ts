@@ -11,9 +11,9 @@ describe('BadRequest', () => {
   let sellers: Sellers;
   let configuration: Configuration;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     configuration = new Configuration();
-    sellers = new Sellers();
+    sellers = await Sellers.create(true);
     sellerService = new SellerService(sellers, configuration);
     badRequest = new BadRequest(configuration);
   });

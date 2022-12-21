@@ -38,7 +38,7 @@ class Utils {
     url: URL,
     path: string,
     body: any,
-    onSuccess?: (res: IncomingMessage) => void,
+    onSuccess?: (res: IncomingMessage) => Promise<void>,
     onError?: (err: Error) => void
   ) {
     const bodyStringified = this.stringify(body);

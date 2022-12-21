@@ -14,14 +14,15 @@ describe('Dispatcher', () => {
   let sellerService: SellerService;
   let configuration: Configuration;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     configuration = new Configuration();
-    sellerService = new SellerService(new Sellers(), configuration);
+    const sellers = await Sellers.create(true);
+    sellerService = new SellerService(sellers, configuration);
     orderService = new OrderService(configuration);
     dispatcher = new Dispatcher(sellerService, orderService, configuration);
   });
 
-  it('should not send request to sellers when active config is set to false', () => {
+  it('should not send request to sellers when active config is set to false', async () => {
     jest.spyOn(configuration, 'all').mockReturnValue({
       reduction: 'STANDARD',
       badRequest: {
@@ -32,7 +33,8 @@ describe('Dispatcher', () => {
     });
     jest.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(jest.fn());
 
-    expect(dispatcher.startBuying(1)).toEqual(1);
+    const nextIteration = await dispatcher.startBuying(1);
+    expect(nextIteration).toEqual(1);
     expect(dispatcher.sendOrderToSellers).not.toHaveBeenCalled();
   });
 
@@ -174,7 +176,7 @@ describe('Dispatcher', () => {
     );
   });
 
-  it('should send the same order to each seller using reduction', () => {
+  it('should send the same order to each seller using reduction', async () => {
     jest.spyOn(configuration, 'all').mockReturnValue({});
     const alice = buildWithDefaults({
       name: 'alice',
@@ -183,7 +185,7 @@ describe('Dispatcher', () => {
       name: 'bob',
     });
     jest.spyOn(sellerService, 'addCash').mockImplementation(jest.fn());
-    jest.spyOn(sellerService, 'allSellers').mockReturnValue([alice, bob]);
+    jest.spyOn(sellerService, 'allSellers').mockResolvedValue([alice, bob]);
     const order = {
       prices: [100, 50],
       quantities: [1, 2],
@@ -193,7 +195,7 @@ describe('Dispatcher', () => {
     jest.spyOn(orderService, 'createOrder').mockReturnValue(order);
     jest.spyOn(orderService, 'sendOrder').mockImplementation(jest.fn());
 
-    dispatcher.sendOrderToSellers(Reductions.STANDARD, 0, false);
+    await dispatcher.sendOrderToSellers(Reductions.STANDARD, 0, false);
 
     expect(orderService.createOrder).toHaveBeenCalledWith(Reductions.STANDARD);
     expect(orderService.sendOrder).toHaveBeenCalledWith(

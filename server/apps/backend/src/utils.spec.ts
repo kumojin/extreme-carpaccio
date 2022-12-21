@@ -33,7 +33,7 @@ describe('Utils', () => {
       jest.spyOn(fakeRequest, 'write');
       jest.spyOn(fakeRequest, 'end');
       const body = { content: 'some content' };
-      const callback = () => {};
+      const callback = () => Promise.resolve();
 
       utils.post(url, '/path', body, callback);
 

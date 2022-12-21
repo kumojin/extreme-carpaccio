@@ -1,3 +1,4 @@
+import { IncomingMessage } from 'node:http';
 import colors from 'colors';
 import _ from 'lodash';
 import Configuration, { WeightedReduction } from '../../config';
@@ -32,7 +33,7 @@ class Dispatcher {
     this.sellerCashUpdater = new SellerCashUpdater(sellerService, orderService);
   }
 
-  public sendOrderToSellers(
+  public async sendOrderToSellers(
     reduction: Reduction,
     currentIteration: number,
     badRequest: boolean
@@ -46,9 +47,10 @@ class Dispatcher {
       order = self.badRequest.corruptOrder(order) as any;
     }
 
-    self.sellerService.allSellers().forEach((seller) => {
+    const allSellers = await self.sellerService.allSellers();
+    allSellers.forEach((seller) => {
       self.sellerService.addCash(seller, 0, currentIteration);
-      let cashUpdater;
+      let cashUpdater: (response: IncomingMessage) => Promise<void>;
 
       if (badRequest) {
         cashUpdater = self.badRequest.updateSellersCash(
@@ -74,7 +76,7 @@ class Dispatcher {
     });
   }
 
-  public startBuying(iteration: number) {
+  public async startBuying(iteration: number) {
     const reductionStrategy = this.getReductionStrategy();
     const period = this.getReductionPeriodFor(reductionStrategy);
     const badRequest = this.badRequest.shouldSendBadRequest(iteration);
@@ -87,7 +89,7 @@ class Dispatcher {
 
     if (this.shouldSendOrders(this)) {
       logger.info(colors.green(message));
-      this.sendOrderToSellers(period.reduction, iteration, !!badRequest);
+      await this.sendOrderToSellers(period.reduction, iteration, !!badRequest);
     } else {
       nextIteration = iteration;
       logger.info(colors.red('Order dispatching disabled'));
@@ -126,8 +128,8 @@ class Dispatcher {
     self: Dispatcher,
     seller: Seller,
     currentIteration: number
-  ) {
-    return () => {
+  ): () => Promise<void> {
+    return async () => {
       logger.error(
         colors.red(`Could not reach seller ${utils.stringify(seller)}`)
       );
@@ -142,7 +144,11 @@ class Dispatcher {
         offlinePenalty = 0;
       }
 
-      self.sellerService.setOffline(seller, offlinePenalty, currentIteration);
+      await self.sellerService.setOffline(
+        seller,
+        offlinePenalty,
+        currentIteration
+      );
     };
   }
 
@@ -185,8 +191,8 @@ class Dispatcher {
     nextIteration: number,
     intervalInMillis: number
   ) {
-    setTimeout(() => {
-      self.startBuying(nextIteration);
+    setTimeout(async () => {
+      await self.startBuying(nextIteration);
     }, intervalInMillis);
   }
 

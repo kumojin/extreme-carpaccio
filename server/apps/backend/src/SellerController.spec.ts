@@ -23,18 +23,19 @@ import { SellerService } from './services';
 describe('Seller Controller', () => {
   let sellerService: SellerService;
 
-  beforeEach(() => {
-    sellerService = new SellerService(new Sellers(), new Configuration());
+  beforeEach(async () => {
+    const sellersRepository = await Sellers.create(true);
+    sellerService = new SellerService(sellersRepository, new Configuration());
   });
 
   describe('listSellers', () => {
-    it('should return only seller name, cash and online status', () => {
+    it('should return only seller name, cash and online status', async () => {
       const request = httpMocks.createRequest({});
       const response = httpMocks.createResponse();
 
-      jest.spyOn(sellerService, 'allSellers').mockReturnValue(sellers);
+      jest.spyOn(sellerService, 'allSellers').mockResolvedValue(sellers);
 
-      listSellers(sellerService)(request, response);
+      await listSellers(sellerService)(request, response);
 
       expect(response._getData()).toEqual([
         {
@@ -53,7 +54,7 @@ describe('Seller Controller', () => {
 
   describe('sellersHistory', () => {
     describe('when chunk is present in query and is a string', () => {
-      it('should call getCashHistory with specified chunk', () => {
+      it('should call getCashHistory with specified chunk', async () => {
         const request = httpMocks.createRequest({
           query: {
             chunk: '42',
@@ -62,16 +63,16 @@ describe('Seller Controller', () => {
         const response = httpMocks.createResponse();
         when(jest.spyOn(sellerService, 'getCashHistory'))
           .calledWith(42)
-          .mockReturnValue(cashHistory);
+          .mockResolvedValue(cashHistory);
 
-        sellersHistory(sellerService)(request, response);
+        await sellersHistory(sellerService)(request, response);
 
         expect(response._getData()).toEqual(cashHistory);
       });
     });
 
     describe('when chunk is present in query but is not a number', () => {
-      it('should call getCashHistory with default chunk', () => {
+      it('should call getCashHistory with default chunk', async () => {
         const request = httpMocks.createRequest({
           query: {
             chunk: 'xxx',
@@ -80,25 +81,25 @@ describe('Seller Controller', () => {
         const response = httpMocks.createResponse();
         when(jest.spyOn(sellerService, 'getCashHistory'))
           .calledWith(10)
-          .mockReturnValue(cashHistory);
+          .mockResolvedValue(cashHistory);
 
-        sellersHistory(sellerService)(request, response);
+        await sellersHistory(sellerService)(request, response);
 
         expect(response._getData()).toEqual(cashHistory);
       });
     });
 
     describe('when chunk is not present in query', () => {
-      it('should call getCashHistory with default chunk', () => {
+      it('should call getCashHistory with default chunk', async () => {
         const request = httpMocks.createRequest({
           query: {},
         });
         const response = httpMocks.createResponse();
         when(jest.spyOn(sellerService, 'getCashHistory'))
           .calledWith(10)
-          .mockReturnValue(cashHistory);
+          .mockResolvedValue(cashHistory);
 
-        sellersHistory(sellerService)(request, response);
+        await sellersHistory(sellerService)(request, response);
 
         expect(response._getData()).toEqual(cashHistory);
       });
@@ -122,12 +123,12 @@ describe('Seller Controller', () => {
           body = missingNameSellerRequest;
         });
 
-        it('should return a bad request', () => {
+        it('should return a bad request', async () => {
           request = httpMocks.createRequest({
             body,
           });
 
-          registerSeller(sellerService)(request, response);
+          await registerSeller(sellerService)(request, response);
 
           expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
           expect(registerMock).not.toHaveBeenCalled();
@@ -139,12 +140,12 @@ describe('Seller Controller', () => {
           body = missingPasswordSellerRequest;
         });
 
-        it('should return a bad request', () => {
+        it('should return a bad request', async () => {
           request = httpMocks.createRequest({
             body,
           });
 
-          registerSeller(sellerService)(request, response);
+          await registerSeller(sellerService)(request, response);
 
           expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
           expect(registerMock).not.toHaveBeenCalled();
@@ -156,12 +157,12 @@ describe('Seller Controller', () => {
           body = missingUrlSellerRequest;
         });
 
-        it('should return a bad request', () => {
+        it('should return a bad request', async () => {
           request = httpMocks.createRequest({
             body,
           });
 
-          registerSeller(sellerService)(request, response);
+          await registerSeller(sellerService)(request, response);
 
           expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
           expect(registerMock).not.toHaveBeenCalled();
@@ -176,12 +177,12 @@ describe('Seller Controller', () => {
           body = validSellerRequestWithUrl(url);
         });
 
-        it('should return a bad request', () => {
+        it('should return a bad request', async () => {
           request = httpMocks.createRequest({
             body,
           });
 
-          registerSeller(sellerService)(request, response);
+          await registerSeller(sellerService)(request, response);
 
           expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
           expect(registerMock).not.toHaveBeenCalled();
@@ -204,11 +205,11 @@ describe('Seller Controller', () => {
         beforeEach(() => {
           when(jest.spyOn(sellerService, 'isAuthorized'))
             .calledWith(body.name!, body.password!)
-            .mockReturnValue(false);
+            .mockResolvedValue(false);
         });
 
-        it('should return a unauthorized', () => {
-          registerSeller(sellerService)(request, response);
+        it('should return a unauthorized', async () => {
+          await registerSeller(sellerService)(request, response);
 
           expect(registerMock).not.toHaveBeenCalled();
           expect(response.statusCode).toBe(StatusCodes.UNAUTHORIZED);
@@ -219,11 +220,11 @@ describe('Seller Controller', () => {
         beforeEach(() => {
           when(jest.spyOn(sellerService, 'isAuthorized'))
             .calledWith(body.name!, body.password!)
-            .mockReturnValue(true);
+            .mockResolvedValue(true);
         });
 
-        it('should return a success', () => {
-          registerSeller(sellerService)(request, response);
+        it('should return a success', async () => {
+          await registerSeller(sellerService)(request, response);
 
           expect(registerMock).toHaveBeenCalledWith(
             body.url,

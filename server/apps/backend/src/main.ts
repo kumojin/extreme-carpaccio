@@ -1,10 +1,10 @@
 import http from 'node:http';
-import * as dotenv from 'dotenv'
+import * as dotenv from 'dotenv';
 import { setup } from './app';
 import logger from './logger';
 
 // Load .env configuration
-dotenv.config()
+dotenv.config();
 
 /**
  * Normalize a port into a number, string, or false.

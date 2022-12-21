@@ -26,7 +26,7 @@ describe('Order Service', () => {
       country: 'CA',
       reduction: 'STANDARD',
     };
-    const cashUpdater = () => {};
+    const cashUpdater = () => Promise.resolve();
     const onError = () => {};
 
     const url = new URL('https://localhost:3000/test');

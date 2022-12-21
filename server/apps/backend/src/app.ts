@@ -8,13 +8,13 @@ import { Dispatcher, OrderService, SellerService } from './services';
 
 const startGame = (dispatcher: Dispatcher) => {
   dispatcher.startBuying(1);
-}
+};
 
 export const setup = async () => {
   const configuration = new Configuration(
     path.join(__dirname, '..', process.env.CONFIGURATION_FILE ?? '')
   );
-  const sellers = new Sellers();
+  const sellers = await Sellers.create();
   const sellerService = new SellerService(sellers, configuration);
   const orderService = new OrderService(configuration);
   const dispatcher = new Dispatcher(sellerService, orderService, configuration);

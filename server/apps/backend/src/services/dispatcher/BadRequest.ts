@@ -101,19 +101,19 @@ class BadRequest {
     seller: Seller,
     expectedBill: Bill,
     currentIteration: number
-  ) {
-    return (response: IncomingMessage) => {
+  ): (response: IncomingMessage) => Promise<void> {
+    return async (response: IncomingMessage) => {
       const amount = expectedBill.total;
       let message;
 
       if (response.statusCode !== 400) {
         const loss = amount * 0.5;
         message = `Hey, ${seller.name} lose ${loss} because he/she does not know how to handle correctly a bad request`;
-        sellerService.deductCash(seller, loss, currentIteration);
+        await sellerService.deductCash(seller, loss, currentIteration);
         sellerService.notify(seller, { type: 'ERROR', content: message });
       } else {
         message = `Hey, ${seller.name} earned ${amount}`;
-        sellerService.addCash(seller, amount, currentIteration);
+        await sellerService.addCash(seller, amount, currentIteration);
         sellerService.notify(seller, { type: 'INFO', content: message });
       }
     };
