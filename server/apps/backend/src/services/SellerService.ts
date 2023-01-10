@@ -1,4 +1,5 @@
 import { URL } from 'node:url';
+import argon2 from 'argon2';
 import _ from 'lodash';
 import Configuration from '../config';
 import { messageFromError } from '../error-utils';
@@ -65,9 +66,7 @@ export default class SellerService {
   public async isAuthorized(name: string, password: string): Promise<boolean> {
     const seller = await this.sellers.get(name);
     if (seller) {
-      const samePwd = seller.password === password;
-      logger.info(`Attempt to re-register ${name}, same password ${password}`);
-      return samePwd;
+      return argon2.verify(seller.password, password);
     }
     return true;
   }
@@ -75,12 +74,14 @@ export default class SellerService {
   public async register(
     sellerUrl: string,
     name: string,
-    password?: string
+    password: string
   ): Promise<void> {
     const parsedUrl = new URL(sellerUrl);
+    const hash = await argon2.hash(password);
+
     const seller: Seller = {
       name,
-      password,
+      password: hash,
       url: parsedUrl,
       cash: 0.0,
       online: false,
