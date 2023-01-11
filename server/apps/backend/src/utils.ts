@@ -1,6 +1,7 @@
 import http, { IncomingMessage, RequestOptions } from 'node:http';
 import https from 'node:https';
 import { URL } from 'node:url';
+import Big from 'big.js';
 
 const isHttps = (url: URL): boolean => url.protocol === 'https:';
 const isHttp = (url: URL): boolean => url.protocol === 'http:';
@@ -31,7 +32,7 @@ class Utils {
   }
 
   public fixPrecision(value: number, precision: number) {
-    return parseFloat(value.toFixed(precision));
+    return new Big(value).round(precision).toNumber();
   }
 
   public post(

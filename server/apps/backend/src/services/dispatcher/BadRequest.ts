@@ -1,4 +1,5 @@
 import { IncomingMessage } from 'node:http';
+import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
 import Configuration, { BadRequestMode } from '../../config';
@@ -107,13 +108,13 @@ class BadRequest {
       let message;
 
       if (response.statusCode !== 400) {
-        const loss = amount * 0.5;
+        const loss = new Big(amount).times(0.5);
         message = `Hey, ${seller.name} lose ${loss} because he/she does not know how to handle correctly a bad request`;
         await sellerService.deductCash(seller, loss, currentIteration);
         sellerService.notify(seller, { type: 'ERROR', content: message });
       } else {
         message = `Hey, ${seller.name} earned ${amount}`;
-        await sellerService.addCash(seller, amount, currentIteration);
+        await sellerService.addCash(seller, new Big(amount), currentIteration);
         sellerService.notify(seller, { type: 'INFO', content: message });
       }
     };

@@ -71,14 +71,14 @@ describe('Sellers', () => {
   it("should update seller's cash", async () => {
     const bob = buildWithDefaults({
       name: 'bob',
-      cash: 0.0,
+      cash: 0.1,
     });
     await sellers.save(bob);
 
-    await sellers.updateCash('bob', 100, 0);
+    await sellers.updateCash('bob', 0.2, 0);
 
     const newBob = await sellers.get('bob');
-    expect(newBob!.cash).toBe(100);
+    expect(newBob!.cash).toBe(0.3);
   });
 
   it('should track cash evolution on cash update by iteration', async () => {

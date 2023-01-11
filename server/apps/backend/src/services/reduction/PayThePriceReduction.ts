@@ -1,3 +1,4 @@
+import Big from 'big.js';
 import { Reduction } from './Reduction';
 
 class PayThePriceReduction implements Reduction {
@@ -11,7 +12,7 @@ class PayThePriceReduction implements Reduction {
     this._name = 'PAY THE PRICE';
   }
 
-  public apply(amount: number): number {
+  public apply(amount: Big): Big {
     return amount;
   }
 }

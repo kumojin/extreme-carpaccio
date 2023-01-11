@@ -1,4 +1,5 @@
 import path from 'node:path';
+import Big from 'big.js';
 import _ from 'lodash';
 import { Database, open } from 'sqlite';
 import sqlite3 from 'sqlite3';
@@ -69,7 +70,7 @@ export default class Sellers {
 
   public async updateCash(
     sellerName: string,
-    amount: number,
+    amount: Big,
     currentIteration: number
   ) {
     const seller = await this.get(sellerName);
@@ -78,7 +79,7 @@ export default class Sellers {
       return;
     }
 
-    seller.cash += parseFloat(String(amount));
+    seller.cash = new Big(seller.cash).add(amount).round(2).toNumber();
     await this.db.run(
       'UPDATE Seller SET cash = ? WHERE name = ?',
       seller.cash,
@@ -139,7 +140,7 @@ export default class Sellers {
   }
 
   private enlargeHistory(newSize: number, oldHistory: number[]) {
-    const newHistory = new Array(newSize);
+    const newHistory = new Array<number>(newSize);
     return [...oldHistory, ...newHistory];
   }
 

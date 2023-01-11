@@ -1,3 +1,4 @@
+import Big from 'big.js';
 import { Reduction } from './Reduction';
 
 class HalfPriceReduction implements Reduction {
@@ -11,8 +12,8 @@ class HalfPriceReduction implements Reduction {
     this._name = 'HALF PRICE';
   }
 
-  public apply(amount: number): number {
-    return amount / 2;
+  public apply(amount: Big): Big {
+    return amount.div(2);
   }
 }
 export default new HalfPriceReduction();

@@ -1,4 +1,5 @@
 import { IncomingMessage } from 'node:http';
+import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
 import Configuration, { WeightedReduction } from '../../config';
@@ -49,7 +50,7 @@ class Dispatcher {
 
     const allSellers = await self.sellerService.allSellers();
     allSellers.forEach((seller) => {
-      self.sellerService.addCash(seller, 0, currentIteration);
+      self.sellerService.addCash(seller, new Big(0), currentIteration);
       let cashUpdater: (response: IncomingMessage) => Promise<void>;
 
       if (badRequest) {
