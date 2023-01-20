@@ -1,3 +1,4 @@
 .turbo/
 dist/
 apps/backend/public/components/
+build/
