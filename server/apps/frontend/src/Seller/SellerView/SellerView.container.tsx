@@ -1,4 +1,3 @@
-import React from 'react';
 import { SellerView } from './SellerView';
 import { SalesHistory, Seller } from '../Seller.hook';
 

@@ -9,10 +9,12 @@ export const useForm = (
   passwordRef: RefObject<HTMLInputElement>;
   urlRef: RefObject<HTMLInputElement>;
   handleSubmit: (event: FormEvent) => void;
+  isError: boolean;
 } => {
   const nameRef: RefObject<HTMLInputElement> = React.useRef(null);
   const passwordRef: RefObject<HTMLInputElement> = React.useRef(null);
   const urlRef: RefObject<HTMLInputElement> = React.useRef(null);
+  const [isError, setIsError] = React.useState<boolean>(false);
 
   const addSellerMutation = useMutation((newSeller: SellerForm) => {
     return fetch('/seller', {
@@ -25,27 +27,32 @@ export const useForm = (
     const name = nameRef.current?.value;
     const password = passwordRef.current?.value;
     const url = urlRef.current?.value;
+    setIsError(false);
 
     event.preventDefault();
-    if (!name || !url) {
+    if (!name || !url || !password) {
+      setIsError(true);
       return;
     }
 
     addSellerMutation.mutate(
-      { name, password: password ?? '', url },
+      { name, password: password, url },
       {
         onSuccess: async (response) => {
           if (!response.ok) {
+            setIsError(true);
             console.error('/seller', response.statusText);
+          } else {
+            addSeller({ name: name, cash: 0, online: true });
           }
-          addSeller({ name: name, cash: 0, online: true });
         },
-        //TODO to fix the any type
-        onError: async (err: any) => {
-          console.error('/seller', err.toString());
+        onError: async (err) => {
+          setIsError(true);
+          console.error('/seller', err);
         },
       }
     );
+
     nameRef.current.value = '';
     urlRef.current.value = '';
     if (passwordRef.current) {
@@ -53,5 +60,5 @@ export const useForm = (
     }
   };
 
-  return { nameRef, passwordRef, urlRef, handleSubmit };
+  return { nameRef, passwordRef, urlRef, handleSubmit, isError };
 };

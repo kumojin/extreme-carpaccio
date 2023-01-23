@@ -19,22 +19,18 @@ export type AddSellerType = (seller: Seller) => void;
 export type SalesHistory =
   | {
       lastIteration: number;
-      history: { [name: string]: number[] };
+      history: Record<string, number[]>;
     }
   | undefined;
 
 const fetchGetSellers = async () => {
-  const res = await fetch('/sellers', {
-    method: 'GET',
-  });
-  return res.json();
+  const result = await fetch('/sellers');
+  return result.json();
 };
 
 const fetchGetSalesHistory = async () => {
-  const res = await fetch('/sellers/history?chunk=' + historyFrequency, {
-    method: 'GET',
-  });
-  return res.json();
+  const result = await fetch(`/sellers/history?chunk=${historyFrequency}`);
+  return result.json();
 };
 
 export const useSeller = () => {

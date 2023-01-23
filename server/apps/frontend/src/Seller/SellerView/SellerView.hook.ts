@@ -1,18 +1,15 @@
-import { Line } from 'react-chartjs-2';
-import { ChartData } from 'chart.js';
-import React from 'react';
 import { Seller, SalesHistory } from '../Seller.hook';
 
 export const stringToColor = (str: string) => {
-  var hash = 0;
+  let hash = 0;
 
-  for (var i = 0; i < str.length; i++) {
+  for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
 
-  var color = '#';
+  let color = '#';
 
-  for (var j = 0; j < 3; j++) {
+  for (let j = 0; j < 3; j++) {
     color += ('00' + ((hash >> (j * 8)) & 0xff).toString(16)).slice(-2);
   }
 
@@ -22,7 +19,7 @@ export const stringToColor = (str: string) => {
 export const options = {
   scales: {
     y: {
-      min: 0,
+      suggestedMin: 0,
     },
   },
   plugins: {
@@ -49,12 +46,12 @@ export const getDataHistory = (
   sellers: Seller[],
   salesHistory: SalesHistory
 ): GetDataHistoryReturned => {
-  var labels: string[] = [];
-  var datasets = [];
+  let labels: string[] = [];
+  let datasets = [];
 
-  if (salesHistory !== undefined && sellers !== undefined) {
+  if (salesHistory && sellers) {
     for (const seller in salesHistory.history) {
-      var color = stringToColor(seller);
+      let color = stringToColor(seller);
       datasets.push({
         label: seller,
         borderColor: color,
@@ -63,9 +60,9 @@ export const getDataHistory = (
       });
     }
 
-    var lastIteration = salesHistory.lastIteration;
-    for (var i = 0; i < lastIteration; i += 10) {
-      labels.push(i + '');
+    let lastIteration = salesHistory.lastIteration;
+    for (let i = 0; i < lastIteration; i += 10) {
+      labels.push(`${i}`);
     }
 
     labels = labels.slice(-10);

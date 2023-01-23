@@ -1,4 +1,3 @@
-import React from 'react';
 import SellerForm from './SellerForm';
 import SellerView from './SellerView';
 import { useHistory, useSeller } from './Seller.hook';

@@ -25,7 +25,6 @@ export const setup = async () => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use('/', routes(sellerService));
   app.use(express.static(path.join(__dirname, '../../frontend/build')));
-  //app.use(express.static(path.join(__dirname, '../public')));
 
   configuration.watch(() => {}, false, 500);
 

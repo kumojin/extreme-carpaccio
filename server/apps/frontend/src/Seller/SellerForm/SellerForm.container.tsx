@@ -1,4 +1,3 @@
-import React from 'react';
 import { SellerForm } from './SellerForm';
 import { useForm } from './SellerFrom.hook';
 import { AddSellerType } from '../Seller.hook';
@@ -8,7 +7,8 @@ type SellerFormContainerProps = {
 };
 
 const SellerFormContainer = ({ addSeller }: SellerFormContainerProps) => {
-  const { nameRef, passwordRef, urlRef, handleSubmit } = useForm(addSeller);
+  const { nameRef, passwordRef, urlRef, handleSubmit, isError } =
+    useForm(addSeller);
 
   return (
     <SellerForm
@@ -16,6 +16,7 @@ const SellerFormContainer = ({ addSeller }: SellerFormContainerProps) => {
       passwordRef={passwordRef}
       urlRef={urlRef}
       handleSubmit={handleSubmit}
+      isError={isError}
     />
   );
 };

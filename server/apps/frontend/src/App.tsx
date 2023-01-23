@@ -1,13 +1,15 @@
-import './App.css';
-import { Seller } from './Seller/Seller';
 import { QueryClientProvider, QueryClient } from 'react-query';
-//Create a client
+
+import { Seller } from './Seller/Seller';
+
+import './App.css';
+
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Seller />;
+      <Seller />
     </QueryClientProvider>
   );
 }
