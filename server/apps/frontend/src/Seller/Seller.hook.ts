@@ -1,14 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 const historyFrequency = 10;
 const intervalTime = 5000;
 
+// eslint-disable-next-line  @typescript-eslint/consistent-type-definitions
 export type Seller = {
   cash: number;
   name: string;
   online: boolean;
 };
+
+// eslint-disable-next-line  @typescript-eslint/consistent-type-definitions
 export type SellerForm = {
   name: string;
   password: string;
@@ -23,21 +26,24 @@ export type SalesHistory =
     }
   | undefined;
 
-const fetchGetSellers = async () => {
+const fetchGetSellers = async (): Promise<Seller[]> => {
   const result = await fetch('/sellers');
   return result.json();
 };
 
-const fetchGetSalesHistory = async () => {
+const fetchGetSalesHistory = async (): Promise<SalesHistory> => {
   const result = await fetch(`/sellers/history?chunk=${historyFrequency}`);
   return result.json();
 };
 
-export const useSeller = () => {
+export const useSeller = (): {
+  sellers: Seller[];
+  addSeller: (s: Seller) => void;
+} => {
   const [sellers, setSellers] = useState<Seller[]>([]);
 
-  const addSeller = (seller: Seller) => {
-    setSellers((sellers: Seller[]) => [...sellers, seller].sort());
+  const addSeller = (seller: Seller): void => {
+    setSellers((sellersParam: Seller[]) => [...sellersParam, seller].sort());
   };
 
   const { data: dataSellers } = useQuery('getSellers', fetchGetSellers, {
@@ -45,7 +51,7 @@ export const useSeller = () => {
   });
 
   useEffect(() => {
-    if (dataSellers) {
+    if (dataSellers != null) {
       setSellers(dataSellers);
     }
   }, [dataSellers]);

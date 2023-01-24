@@ -1,6 +1,7 @@
-import { Seller, SalesHistory } from '../Seller.hook';
+import { SalesHistory, Seller } from '../Seller.hook';
 
-export const stringToColor = (str: string) => {
+// type colorType = `#${string}`;
+export const stringToColor = (str: string): string => {
   let hash = 0;
 
   for (let i = 0; i < str.length; i++) {
@@ -32,26 +33,26 @@ export const options = {
   },
 };
 
-export type GetDataHistoryReturned = {
+export interface GetDataHistoryReturned {
   labels: string[];
-  datasets: {
+  datasets: Array<{
     label: string;
     borderColor: string;
     backgroundColor: string;
     data: number[];
-  }[];
-};
+  }>;
+}
 
 export const getDataHistory = (
   sellers: Seller[],
   salesHistory: SalesHistory
 ): GetDataHistoryReturned => {
   let labels: string[] = [];
-  let datasets = [];
+  const datasets = [];
 
-  if (salesHistory && sellers) {
+  if (salesHistory?.history != null) {
     for (const seller in salesHistory.history) {
-      let color = stringToColor(seller);
+      const color = stringToColor(seller);
       datasets.push({
         label: seller,
         borderColor: color,
@@ -60,7 +61,7 @@ export const getDataHistory = (
       });
     }
 
-    let lastIteration = salesHistory.lastIteration;
+    const lastIteration = salesHistory.lastIteration;
     for (let i = 0; i < lastIteration; i += 10) {
       labels.push(`${i}`);
     }

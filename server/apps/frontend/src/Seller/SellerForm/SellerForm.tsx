@@ -1,12 +1,12 @@
 import { FormEvent, RefObject } from 'react';
 
-type SellerFormProps = {
+interface SellerFormProps {
   handleSubmit: (event: FormEvent) => void;
   nameRef: RefObject<HTMLInputElement>;
   passwordRef: RefObject<HTMLInputElement>;
   urlRef: RefObject<HTMLInputElement>;
   isError: boolean;
-};
+}
 
 export const SellerForm = ({
   handleSubmit,

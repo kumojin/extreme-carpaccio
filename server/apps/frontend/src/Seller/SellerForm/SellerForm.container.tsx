@@ -1,12 +1,15 @@
-import { SellerForm } from './SellerForm';
-import { useForm } from './SellerFrom.hook';
 import { AddSellerType } from '../Seller.hook';
 
-type SellerFormContainerProps = {
-  addSeller: AddSellerType;
-};
+import { SellerForm } from './SellerForm';
+import { useForm } from './SellerFrom.hook';
 
-const SellerFormContainer = ({ addSeller }: SellerFormContainerProps) => {
+interface SellerFormContainerProps {
+  addSeller: AddSellerType;
+}
+
+const SellerFormContainer = ({
+  addSeller,
+}: SellerFormContainerProps): JSX.Element => {
   const { nameRef, passwordRef, urlRef, handleSubmit, isError } =
     useForm(addSeller);
 

@@ -1,17 +1,20 @@
+import { Line } from 'react-chartjs-2';
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
-  PointElement,
   LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+
+import '@formatjs/intl-numberformat/polyfill';
 
 import { SalesHistory, Seller } from '../Seller.hook';
-import { stringToColor, options, getDataHistory } from './SellerView.hook';
+
+import { getDataHistory, options, stringToColor } from './SellerView.hook';
 
 ChartJS.register(
   CategoryScale,
@@ -36,7 +39,9 @@ const AlertIcon = (): JSX.Element => (
   </svg>
 );
 
-export type SellerContentProps = { sellers: Seller[] };
+export interface SellerContentProps {
+  sellers: Seller[];
+}
 const getArraySeller = ({ sellers }: SellerContentProps): JSX.Element[] =>
   sellers.map((seller: Seller) => {
     const cash = new Intl.NumberFormat('fr-FR', {
@@ -44,8 +49,8 @@ const getArraySeller = ({ sellers }: SellerContentProps): JSX.Element[] =>
       currency: 'EUR',
     }).format(seller.cash);
 
-    let sellerColor = stringToColor(seller.name);
-    let showOfflineWarning = !seller.online ? <AlertIcon /> : '';
+    const sellerColor = stringToColor(seller.name);
+    const showOfflineWarning = !seller.online ? <AlertIcon /> : '';
     return (
       <tr key={seller.name}>
         <td className="col-md-6">
@@ -61,12 +66,15 @@ const getArraySeller = ({ sellers }: SellerContentProps): JSX.Element[] =>
     );
   });
 
-type SellerViewProps = {
+interface SellerViewProps {
   sellers: Seller[];
   salesHistory: SalesHistory;
-};
+}
 
-export const SellerView = ({ sellers, salesHistory }: SellerViewProps) => (
+export const SellerView = ({
+  sellers,
+  salesHistory,
+}: SellerViewProps): JSX.Element => (
   <div>
     <div className="row">
       <div className="col-md-4">

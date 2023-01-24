@@ -1,5 +1,6 @@
 import React, { FormEvent, RefObject } from 'react';
 import { useMutation } from 'react-query';
+
 import { AddSellerType, SellerForm } from '../Seller.hook';
 
 export const useForm = (
@@ -16,14 +17,14 @@ export const useForm = (
   const urlRef: RefObject<HTMLInputElement> = React.useRef(null);
   const [isError, setIsError] = React.useState<boolean>(false);
 
-  const addSellerMutation = useMutation((newSeller: SellerForm) => {
+  const addSellerMutation = useMutation(async (newSeller: SellerForm) => {
     return fetch('/seller', {
       method: 'POST',
       body: new URLSearchParams(newSeller),
     });
   });
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = (event: FormEvent): void => {
     const name = nameRef.current?.value;
     const password = passwordRef.current?.value;
     const url = urlRef.current?.value;
@@ -36,14 +37,14 @@ export const useForm = (
     }
 
     addSellerMutation.mutate(
-      { name, password: password, url },
+      { name, password, url },
       {
         onSuccess: async (response) => {
           if (!response.ok) {
             setIsError(true);
             console.error('/seller', response.statusText);
           } else {
-            addSeller({ name: name, cash: 0, online: true });
+            addSeller({ name, cash: 0, online: true });
           }
         },
         onError: async (err) => {
@@ -55,9 +56,7 @@ export const useForm = (
 
     nameRef.current.value = '';
     urlRef.current.value = '';
-    if (passwordRef.current) {
-      passwordRef.current.value = '';
-    }
+    passwordRef.current.value = '';
   };
 
   return { nameRef, passwordRef, urlRef, handleSubmit, isError };
