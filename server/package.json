@@ -6,7 +6,6 @@
     "apps/*"
   ],
   "scripts": {
-    "postinstall": "bower install",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
     "build": "turbo run build",
