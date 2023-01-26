@@ -1,6 +1,5 @@
 import { SalesHistory, Seller } from '../Seller.hook';
 
-// type colorType = `#${string}`;
 export const stringToColor = (str: string): string => {
   let hash = 0;
 

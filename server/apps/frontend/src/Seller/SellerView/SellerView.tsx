@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 
 import '@formatjs/intl-numberformat/polyfill';
+import '@formatjs/intl-numberformat/locale-data/fr';
 
 import { SalesHistory, Seller } from '../Seller.hook';
 
@@ -111,7 +112,7 @@ export const SellerView = ({
     </div>
     <hr />
     <footer>
-      <p>Have fun :D </p>
+      <p>Have fun :D</p>
     </footer>
   </div>
 );
