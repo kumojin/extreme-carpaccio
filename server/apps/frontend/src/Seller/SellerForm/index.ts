@@ -1,1 +1,1 @@
-export { default } from './SellerForm.container';
+export { default as SellerForm } from './SellerForm.container';

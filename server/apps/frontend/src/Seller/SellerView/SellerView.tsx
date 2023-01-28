@@ -1,20 +1,17 @@
-import { Line } from 'react-chartjs-2';
 import {
   CategoryScale,
   Chart as ChartJS,
   Legend,
-  LinearScale,
   LineElement,
+  LinearScale,
   PointElement,
   Title,
   Tooltip,
 } from 'chart.js';
-
+import { Line } from 'react-chartjs-2';
 import '@formatjs/intl-numberformat/polyfill';
 import '@formatjs/intl-numberformat/locale-data/fr';
-
 import { SalesHistory, Seller } from '../Seller.hook';
-
 import { getDataHistory, options, stringToColor } from './SellerView.hook';
 
 ChartJS.register(

@@ -4,14 +4,12 @@ import { useQuery } from 'react-query';
 const historyFrequency = 10;
 const intervalTime = 5000;
 
-// eslint-disable-next-line  @typescript-eslint/consistent-type-definitions
 export type Seller = {
   cash: number;
   name: string;
   online: boolean;
 };
 
-// eslint-disable-next-line  @typescript-eslint/consistent-type-definitions
 export type SellerForm = {
   name: string;
   password: string;
@@ -38,7 +36,7 @@ const fetchGetSalesHistory = async (): Promise<SalesHistory> => {
 
 export const useSeller = (): {
   sellers: Seller[];
-  addSeller: (s: Seller) => void;
+  addSeller: (seller: Seller) => void;
 } => {
   const [sellers, setSellers] = useState<Seller[]>([]);
 

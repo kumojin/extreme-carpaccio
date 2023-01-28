@@ -4,13 +4,13 @@ export const stringToColor = (str: string): string => {
   let hash = 0;
 
   for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    hash = str.charCodeAt(i) + ((hash << 5) - hash); // eslint-disable-line no-bitwise
   }
 
   let color = '#';
 
   for (let j = 0; j < 3; j++) {
-    color += ('00' + ((hash >> (j * 8)) & 0xff).toString(16)).slice(-2);
+    color += `00${((hash >> (j * 8)) & 0xff).toString(16)}`.slice(-2); // eslint-disable-line no-bitwise
   }
 
   return color;
@@ -47,10 +47,17 @@ export const getDataHistory = (
   salesHistory: SalesHistory
 ): GetDataHistoryReturned => {
   let labels: string[] = [];
-  const datasets = [];
+  const datasets: {
+    label: string;
+    borderColor: string;
+    backgroundColor: string;
+    data: number[];
+  }[] = [];
 
-  if (salesHistory?.history != null) {
-    for (const seller in salesHistory.history) {
+  if (salesHistory?.history) {
+    const { lastIteration } = salesHistory;
+
+    Object.keys(salesHistory.history).forEach((seller) => {
       const color = stringToColor(seller);
       datasets.push({
         label: seller,
@@ -58,9 +65,8 @@ export const getDataHistory = (
         backgroundColor: color,
         data: salesHistory.history[seller].slice(-10),
       });
-    }
+    });
 
-    const lastIteration = salesHistory.lastIteration;
     for (let i = 0; i < lastIteration; i += 10) {
       labels.push(`${i}`);
     }

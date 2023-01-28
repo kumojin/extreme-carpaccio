@@ -1,11 +1,12 @@
 import { FormEvent, RefObject } from 'react';
+import { ErrorFormType } from './SellerFrom.hook';
 
 interface SellerFormProps {
   handleSubmit: (event: FormEvent) => void;
   nameRef: RefObject<HTMLInputElement>;
   passwordRef: RefObject<HTMLInputElement>;
   urlRef: RefObject<HTMLInputElement>;
-  isError: boolean;
+  errorForm: ErrorFormType;
 }
 
 export const SellerForm = ({
@@ -13,8 +14,8 @@ export const SellerForm = ({
   nameRef,
   passwordRef,
   urlRef,
-  isError,
-}: SellerFormProps): JSX.Element => (
+  errorForm,
+}: SellerFormProps) => (
   <div className="App">
     <div className="container-fluid text-sm-center p-5 mb-5 bg-light">
       <h2 className="p-3">Hello, Seller!</h2>
@@ -32,6 +33,7 @@ export const SellerForm = ({
               data-toggle="tooltip"
               data-placement="bottom"
               title="Your username"
+              required
             />
           </div>
           <div className="col-auto text-sm-start">
@@ -46,6 +48,7 @@ export const SellerForm = ({
               data-toggle="tooltip"
               data-placement="bottom"
               title="Password is used if you want to register yourself on a different url. You will need to provide the same username with the same password. Beware that there is nothing that can be done to retrieve it..."
+              required
             />
           </div>
           <div className="col-auto text-sm-start">
@@ -60,6 +63,7 @@ export const SellerForm = ({
               data-toggle="tooltip"
               data-placement="bottom"
               title="Base url of your own client"
+              required
             />
           </div>
           <div className="col-auto align-self-end">
@@ -70,9 +74,12 @@ export const SellerForm = ({
         </div>
       </form>
     </div>
-    {isError ? (
+    {errorForm.hasError ? (
       <div className="alert alert-danger" role="alert">
-        Warning: There is an error.
+        Warning: {errorForm.message}
+        <br />
+        If the error is recurring please check the URL of your client, or ask
+        the facilitator/read the README for help
       </div>
     ) : (
       <></>

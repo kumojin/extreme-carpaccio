@@ -1,8 +1,11 @@
 import React, { FormEvent, RefObject } from 'react';
 import { useMutation } from 'react-query';
-
 import { AddSellerType, SellerForm } from '../Seller.hook';
 
+export type ErrorFormType = {
+  hasError: boolean;
+  message: string;
+};
 export const useForm = (
   addSeller: AddSellerType
 ): {
@@ -10,29 +13,37 @@ export const useForm = (
   passwordRef: RefObject<HTMLInputElement>;
   urlRef: RefObject<HTMLInputElement>;
   handleSubmit: (event: FormEvent) => void;
-  isError: boolean;
+  errorForm: ErrorFormType;
 } => {
   const nameRef: RefObject<HTMLInputElement> = React.useRef(null);
   const passwordRef: RefObject<HTMLInputElement> = React.useRef(null);
   const urlRef: RefObject<HTMLInputElement> = React.useRef(null);
-  const [isError, setIsError] = React.useState<boolean>(false);
+  const initErrorFormState = {
+    hasError: false,
+    message: '',
+  };
+  const [errorForm, setErrorForm] =
+    React.useState<ErrorFormType>(initErrorFormState);
 
-  const addSellerMutation = useMutation(async (newSeller: SellerForm) => {
-    return fetch('/seller', {
+  const addSellerMutation = useMutation(async (newSeller: SellerForm) =>
+    fetch('/seller', {
       method: 'POST',
       body: new URLSearchParams(newSeller),
-    });
-  });
+    })
+  );
 
   const handleSubmit = (event: FormEvent): void => {
     const name = nameRef.current?.value;
     const password = passwordRef.current?.value;
     const url = urlRef.current?.value;
-    setIsError(false);
+    setErrorForm(initErrorFormState);
 
     event.preventDefault();
     if (!name || !url || !password) {
-      setIsError(true);
+      setErrorForm({
+        hasError: true,
+        message: 'There is at least one missing information',
+      });
       return;
     }
 
@@ -41,14 +52,20 @@ export const useForm = (
       {
         onSuccess: async (response) => {
           if (!response.ok) {
-            setIsError(true);
+            setErrorForm({
+              hasError: true,
+              message: `The is a warning : ${response.statusText}`,
+            });
             console.error('/seller', response.statusText);
           } else {
             addSeller({ name, cash: 0, online: true });
           }
         },
         onError: async (err) => {
-          setIsError(true);
+          setErrorForm({
+            hasError: true,
+            message: `The is a an error : ${err}`,
+          });
           console.error('/seller', err);
         },
       }
@@ -59,5 +76,5 @@ export const useForm = (
     passwordRef.current.value = '';
   };
 
-  return { nameRef, passwordRef, urlRef, handleSubmit, isError };
+  return { nameRef, passwordRef, urlRef, handleSubmit, errorForm };
 };

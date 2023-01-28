@@ -5,16 +5,10 @@
     "node": true
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "standard-with-typescript",
+    "airbnb-base",
     "airbnb-typescript",
-    "plugin:import/typescript",
-    "plugin:prettier/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:react/jsx-runtime"
+    "prettier"
   ],
-  "overrides": [],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -24,32 +18,44 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["react", "@typescript-eslint", "simple-import-sort"],
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "react/react-in-jsx-scope": ["off"],
     "react/jsx-uses-react": ["off"],
     "react/jsx-props-no-spreading": ["warn"],
-    "simple-import-sort/imports": [
-      "error",
-      {
-        "groups": [
-          // Packages `react` related packages come first.
-          ["^react", "^@?\\w"],
-          // Internal packages.
-          ["^(@|components)(/.*|$)"],
-          // Side effect imports.
-          ["^\\u0000"],
-          // Parent imports. Put `..` last.
-          ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
-          // Other relative imports. Put same-folder imports and `.` last.
-          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
-          // Style imports.
-          ["^.+\\.?(css)$"]
-        ]
-      }
-    ],
-    "simple-import-sort/exports": "error",
     "@typescript-eslint/strict-boolean-expressions": "off",
-    "@typescript-eslint/require-array-sort-compare": "warn"
+    "@typescript-eslint/require-array-sort-compare": "warn",
+    "@typescript-eslint/consistent-type-definitions":  "off",
+    
+      // Build-in
+      "class-methods-use-this": "off",
+      "no-underscore-dangle": "off",
+      "no-plusplus": "off",
+      "sort-imports": [
+        "error",
+        {
+          "ignoreDeclarationSort": true
+        }
+      ],
+  
+      // Plugin import
+      "import/order": [
+        "error",
+        {
+          "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          }
+        }
+      ],
+      "import/prefer-default-export": "off",
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": ["src/**/*.spec.ts", "src/mocks/**/*.ts", "*.config.ts"]
+        }
+    ]
   }
 }
+

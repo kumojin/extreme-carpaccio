@@ -1,8 +1,8 @@
 import { useHistory, useSeller } from './Seller.hook';
-import SellerForm from './SellerForm';
-import SellerView from './SellerView';
+import { SellerForm } from './SellerForm';
+import { SellerView } from './SellerView';
 
-export const Seller = (): JSX.Element => {
+export const Seller = () => {
   const { sellers, addSeller } = useSeller();
   const { salesHistory } = useHistory();
 

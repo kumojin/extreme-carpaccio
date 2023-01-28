@@ -1,5 +1,4 @@
 import { SalesHistory, Seller } from '../Seller.hook';
-
 import { SellerView } from './SellerView';
 
 interface SellerViewContainerProps {
@@ -10,7 +9,7 @@ interface SellerViewContainerProps {
 const SellerViewContainer = ({
   sellers,
   salesHistory,
-}: SellerViewContainerProps): JSX.Element => (
+}: SellerViewContainerProps) => (
   <SellerView sellers={sellers} salesHistory={salesHistory} />
 );
 
