@@ -24,7 +24,7 @@ ChartJS.register(
   Legend
 );
 
-const AlertIcon = (): JSX.Element => (
+const AlertIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
@@ -37,10 +37,10 @@ const AlertIcon = (): JSX.Element => (
   </svg>
 );
 
-export interface SellerContentProps {
+type SellerContentProps = {
   sellers: Seller[];
-}
-const getArraySeller = ({ sellers }: SellerContentProps): JSX.Element[] =>
+};
+const getArraySeller = ({ sellers }: SellerContentProps) =>
   sellers.map((seller: Seller) => {
     const cash = new Intl.NumberFormat('fr-FR', {
       style: 'currency',
@@ -69,10 +69,7 @@ interface SellerViewProps {
   salesHistory: SalesHistory;
 }
 
-export const SellerView = ({
-  sellers,
-  salesHistory,
-}: SellerViewProps): JSX.Element => (
+export const SellerView = ({ sellers, salesHistory }: SellerViewProps) => (
   <div>
     <div className="row">
       <div className="col-md-4">
@@ -87,11 +84,9 @@ export const SellerView = ({
               </tr>
             </thead>
             <tbody>
-              <>
-                {getArraySeller({ sellers }).map(
-                  (sellerContent) => sellerContent
-                )}
-              </>
+              {getArraySeller({ sellers }).map(
+                (sellerContent) => sellerContent
+              )}
             </tbody>
           </table>
         </div>

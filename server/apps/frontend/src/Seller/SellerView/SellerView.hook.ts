@@ -32,7 +32,7 @@ export const options = {
   },
 };
 
-export interface GetDataHistoryReturned {
+type GetDataHistoryReturned = {
   labels: string[];
   datasets: Array<{
     label: string;
@@ -40,7 +40,7 @@ export interface GetDataHistoryReturned {
     backgroundColor: string;
     data: number[];
   }>;
-}
+};
 
 export const getDataHistory = (
   sellers: Seller[],

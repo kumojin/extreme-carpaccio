@@ -26,6 +26,7 @@ export const SellerForm = ({
               Name
             </label>
             <input
+              id="name"
               type="text"
               placeholder="your name"
               className="form-control"
@@ -41,6 +42,7 @@ export const SellerForm = ({
               Password
             </label>
             <input
+              id="password"
               type="password"
               placeholder="your password"
               className="form-control"
@@ -56,6 +58,7 @@ export const SellerForm = ({
               URL
             </label>
             <input
+              id="url"
               type="text"
               placeholder="http://192.168.1.1:3000"
               className="form-control"
@@ -74,15 +77,10 @@ export const SellerForm = ({
         </div>
       </form>
     </div>
-    {errorForm.hasError ? (
+    {errorForm.hasError && (
       <div className="alert alert-danger" role="alert">
-        Warning: {errorForm.message}
-        <br />
-        If the error is recurring please check the URL of your client, or ask
-        the facilitator/read the README for help
+        {errorForm.message}
       </div>
-    ) : (
-      <></>
     )}
   </div>
 );

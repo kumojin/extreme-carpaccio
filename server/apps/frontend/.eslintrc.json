@@ -5,7 +5,7 @@
     "node": true
   },
   "extends": [
-    "airbnb-base",
+    "airbnb",
     "airbnb-typescript",
     "prettier"
   ],
@@ -26,20 +26,29 @@
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/require-array-sort-compare": "warn",
     "@typescript-eslint/consistent-type-definitions":  "off",
-    
-      // Build-in
-      "class-methods-use-this": "off",
-      "no-underscore-dangle": "off",
-      "no-plusplus": "off",
-      "sort-imports": [
+    "jsx-a11y/label-has-associated-control": [ "error", {
+      "required": {
+        "some": [ "nesting", "id"  ]
+      }
+    }],
+    "jsx-a11y/label-has-for": [ "error", {
+      "required": {
+        "some": [ "nesting", "id"  ]
+      }
+    }],
+    // Build-in
+    "class-methods-use-this": "off",
+    "no-underscore-dangle": "off",
+    "no-plusplus": "off",
+    "sort-imports": [
         "error",
         {
           "ignoreDeclarationSort": true
         }
       ],
   
-      // Plugin import
-      "import/order": [
+    // Plugin import
+    "import/order": [
         "error",
         {
           "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
@@ -49,12 +58,19 @@
           }
         }
       ],
-      "import/prefer-default-export": "off",
-      "import/no-extraneous-dependencies": [
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": [
         "error",
         {
           "devDependencies": ["src/**/*.spec.ts", "src/mocks/**/*.ts", "*.config.ts"]
         }
+    ],
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
     ]
   }
 }

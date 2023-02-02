@@ -39,10 +39,24 @@ export const useForm = (
     setErrorForm(initErrorFormState);
 
     event.preventDefault();
-    if (!name || !url || !password) {
+    if (!name) {
       setErrorForm({
         hasError: true,
-        message: 'There is at least one missing information',
+        message: 'name is required',
+      });
+      return;
+    }
+    if (!password) {
+      setErrorForm({
+        hasError: true,
+        message: 'password is required',
+      });
+      return;
+    }
+    if (!url) {
+      setErrorForm({
+        hasError: true,
+        message: 'url is required',
       });
       return;
     }
@@ -54,7 +68,7 @@ export const useForm = (
           if (!response.ok) {
             setErrorForm({
               hasError: true,
-              message: `The is a warning : ${response.statusText}`,
+              message: 'An error occurred during registration',
             });
             console.error('/seller', response.statusText);
           } else {
@@ -64,7 +78,7 @@ export const useForm = (
         onError: async (err) => {
           setErrorForm({
             hasError: true,
-            message: `The is a an error : ${err}`,
+            message: `An error occured during registration: ${err}`,
           });
           console.error('/seller', err);
         },
