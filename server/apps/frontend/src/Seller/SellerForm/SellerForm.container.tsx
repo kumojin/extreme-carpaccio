@@ -2,9 +2,9 @@ import { AddSellerType } from '../Seller.hook';
 import { SellerForm } from './SellerForm';
 import { useForm } from './SellerFrom.hook';
 
-interface SellerFormContainerProps {
+type SellerFormContainerProps = {
   addSeller: AddSellerType;
-}
+};
 
 const SellerFormContainer = ({ addSeller }: SellerFormContainerProps) => {
   const { nameRef, passwordRef, urlRef, handleSubmit, errorForm } =

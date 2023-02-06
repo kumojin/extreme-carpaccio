@@ -18,14 +18,14 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "react-hooks", "jsx-a11y"],
   "rules": {
     "react/react-in-jsx-scope": ["off"],
     "react/jsx-uses-react": ["off"],
     "react/jsx-props-no-spreading": ["warn"],
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/require-array-sort-compare": "warn",
-    "@typescript-eslint/consistent-type-definitions":  "off",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "jsx-a11y/label-has-associated-control": [ "error", {
       "required": {
         "some": [ "nesting", "id"  ]

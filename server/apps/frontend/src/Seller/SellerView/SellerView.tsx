@@ -1,3 +1,5 @@
+import '@formatjs/intl-numberformat/polyfill';
+import '@formatjs/intl-numberformat/locale-data/fr';
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -9,8 +11,6 @@ import {
   Tooltip,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import '@formatjs/intl-numberformat/polyfill';
-import '@formatjs/intl-numberformat/locale-data/fr';
 import { SalesHistory, Seller } from '../Seller.hook';
 import { getDataHistory, options, stringToColor } from './SellerView.hook';
 
@@ -64,10 +64,10 @@ const getArraySeller = ({ sellers }: SellerContentProps) =>
     );
   });
 
-interface SellerViewProps {
+type SellerViewProps = {
   sellers: Seller[];
   salesHistory: SalesHistory;
-}
+};
 
 export const SellerView = ({ sellers, salesHistory }: SellerViewProps) => (
   <div>

@@ -1,10 +1,10 @@
 import { SalesHistory, Seller } from '../Seller.hook';
 import { SellerView } from './SellerView';
 
-interface SellerViewContainerProps {
+type SellerViewContainerProps = {
   sellers: Seller[];
   salesHistory: SalesHistory;
-}
+};
 
 const SellerViewContainer = ({
   sellers,

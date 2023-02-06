@@ -70,7 +70,6 @@ export const useForm = (
               hasError: true,
               message: 'An error occurred during registration',
             });
-            console.error('/seller', response.statusText);
           } else {
             addSeller({ name, cash: 0, online: true });
           }
@@ -80,7 +79,6 @@ export const useForm = (
             hasError: true,
             message: `An error occured during registration: ${err}`,
           });
-          console.error('/seller', err);
         },
       }
     );

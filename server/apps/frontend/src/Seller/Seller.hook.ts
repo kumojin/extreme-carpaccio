@@ -41,7 +41,7 @@ export const useSeller = (): {
   const [sellers, setSellers] = useState<Seller[]>([]);
 
   const addSeller = (seller: Seller): void => {
-    setSellers((sellersParam: Seller[]) => [...sellersParam, seller].sort());
+    setSellers((sellersParam: Seller[]) => [...sellersParam, seller]);
   };
 
   const { data: dataSellers } = useQuery('getSellers', fetchGetSellers, {
@@ -49,7 +49,7 @@ export const useSeller = (): {
   });
 
   useEffect(() => {
-    if (dataSellers != null) {
+    if (dataSellers) {
       setSellers(dataSellers);
     }
   }, [dataSellers]);
