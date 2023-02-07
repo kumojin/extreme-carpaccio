@@ -17,7 +17,7 @@ npm start
 
 ## Tester le réseau
 
-Durant l'atelier, des paquets HTTP vont être échangé entre les ordinateurs des participants et celui hébergeant le serveur. Cependant nombreux sont les réseaux
+Durant l'atelier, des paquets HTTP vont être échangés entre les ordinateurs des participants et celui hébergeant le serveur. Cependant nombreux sont les réseaux
 qui bloquent les requêtes entrantes au moyen de firewall, ce qui empêchera le serveur de joindre les ordinateurs des participants.
 
 Avant de commencer l'atelier, il est fortement conseillé de tester le réseau que vous comptez utiliser, afin de vérifier qui accepte les requêtes entrantes.
@@ -26,7 +26,7 @@ Pour cela suivez les instructions suivantes :
 1. Connectez un premier ordinateur au réseau en question
 2. Sur cet ordinateur lancez: `$ echo "Hello Extreme Carpaccio" | nc -l 3000`
 3. Connectez un second ordinateur au réseau
-4. Sur ce second ordinateur lancez: `$ nc <IP address of the 1st computer> 3000 | tee `
+4. Sur ce second ordinateur lancez: `$ nc <IP address of the 1st computer> 3000 | tee`
 5. Si le réseau accèpte les connexions entrantes, vous devriez voir apparaitre le message `Hello Extreme Carpaccio` sur le second ordinateur.
 
 ## Démarrer un nouveau workshop
