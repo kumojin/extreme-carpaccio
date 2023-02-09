@@ -51,13 +51,21 @@ const getArraySeller = ({ sellers }: SellerContentProps) =>
     const showOfflineWarning = !seller.online ? <AlertIcon /> : '';
     return (
       <tr key={seller.name}>
-        <td className="col-md-6">
+        <td className="col-md-6" aria-label="the name of seller">
           <strong style={{ color: sellerColor }}>{seller.name}</strong>
         </td>
-        <td className="col-md-5" style={{ color: sellerColor }}>
+        <td
+          className="col-md-5"
+          aria-label="the cash of seller"
+          style={{ color: sellerColor }}
+        >
           {cash}
         </td>
-        <td className="col-md-1" style={{ color: sellerColor }}>
+        <td
+          className="col-md-1"
+          aria-label="the statut of seller"
+          style={{ color: sellerColor }}
+        >
           {showOfflineWarning}
         </td>
       </tr>
@@ -75,7 +83,7 @@ export const SellerView = ({ sellers, salesHistory }: SellerViewProps) => (
       <div className="col-md-4">
         <h2>Ranking</h2>
         <div className="table-responsive">
-          <table className="table table-striped">
+          <table className="table table-striped sellers">
             <thead>
               <tr>
                 <th>Name</th>

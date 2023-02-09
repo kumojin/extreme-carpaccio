@@ -28,6 +28,7 @@ export const SellerForm = ({
             <input
               id="name"
               type="text"
+              aria-label="your username"
               placeholder="your name"
               className="form-control"
               ref={nameRef}
@@ -44,6 +45,7 @@ export const SellerForm = ({
             <input
               id="password"
               type="password"
+              aria-label="your password"
               placeholder="your password"
               className="form-control"
               ref={passwordRef}
@@ -60,6 +62,7 @@ export const SellerForm = ({
             <input
               id="url"
               type="text"
+              aria-label="your url"
               placeholder="http://192.168.1.1:3000"
               className="form-control"
               ref={urlRef}
@@ -70,7 +73,12 @@ export const SellerForm = ({
             />
           </div>
           <div className="col-auto align-self-end">
-            <button type="submit" className="btn btn-success">
+            <button
+              //TODO: aria-pressed (add the state ?)
+              aria-label="register-button"
+              type="submit"
+              className="btn btn-success"
+            >
               Register
             </button>
           </div>

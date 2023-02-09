@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SellerForm should render shellerForm with error 1`] = `
+<body>
+  <div>
+    <div
+      class="App"
+    >
+      <div
+        class="container-fluid text-sm-center p-5 mb-5 bg-light"
+      >
+        <h2
+          class="p-3"
+        >
+          Hello, Seller!
+        </h2>
+        <form>
+          <div
+            class="row d-flex align-items-end justify-content-center"
+          >
+            <div
+              class="col-auto text-sm-start"
+            >
+              <label
+                class="sr-only p-1"
+                for="name"
+              >
+                Name
+              </label>
+              <input
+                class="form-control"
+                data-placement="bottom"
+                data-toggle="tooltip"
+                placeholder="your name"
+                title="Your username"
+                type="text"
+              />
+            </div>
+            <div
+              class="col-auto text-sm-start"
+            >
+              <label
+                class="sr-only p-1"
+                for="password"
+              >
+                Password
+              </label>
+              <input
+                class="form-control"
+                data-placement="bottom"
+                data-toggle="tooltip"
+                placeholder="your password"
+                title="Password is used if you want to register yourself on a different url. You will need to provide the same username with the same password. Beware that there is nothing that can be done to retrieve it..."
+                type="password"
+              />
+            </div>
+            <div
+              class="col-auto text-sm-start"
+            >
+              <label
+                class="sr-only p-1"
+                for="url"
+              >
+                URL
+              </label>
+              <input
+                class="form-control"
+                data-placement="bottom"
+                data-toggle="tooltip"
+                placeholder="http://192.168.1.1:3000"
+                title="Base url of your own client"
+                type="text"
+              />
+            </div>
+            <div
+              class="col-auto align-self-end"
+            >
+              <button
+                class="btn btn-success"
+                type="submit"
+              >
+                Register
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div
+        class="alert alert-danger"
+        role="alert"
+      >
+        Warning: There is an error.
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`SellerForm should render shellerForm without error 1`] = `
+<body>
+  <div>
+    <div
+      class="App"
+    >
+      <div
+        class="container-fluid text-sm-center p-5 mb-5 bg-light"
+      >
+        <h2
+          class="p-3"
+        >
+          Hello, Seller!
+        </h2>
+        <form>
+          <div
+            class="row d-flex align-items-end justify-content-center"
+          >
+            <div
+              class="col-auto text-sm-start"
+            >
+              <label
+                class="sr-only p-1"
+                for="name"
+              >
+                Name
+              </label>
+              <input
+                class="form-control"
+                data-placement="bottom"
+                data-toggle="tooltip"
+                placeholder="your name"
+                title="Your username"
+                type="text"
+              />
+            </div>
+            <div
+              class="col-auto text-sm-start"
+            >
+              <label
+                class="sr-only p-1"
+                for="password"
+              >
+                Password
+              </label>
+              <input
+                class="form-control"
+                data-placement="bottom"
+                data-toggle="tooltip"
+                placeholder="your password"
+                title="Password is used if you want to register yourself on a different url. You will need to provide the same username with the same password. Beware that there is nothing that can be done to retrieve it..."
+                type="password"
+              />
+            </div>
+            <div
+              class="col-auto text-sm-start"
+            >
+              <label
+                class="sr-only p-1"
+                for="url"
+              >
+                URL
+              </label>
+              <input
+                class="form-control"
+                data-placement="bottom"
+                data-toggle="tooltip"
+                placeholder="http://192.168.1.1:3000"
+                title="Base url of your own client"
+                type="text"
+              />
+            </div>
+            <div
+              class="col-auto align-self-end"
+            >
+              <button
+                class="btn btn-success"
+                type="submit"
+              >
+                Register
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+`;
