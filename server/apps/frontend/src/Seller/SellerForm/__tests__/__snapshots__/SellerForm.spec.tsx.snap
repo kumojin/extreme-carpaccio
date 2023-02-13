@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`SellerForm should render shellerForm with error 1`] = `
+exports[`SellerForm > should render shellerForm with error 1`] = `
 <body>
   <div>
     <div
@@ -28,10 +28,13 @@ exports[`SellerForm should render shellerForm with error 1`] = `
                 Name
               </label>
               <input
+                aria-label="your username"
                 class="form-control"
                 data-placement="bottom"
                 data-toggle="tooltip"
+                id="name"
                 placeholder="your name"
+                required=""
                 title="Your username"
                 type="text"
               />
@@ -46,10 +49,13 @@ exports[`SellerForm should render shellerForm with error 1`] = `
                 Password
               </label>
               <input
+                aria-label="your password"
                 class="form-control"
                 data-placement="bottom"
                 data-toggle="tooltip"
+                id="password"
                 placeholder="your password"
+                required=""
                 title="Password is used if you want to register yourself on a different url. You will need to provide the same username with the same password. Beware that there is nothing that can be done to retrieve it..."
                 type="password"
               />
@@ -64,10 +70,13 @@ exports[`SellerForm should render shellerForm with error 1`] = `
                 URL
               </label>
               <input
+                aria-label="your url"
                 class="form-control"
                 data-placement="bottom"
                 data-toggle="tooltip"
+                id="url"
                 placeholder="http://192.168.1.1:3000"
+                required=""
                 title="Base url of your own client"
                 type="text"
               />
@@ -76,6 +85,7 @@ exports[`SellerForm should render shellerForm with error 1`] = `
               class="col-auto align-self-end"
             >
               <button
+                aria-label="register-button"
                 class="btn btn-success"
                 type="submit"
               >
@@ -96,7 +106,7 @@ exports[`SellerForm should render shellerForm with error 1`] = `
 </body>
 `;
 
-exports[`SellerForm should render shellerForm without error 1`] = `
+exports[`SellerForm > should render shellerForm without error 1`] = `
 <body>
   <div>
     <div
@@ -124,10 +134,13 @@ exports[`SellerForm should render shellerForm without error 1`] = `
                 Name
               </label>
               <input
+                aria-label="your username"
                 class="form-control"
                 data-placement="bottom"
                 data-toggle="tooltip"
+                id="name"
                 placeholder="your name"
+                required=""
                 title="Your username"
                 type="text"
               />
@@ -142,10 +155,13 @@ exports[`SellerForm should render shellerForm without error 1`] = `
                 Password
               </label>
               <input
+                aria-label="your password"
                 class="form-control"
                 data-placement="bottom"
                 data-toggle="tooltip"
+                id="password"
                 placeholder="your password"
+                required=""
                 title="Password is used if you want to register yourself on a different url. You will need to provide the same username with the same password. Beware that there is nothing that can be done to retrieve it..."
                 type="password"
               />
@@ -160,10 +176,13 @@ exports[`SellerForm should render shellerForm without error 1`] = `
                 URL
               </label>
               <input
+                aria-label="your url"
                 class="form-control"
                 data-placement="bottom"
                 data-toggle="tooltip"
+                id="url"
                 placeholder="http://192.168.1.1:3000"
+                required=""
                 title="Base url of your own client"
                 type="text"
               />
@@ -172,6 +191,7 @@ exports[`SellerForm should render shellerForm without error 1`] = `
               class="col-auto align-self-end"
             >
               <button
+                aria-label="register-button"
                 class="btn btn-success"
                 type="submit"
               >

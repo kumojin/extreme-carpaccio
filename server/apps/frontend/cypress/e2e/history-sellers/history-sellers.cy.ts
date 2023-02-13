@@ -1,9 +1,8 @@
 /// <reference types="cypress" />
-/// <reference types="cypress-image-snapshot" />
 import { Given, When, And, Then } from 'cypress-cucumber-preprocessor/steps';
 import '@testing-library/cypress/add-commands';
-import { waitForDebugger } from 'inspector';
 
+let number = 100;
 Given(/^I'm on the website$/, () => {
   cy.visit('http://localhost:5173/');
 });
@@ -45,12 +44,26 @@ When('There are 200 iterations', () => {
       },
     },
   });
+  number = 200;
 });
 
 When('the chart is visible {string}', (name) => {
-  cy.get('canvas').should('be.visible');
+  cy.get('canvas')
+    .should('be.visible')
+    .and((chart) => {
+      expect(chart.height()).to.be.greaterThan(200);
+    });
 
   cy.wait(4000);
-  cy.viewport(2000, 2000).get('canvas').screenshot(name);
-  cy.wait(4000);
+  cy.eyesOpen({
+    appName: 'Extreme carpaccio',
+    testName: `chart-history${number}`,
+  });
+  cy.get('canvas').eyesCheckWindow({
+    name: `chart-history${number}`,
+    tag: `chart-history${number}`,
+    fully: true,
+  });
+  cy.eyesClose();
+  //cy.viewport(2000, 2000).get('canvas').screenshot(name);
 });

@@ -8,6 +8,7 @@ module.exports = (on, config) => {
   on('file:preprocessor', cucumber());
   getCompareSnapshotsPlugin(on, config);
 
+  require('@applitools/eyes-cypress')(module);
   return Object.assign({}, config, {
     fixturesFolder: 'cypress/fixtures',
     integrationFolder: 'cypress/e2e',

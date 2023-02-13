@@ -10,6 +10,8 @@ Given(/^I'm a Seller$/, () => {
     (req) => {
       if (req.body.includes('Xavier') || req.body.includes('newPassword')) {
         req.reply({ statusCode: 201, body: {} });
+      } else if (req.body.includes('Sandrine')) {
+        req.reply({ statusCode: 500 });
       } else {
         req.reply({ statusCode: 404, body: {} });
       }
@@ -36,6 +38,13 @@ Then('I see on the tab {string} with {string}', (name, cash) => {
 
 Then('I see an error message: {string}', (message) => {
   cy.get('.alert').contains(message);
+});
+
+Then('I see an error message for the input: {string}', (label) => {
+  cy.get('input:invalid').should('have.length', 1);
+  cy.get(`#${label}`).then((input) => {
+    expect(input[0].validationMessage).to.eq('Please fill out this field.');
+  });
 });
 
 Then("I don't see on the tab {string} with {string}", (name, cash) => {

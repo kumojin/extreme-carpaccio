@@ -46,7 +46,7 @@ And('I see sellers:', (table) => {
 });
 
 And('there is a updating of sellers', () => {
-  cy.intercept('GET', 'http://127.0.0.1:5173/sellers', {
+  cy.intercept('GET', 'http://localhost:5173/sellers', {
     statusCode: 200,
     body: [
       { cash: 10000023210, name: 'Lukasz', online: true },

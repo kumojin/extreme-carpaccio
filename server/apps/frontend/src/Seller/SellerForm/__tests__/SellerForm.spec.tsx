@@ -1,52 +1,50 @@
 import { useRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { it, describe, test, expect, vi } from 'vitest';
 
-import '@testing-library/jest-dom';
 import { SellerForm } from '../SellerForm';
-
-jest.mock('react', () => {
-  const originReact = jest.requireActual('react');
-  const mUseRef = jest.fn();
+vi.mock('react', () => {
+  const mUseRef = vi.fn();
   return {
-    ...originReact,
+    ...vi.importActual('react'),
     useRef: mUseRef,
   };
 });
 
 describe('SellerForm', () => {
-  const handleSubmit = jest.fn();
+  const handleSubmitFn = vi.fn((e) => e.preventDefault());
   const nameRef = useRef(null);
   const passwordRef = useRef(null);
   const urlRef = useRef(null);
 
-  test('should render shellerForm without error', () => {
+  it('should render shellerForm without error', () => {
     // ARRANGE
     const { baseElement } = render(
       <SellerForm
-        handleSubmit={handleSubmit}
+        handleSubmit={handleSubmitFn}
         nameRef={nameRef}
         passwordRef={passwordRef}
         urlRef={urlRef}
-        isError={false}
+        errorForm={{ hasError: false, message: 'error' }}
       />
     );
     expect(baseElement).toMatchSnapshot();
   });
 
-  test('should render shellerForm with error', () => {
+  it('should render shellerForm with error', () => {
     // ARRANGE
     const { baseElement } = render(
       <SellerForm
-        handleSubmit={handleSubmit}
+        handleSubmit={handleSubmitFn}
         nameRef={nameRef}
         passwordRef={passwordRef}
         urlRef={urlRef}
-        isError={true}
+        errorForm={{ hasError: true, message: 'Warning: There is an error.' }}
       />
     );
     expect(baseElement).toMatchSnapshot();
-    expect(screen.getByRole('alert')).toHaveTextContent(
+    expect(screen.getByRole('alert').textContent).toBe(
       'Warning: There is an error.'
     );
   });
@@ -54,15 +52,18 @@ describe('SellerForm', () => {
   test('should handleSubmit is called when I click on the button', async () => {
     render(
       <SellerForm
-        handleSubmit={handleSubmit}
+        handleSubmit={handleSubmitFn}
         nameRef={nameRef}
         passwordRef={passwordRef}
         urlRef={urlRef}
-        isError={true}
+        errorForm={{ hasError: true, message: 'Warning: There is an error.' }}
       />
     );
-
-    await userEvent.click(screen.getByText('Register'));
-    expect(handleSubmit).toBeCalled();
+    const user = userEvent.setup();
+    await user.type(screen.getByText(/url/i), 'http://196.234.1.1:6000');
+    await user.type(screen.getByText(/password/i), 'P4ssw0rd');
+    await user.type(screen.getByText(/name/i), 'Jessica');
+    await user.click(screen.getByText('Register'));
+    expect(handleSubmitFn).toHaveBeenCalledOnce();
   });
 });
