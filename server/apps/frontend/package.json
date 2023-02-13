@@ -5,12 +5,12 @@
   "dependencies": {
     "@formatjs/intl-numberformat": "8.3.3",
     "@types/node": "18.13.0",
-    "@types/react": "18.0.27",
+    "@types/react": "18.0.28",
     "@types/react-dom": "18.0.10",
     "bootstrap": "5.2.3",
     "chart.js": "4.2.1",
     "react": "18.2.0",
-    "react-bootstrap": "2.7.0",
+    "react-bootstrap": "2.7.1",
     "react-chartjs-2": "5.2.0",
     "react-dom": "18.2.0",
     "react-query": "3.39.3"
@@ -37,7 +37,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "18.0.27",
+    "@types/react": "18.0.28",
     "@types/react-dom": "18.0.10",
     "@typescript-eslint/eslint-plugin": "5.51.0",
     "@typescript-eslint/parser": "5.51.0",
