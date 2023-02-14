@@ -13,11 +13,11 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-import '@applitools/eyes-cypress/commands'
-
+import compareSnapshotCommand from 'cypress-image-diff-js/dist/command';
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+compareSnapshotCommand();
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

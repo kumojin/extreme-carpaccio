@@ -2,7 +2,7 @@ Feature: Creation a seller
 
         Scenario: Create a seller with success
                 Given I'm a Seller
-                When  I write the field "input" "username" with "Xavier"
+                When I write the field "input" "username" with "Xavier"
                 And  I write the field "input" "password" with "Sup3rP4ssw0rd"
                 And I write the field "input" "url" with "http://192:168:1.1:4300"
                 And I click on the button "Register"
@@ -11,7 +11,7 @@ Feature: Creation a seller
 
         Scenario: Create a seller with error server
                 Given I'm a Seller
-                When  I write the field "input" "username" with "Anne-Marie"
+                When I write the field "input" "username" with "Anne-Marie"
                 And  I write the field "input" "password" with "Sup3rP4ssw0rd"
                 And I write the field "input" "url" with "http://192:168:1.1:4300"
                 And I click on the button "Register"

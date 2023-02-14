@@ -5,7 +5,7 @@ import '@testing-library/cypress/add-commands';
 Given(/^I'm a Seller$/, () => {
   cy.intercept(
     'POST',
-    'http://localhost:5173/seller',
+    'http://localhost:3000/seller',
 
     (req) => {
       if (req.body.includes('Xavier') || req.body.includes('newPassword')) {
@@ -17,7 +17,7 @@ Given(/^I'm a Seller$/, () => {
       }
     }
   );
-  cy.visit('http://localhost:5173/');
+  cy.visit('http://localhost:3000/');
 });
 When('I write the field {string} {string} with {string}', (_, label, value) => {
   cy.get(`[aria-label="your ${label}"]`).type(value);

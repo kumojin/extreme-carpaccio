@@ -4,11 +4,11 @@ import '@testing-library/cypress/add-commands';
 
 let number = 100;
 Given(/^I'm on the website$/, () => {
-  cy.visit('http://localhost:5173/');
+  cy.visit('http://localhost:3000/');
 });
 
 When('There are 100 iterations', () => {
-  cy.intercept('GET', 'http://localhost:5173/sellers/history?chunk=10', {
+  cy.intercept('GET', 'http://localhost:3000/sellers/history?chunk=10', {
     statusCode: 200,
     body: {
       lastIteration: 100,
@@ -23,7 +23,7 @@ When('There are 100 iterations', () => {
 });
 
 When('There are 200 iterations', () => {
-  cy.intercept('GET', 'http://localhost:5173/sellers/history?chunk=10', {
+  cy.intercept('GET', 'http://localhost:3000/sellers/history?chunk=10', {
     statusCode: 200,
     body: {
       lastIteration: 100,
@@ -55,15 +55,5 @@ When('the chart is visible {string}', (name) => {
     });
 
   cy.wait(4000);
-  cy.eyesOpen({
-    appName: 'Extreme carpaccio',
-    testName: `chart-history${number}`,
-  });
-  cy.get('canvas').eyesCheckWindow({
-    name: `chart-history${number}`,
-    tag: `chart-history${number}`,
-    fully: true,
-  });
-  cy.eyesClose();
-  //cy.viewport(2000, 2000).get('canvas').screenshot(name);
+  cy.get('canvas').compareSnapshot(`chart-history-${number}`);
 });

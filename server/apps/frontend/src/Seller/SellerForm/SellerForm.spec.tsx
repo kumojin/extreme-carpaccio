@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { it, describe, test, expect, vi } from 'vitest';
 
-import { SellerForm } from '../SellerForm';
+import { SellerForm } from './SellerForm';
 vi.mock('react', () => {
   const mUseRef = vi.fn();
   return {

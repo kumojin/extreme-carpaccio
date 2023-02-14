@@ -25,7 +25,6 @@
     "test": "vitest",
     "de": "START_SERVER_AND_TEST_INSECURE=1 start-server-and-test start http://localhost:3000/ cy:run",
     "cypress:open": "cypress open",
-    "cypress-run-cucumber": "cypress run",
     "format:check": "prettier --list-different src",
     "format:fix": "prettier --write src",
     "lint:check": "eslint src",
@@ -47,7 +46,6 @@
     ]
   },
   "devDependencies": {
-    "@applitools/eyes-cypress": "3.29.1",
     "@cypress/vite-dev-server": "5.0.2",
     "@testing-library/cypress": "9.0.0",
     "@testing-library/jest-dom": "5.16.5",
@@ -60,6 +58,7 @@
     "@vitejs/plugin-react": "3.0.1",
     "cypress": "12.5.1",
     "cypress-cucumber-preprocessor": "4.3.1",
+    "cypress-image-diff-js": "1.23.0",
     "dotenv": "16.0.3",
     "eslint": "8.32.0",
     "eslint-config-airbnb": "19.0.4",

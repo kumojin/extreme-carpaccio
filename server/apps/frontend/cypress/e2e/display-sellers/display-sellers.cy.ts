@@ -23,11 +23,11 @@ const checkTableSellers = (table) => {
 };
 
 Given(/^I'm on the website$/, () => {
-  cy.visit('http://localhost:5173/');
+  cy.visit('http://localhost:3000/');
 });
 
 When('There are 3 sellers', () => {
-  cy.intercept('GET', 'http://localhost:5173/sellers', {
+  cy.intercept('GET', 'http://localhost:3000/sellers', {
     statusCode: 200,
     body: [
       { cash: 60, name: 'Lukasz', online: true },
@@ -46,7 +46,7 @@ And('I see sellers:', (table) => {
 });
 
 And('there is a updating of sellers', () => {
-  cy.intercept('GET', 'http://localhost:5173/sellers', {
+  cy.intercept('GET', 'http://localhost:3000/sellers', {
     statusCode: 200,
     body: [
       { cash: 10000023210, name: 'Lukasz', online: true },
