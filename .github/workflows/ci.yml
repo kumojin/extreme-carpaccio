@@ -26,3 +26,11 @@ jobs:
         run: npm ci
       - name: Build
         run: npx turbo format:check lint:check test build
+      - name: Cypress.io
+         # uses: cypress-io/github-action@ca3f666049f4ac2267a75de769535a7cbdc7bfd7
+        uses: cypress-io/github-action@v5.0.8
+        with:
+          install: false
+          working-directory: ./server/apps/frontend
+          wait-on: 'http://localhost:3000'
+          start: npm run start:server:local
