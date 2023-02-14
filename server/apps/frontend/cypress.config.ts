@@ -16,7 +16,6 @@ export default defineConfig({
       on('file:preprocessor', cucumber(options));
     },
     baseUrl: 'http://localhost:3000',
-    excludeSpecPattern: ['*.js', '*.md'],
     specPattern: 'cypress/e2e/**/*.feature',
     viewportHeight: 800,
     viewportWidth: 1000,

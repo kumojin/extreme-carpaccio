@@ -74,7 +74,7 @@ export const SellerForm = ({
           </div>
           <div className="col-auto align-self-end">
             <button
-              //TODO: aria-pressed (add the state ?)
+              // TODO: aria-pressed (add the state ?)
               aria-label="register-button"
               type="submit"
               className="btn btn-success"

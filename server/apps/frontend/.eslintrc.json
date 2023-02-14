@@ -61,7 +61,7 @@
     "import/no-extraneous-dependencies": [
         "error",
         {
-          "devDependencies": ["src/**/*.spec.ts", "src/mocks/**/*.ts", "*.config.ts"]
+          "devDependencies": ["src/**/*.spec.ts?(x)", "src/mocks/**/*.ts", "*.config.ts"]
         }
     ],
     "react/function-component-definition": [
