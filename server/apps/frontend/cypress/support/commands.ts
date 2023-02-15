@@ -35,5 +35,6 @@
 //     }
 //   }
 // }
-import compareSnapshotCommand from 'cypress-image-diff-js/dist/command';
+import compareSnapshotCommand from 'cypress-visual-regression/dist/command';
+
 compareSnapshotCommand();

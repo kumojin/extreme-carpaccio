@@ -1,10 +1,17 @@
 import { defineConfig } from 'cypress';
 
 module.exports = defineConfig({
+  viewportHeight: 800,
+  viewportWidth: 1000,
+  env: {
+    screenshotsFolder: './cypress/snapshots/actual',
+    trashAssetsBeforeRuns: true,
+    type: 'actual',
+  },
   e2e: {
+    video: false,
     specPattern: '**/*.feature',
-    viewportHeight: 800,
-    viewportWidth: 1000,
+
     baseUrl: 'http://localhost:3000',
     //https://docs.cypress.io/api/plugins/browser-launch-api#Set-screen-size-when-running-headless
     // prefix async
@@ -12,7 +19,7 @@ module.exports = defineConfig({
       const createEsbuildPlugin =
         require('@badeball/cypress-cucumber-preprocessor/esbuild').createEsbuildPlugin;
       const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
-      const getCompareSnapshotsPlugin = require('cypress-image-diff-js/dist/plugin');
+      const getCompareSnapshotsPlugin = require('cypress-visual-regression/dist/plugin');
       getCompareSnapshotsPlugin(on, config);
 
       // await here

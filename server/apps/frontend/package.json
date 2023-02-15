@@ -12,6 +12,7 @@
     "bootstrap": "5.2.3",
     "chart.js": "4.2.1",
     "cypress-esbuild-preprocessor": "^1.0.2",
+    "cypress-visual-regression": "^2.1.1",
     "react": "18.2.0",
     "react-bootstrap": "2.7.1",
     "react-chartjs-2": "5.2.0",
@@ -22,7 +23,7 @@
     "dev": "vite build --watch",
     "build": "vite build",
     "start:server:local": "vite",
-    "test:e2e": "cypress run",
+    "test:e2e": "cypress run --browser chrome --headless",
     "test": "vitest",
     "format:check": "prettier --list-different src",
     "format:fix": "prettier --write src",
@@ -74,6 +75,8 @@
     "vitest": "0.28.4"
   },
   "cypress-cucumber-preprocessor": {
-    "stepDefinitions": ["cypress/e2e/[filepath]/*.{js,ts}"]
+    "stepDefinitions": [
+      "cypress/e2e/[filepath]/*.{js,ts}"
+    ]
   }
 }
