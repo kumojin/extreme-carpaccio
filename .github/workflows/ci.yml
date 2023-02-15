@@ -14,7 +14,7 @@ jobs:
     defaults:
       run:
         working-directory: server
-
+    container: cypress/browsers:node12.18.3-chrome87-ff82
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,3 +34,5 @@ jobs:
           working-directory: ./server/apps/frontend
           wait-on: 'http://localhost:3000'
           start: npm run start:server:local
+          record: false
+          browser: Chrome
