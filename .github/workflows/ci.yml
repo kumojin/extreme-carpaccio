@@ -35,4 +35,4 @@ jobs:
           wait-on: 'http://localhost:3000'
           start: npm run start:server:local
           record: false
-          browser: Chrome
+          browser: chrome
