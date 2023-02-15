@@ -36,10 +36,3 @@ jobs:
           start: npm run start:server:local
           record: false
           browser: chrome
-
-      - name: Upload screenshots
-        uses: actions/upload-artifact@latest
-        if: failure()
-        with:
-          name: cypress-snapshots
-          path: cypress/screenshot

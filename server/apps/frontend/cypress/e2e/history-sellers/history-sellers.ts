@@ -55,7 +55,5 @@ When('the chart is visible {string}', (name) => {
     });
 
   cy.wait(4000);
-  cy.get('canvas').compareSnapshot(`chart-history-${number}`, {
-    errorThreshold: 0.03,
-  });
+  cy.get('canvas').compareSnapshot(`chart-history-${number}`);
 });
