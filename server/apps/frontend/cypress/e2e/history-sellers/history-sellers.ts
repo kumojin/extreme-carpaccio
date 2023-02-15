@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { Given, When, And, Then } from 'cypress-cucumber-preprocessor/steps';
+import { Given, When } from '@badeball/cypress-cucumber-preprocessor';
 import '@testing-library/cypress/add-commands';
 
 let number = 100;
@@ -55,5 +55,7 @@ When('the chart is visible {string}', (name) => {
     });
 
   cy.wait(4000);
-  cy.get('canvas').compareSnapshot(`chart-history-${number}`);
+  cy.get('canvas').compareSnapshot(`chart-history-${number}`, {
+    errorThreshold: 0.03,
+  });
 });

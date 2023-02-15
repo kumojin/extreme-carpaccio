@@ -1,30 +1,38 @@
 import { defineConfig } from 'cypress';
 
-export default defineConfig({
+module.exports = defineConfig({
   e2e: {
-    setupNodeEvents(on, config) {
-      const cucumber = require('cypress-cucumber-preprocessor').default;
-      const browserify = require('@cypress/browserify-preprocessor');
+    specPattern: '**/*.feature',
+    viewportHeight: 800,
+    viewportWidth: 1000,
+    baseUrl: 'http://localhost:3000',
+    //https://docs.cypress.io/api/plugins/browser-launch-api#Set-screen-size-when-running-headless
+    // prefix async
+    async setupNodeEvents(on, config) {
+      const createEsbuildPlugin =
+        require('@badeball/cypress-cucumber-preprocessor/esbuild').createEsbuildPlugin;
+      const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
       const getCompareSnapshotsPlugin = require('cypress-image-diff-js/dist/plugin');
       getCompareSnapshotsPlugin(on, config);
 
-      const options = {
-        ...browserify.defaultOptions,
-        typescript: require.resolve('typescript'),
-      };
+      // await here
+      await require('@badeball/cypress-cucumber-preprocessor').addCucumberPreprocessorPlugin(
+        on,
+        config,
+        {
+          omitAfterScreenshotHandler: true,
+        }
+      );
 
-      on('file:preprocessor', cucumber(options));
-    },
-    baseUrl: 'http://localhost:3000',
-    specPattern: 'cypress/e2e/**/*.feature',
-    viewportHeight: 800,
-    viewportWidth: 1000,
-  },
+      on(
+        'file:preprocessor',
+        createBundler({
+          plugins: [createEsbuildPlugin(config)],
+        })
+      );
 
-  component: {
-    devServer: {
-      framework: 'react',
-      bundler: 'vite',
+      // return any mods to Cypress
+      return config;
     },
   },
 });
