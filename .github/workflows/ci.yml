@@ -41,3 +41,10 @@ jobs:
         with:
           name: cypress-screenshots
           path: ./server/apps/frontend/cypress/screenshots
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-snapshots
+          path: ./server/apps/frontend/cypress/snapshots     
+          
+          
