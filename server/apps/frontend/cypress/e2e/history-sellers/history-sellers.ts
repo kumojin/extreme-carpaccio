@@ -4,6 +4,8 @@ import '@testing-library/cypress/add-commands';
 
 let number = 100;
 Given(/^I'm on the website$/, () => {
+  cy.get('html').invoke('css', 'height', 'initial');
+  cy.get('body').invoke('css', 'height', 'initial');
   cy.visit('http://localhost:3000/');
 });
 
@@ -53,6 +55,8 @@ When('the chart is visible {string}', (name) => {
     .and((chart) => {
       expect(chart.height()).to.be.greaterThan(200);
     });
+
+  cy.get('canvas').invoke('css', 'position', 'relative');
 
   cy.wait(4000);
   cy.get('canvas').compareSnapshot(`chart-history-${number}`, {

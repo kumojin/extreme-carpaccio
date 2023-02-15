@@ -3,6 +3,7 @@ import { defineConfig } from 'cypress';
 module.exports = defineConfig({
   viewportHeight: 800,
   viewportWidth: 1000,
+
   env: {
     screenshotsFolder: './cypress/snapshots/actual',
     trashAssetsBeforeRuns: true,

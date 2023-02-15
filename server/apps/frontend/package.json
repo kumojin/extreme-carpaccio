@@ -23,7 +23,7 @@
     "dev": "vite build --watch",
     "build": "vite build",
     "start:server:local": "vite",
-    "test:e2e": "cypress run --browser chrome --headless",
+    "test:e2e": "cypress run --browser chrome",
     "test": "vitest",
     "format:check": "prettier --list-different src",
     "format:fix": "prettier --write src",
