@@ -36,3 +36,5 @@ jobs:
           start: npm run start:server:local
           record: false
           browser: chrome
+          container: cypress/browsers:node12.18.3-chrome87-ff82
+
