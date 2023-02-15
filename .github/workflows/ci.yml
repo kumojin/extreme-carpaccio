@@ -36,3 +36,8 @@ jobs:
           start: npm run start:server:local
           record: false
           browser: chrome
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
