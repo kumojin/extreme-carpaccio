@@ -1,13 +1,8 @@
 /// <reference types="cypress" />
-import { Given, When } from '@badeball/cypress-cucumber-preprocessor';
+import { When } from '@badeball/cypress-cucumber-preprocessor';
 import '@testing-library/cypress/add-commands';
 
 let number = 100;
-Given(/^I'm on the website$/, () => {
-  cy.get('html').invoke('css', 'height', 'initial');
-  cy.get('body').invoke('css', 'height', 'initial');
-  cy.visit('http://localhost:3000/');
-});
 
 When('There are 100 iterations', () => {
   cy.intercept('GET', 'http://localhost:3000/sellers/history?chunk=10', {

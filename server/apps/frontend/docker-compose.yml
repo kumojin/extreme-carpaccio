@@ -1,0 +1,17 @@
+version: '12.5.1'
+services:
+  front:
+    build: ./
+    environment:
+      - PORT=3000
+  cypress:
+  
+    image: cypress/included:cypress-12.6.0-node-16.18.1-chrome-110.0.5481.96-1-ff-109.0-edge-110.0.1587.41-1
+    environment:
+      - CYPRESS_BASE_URL=http://front:3000
+    depends_on:
+      - front
+    command: "--browser chrome"
+    working_dir: /test
+    volumes:
+      - ./:/test

@@ -58,7 +58,7 @@
     "cypress": "^12.5.1",
     "cypress-image-diff-js": "1.23.0",
     "dotenv": "16.0.3",
-    "esbuild": "0.16.5",
+    "esbuild": "0.17.8",
     "eslint": "8.32.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.0.0",
@@ -76,7 +76,7 @@
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": [
-      "cypress/e2e/[filepath]/*.{js,ts}"
+      "cypress/e2e/**/*.{js,ts}"
     ]
   }
 }
