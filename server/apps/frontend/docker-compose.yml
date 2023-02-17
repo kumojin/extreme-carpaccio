@@ -5,13 +5,11 @@ services:
     environment:
       - PORT=3000
   cypress:
-  
-    image: cypress/included:cypress-12.6.0-node-16.18.1-chrome-110.0.5481.96-1-ff-109.0-edge-110.0.1587.41-1
-    environment:
-      - CYPRESS_BASE_URL=http://front:3000
+    image: cypress/included:cypress-12.5.1-node-16.18.1-chrome-110.0.5481.96-1-ff-109.0-edge-110.0.1587.41-1
+    entrypoint: /bin/sh -c "npm install @esbuild/linux-x64 && CYPRESS_BASE_URL=http://front:3000 cypress run --headless --browser chrome"
     depends_on:
       - front
-    command: "--browser chrome"
     working_dir: /test
     volumes:
       - ./:/test
+      - /tmp/.X11-unix:/tmp/.X11-unix

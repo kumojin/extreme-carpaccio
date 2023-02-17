@@ -14,7 +14,8 @@ jobs:
     defaults:
       run:
         working-directory: server
-    container: cypress/included:12.5.1
+    container: cypress/browsers:node-16.18.1-chrome-110.0.5481.96-1-ff-109.0-edge-110.0.1587.41-1
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
