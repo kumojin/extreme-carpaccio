@@ -68,7 +68,7 @@ export const useForm = (
           if (!response.ok) {
             setErrorForm({
               hasError: true,
-              message: 'An error occurred during registration',
+              message: `An error occured during registration: ${response.statusText}`,
             });
           } else {
             addSeller({ name, cash: 0, online: true });
