@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@formatjs/intl-numberformat": "8.3.5",
-    "@types/node": "18.14.2",
+    "@types/node": "18.14.6",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
     "bootstrap": "5.2.3",
