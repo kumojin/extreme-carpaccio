@@ -1,3 +1,4 @@
+import { baseUrl } from './../share-util';
 /// <reference types="cypress" />
 import { When } from '@badeball/cypress-cucumber-preprocessor';
 import '@testing-library/cypress/add-commands';
@@ -5,7 +6,7 @@ import '@testing-library/cypress/add-commands';
 let number = 100;
 
 When('There are 100 iterations', () => {
-  cy.intercept('GET', 'http://localhost:3000/sellers/history?chunk=10', {
+  cy.intercept('GET', `${baseUrl}/sellers/history?chunk=10`, {
     statusCode: 200,
     body: {
       lastIteration: 100,
@@ -20,7 +21,7 @@ When('There are 100 iterations', () => {
 });
 
 When('There are 200 iterations', () => {
-  cy.intercept('GET', 'http://localhost:3000/sellers/history?chunk=10', {
+  cy.intercept('GET', `${baseUrl}/sellers/history?chunk=10`, {
     statusCode: 200,
     body: {
       lastIteration: 100,

@@ -1,3 +1,4 @@
+import { baseUrl } from './../share-util';
 /// <reference types="cypress" />
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import '@testing-library/cypress/add-commands';
@@ -23,7 +24,7 @@ const checkTableSellers = (table) => {
 };
 
 When('There are 3 sellers', () => {
-  cy.intercept('GET', 'http://localhost:3000/sellers', {
+  cy.intercept('GET', `${baseUrl}/sellers`, {
     statusCode: 200,
     body: [
       { cash: 60, name: 'Lukasz', online: true },
@@ -38,7 +39,7 @@ Then('I see sellers:', (table) => {
 });
 
 Then('there is a updating of sellers', () => {
-  cy.intercept('GET', 'http://localhost:3000/sellers', {
+  cy.intercept('GET', `${baseUrl}/sellers`, {
     statusCode: 200,
     body: [
       { cash: 10000023210, name: 'Lukasz', online: true },

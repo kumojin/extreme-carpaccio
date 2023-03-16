@@ -1,3 +1,4 @@
+import { baseUrl } from './../share-util';
 /// <reference types="cypress" />
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import '@testing-library/cypress/add-commands';
@@ -5,7 +6,7 @@ import '@testing-library/cypress/add-commands';
 Given(/^I'm a Seller$/, () => {
   cy.intercept(
     'POST',
-    'http://localhost:3000/seller',
+    `${baseUrl}/seller`,
 
     (req) => {
       if (req.body.includes('Xavier') || req.body.includes('newPassword')) {
@@ -17,7 +18,7 @@ Given(/^I'm a Seller$/, () => {
       }
     }
   );
-  cy.visit('http://localhost:3000/');
+  cy.visit(baseUrl);
 });
 When('I write the field {string} {string} with {string}', (_, label, value) => {
   cy.get(`[aria-label="your ${label}"]`).type(value);

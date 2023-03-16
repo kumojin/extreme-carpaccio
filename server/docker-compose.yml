@@ -1,0 +1,14 @@
+version: '3.6'
+services:
+  front:
+    build: ./
+    restart: always
+    ports:
+      - '80:80'
+  cypress:
+    build:
+        context: .
+        dockerfile: Dockerfile-cypress
+    depends_on:
+        - front
+    network_mode: 'host'
