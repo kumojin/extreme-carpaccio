@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 
 const historyFrequency = 10;
 const intervalTime = 5000;
@@ -44,7 +44,9 @@ export const useSeller = (): {
     setSellers((sellersParam: Seller[]) => [...sellersParam, seller]);
   };
 
-  const { data: dataSellers } = useQuery('getSellers', fetchGetSellers, {
+  const { data: dataSellers } = useQuery({
+    queryKey: ['getSellers'],
+    queryFn: fetchGetSellers,
     refetchInterval: intervalTime,
   });
 
@@ -60,13 +62,11 @@ export const useSeller = (): {
 export const useHistory = (): { salesHistory: SalesHistory } => {
   const [salesHistory, setSalesHistory] = useState<SalesHistory>();
 
-  const { data: dataSalesHistory } = useQuery(
-    'getSalesHistory',
-    fetchGetSalesHistory,
-    {
-      refetchInterval: intervalTime,
-    }
-  );
+  const { data: dataSalesHistory } = useQuery({
+    queryKey: ['getSalesHistory'],
+    queryFn: fetchGetSalesHistory,
+    refetchInterval: intervalTime,
+  });
 
   useEffect(() => {
     if (dataSalesHistory) {
