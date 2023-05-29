@@ -19,6 +19,6 @@
   "devDependencies": {
     "prettier": "2.8.8",
     "rimraf": "5.0.1",
-    "turbo": "1.9.1"
+    "turbo": "1.9.8"
   }
 }
