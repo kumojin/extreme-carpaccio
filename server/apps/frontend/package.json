@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@formatjs/intl-numberformat": "8.5.0",
+    "@formatjs/intl-numberformat": "8.7.0",
     "@tanstack/react-query": "4.29.17",
     "@types/node": "18.16.18",
     "@types/react": "18.0.35",
