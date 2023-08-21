@@ -14,7 +14,7 @@
     "lint:fix": "eslint src --fix"
   },
   "dependencies": {
-    "@types/big.js": "6.1.6",
+    "@types/big.js": "6.2.0",
     "@types/body-parser": "1.19.2",
     "@types/express": "4.17.17",
     "@types/http-status-codes": "1.2.0",
