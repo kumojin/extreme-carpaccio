@@ -40,7 +40,7 @@
     "@types/jest": "29.5.3",
     "@types/jest-when": "3.5.2",
     "@types/node": "18.17.15",
-    "@types/supertest": "2.0.14",
+    "@types/supertest": "2.0.15",
     "@typescript-eslint/eslint-plugin": "5.58.0",
     "@typescript-eslint/parser": "5.58.0",
     "bower": "1.8.14",
