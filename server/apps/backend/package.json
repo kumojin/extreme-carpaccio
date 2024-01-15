@@ -30,7 +30,7 @@
     "joi": "17.9.2",
     "lodash": "4.17.21",
     "sqlite": "4.1.2",
-    "sqlite3": "5.1.6",
+    "sqlite3": "5.1.7",
     "winston": "3.8.2"
   },
   "devDependencies": {
