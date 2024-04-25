@@ -1,27 +1,14 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    "config:base",
-    "group:recommended",
-    "schedule:weekly",
+    "config:best-practices",
     ":semanticCommitTypeAll(ci)",
+    "docker:enableMajor",
     ":enableVulnerabilityAlertsWithLabel(security)",
+    ":maintainLockFilesWeekly",
+    ":automergeMinor",
+    ":automergeDigest"
   ],
-
-  // Avoid updating to unstable versions
-  ignoreUnstable: true,
-  stabilityDays: 7,
-
   ignorePaths: ["clients/**"],
-  automerge: true,
-  labels: ["dependencies"],
-  lockFileMaintenance: {
-    enabled: true,
-  },
-  packageRules: [
-    {
-      matchUpdateTypes: ["major"],
-      automerge: false,
-    },
-  ],
+  labels: ["dependencies"]
 }
