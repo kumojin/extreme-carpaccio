@@ -25,12 +25,13 @@ export const useForm = (
   const [errorForm, setErrorForm] =
     React.useState<ErrorFormType>(initErrorFormState);
 
-  const addSellerMutation = useMutation(async (newSeller: SellerForm) =>
-    fetch('/seller', {
-      method: 'POST',
-      body: new URLSearchParams(newSeller),
-    }),
-  );
+  const addSellerMutation = useMutation({
+    mutationFn: async (newSeller: SellerForm) =>
+      fetch('/seller', {
+        method: 'POST',
+        body: new URLSearchParams(newSeller),
+      }),
+  });
 
   const handleSubmit = (event: FormEvent): void => {
     const name = nameRef.current?.value;

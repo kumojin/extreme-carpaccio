@@ -16,7 +16,7 @@
     "react-dom": "18.3.0"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "tsc && vite build",
     "clean": "rimraf dist",
     "dev": "vite build --watch",
     "format:check": "prettier --list-different src",
