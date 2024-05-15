@@ -53,7 +53,7 @@
     "jest-when": "3.6.0",
     "node-mocks-http": "1.14.1",
     "supertest": "6.3.4",
-    "tsup": "6.7.0",
+    "tsup": "8.0.2",
     "typescript": "5.4.5"
   }
 }
