@@ -10,7 +10,7 @@ export const validSellerRequest: RegisterSellerRequest = {
 };
 
 export const validSellerRequestWithUrl = (
-  url: string
+  url: string,
 ): MaybeRegisterSellerRequest => ({
   name: 'John',
   password: '12345',

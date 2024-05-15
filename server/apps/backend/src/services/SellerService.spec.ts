@@ -26,7 +26,7 @@ describe('Seller Service', () => {
     await sellerService.register(
       'http://localhost:3000/path',
       'bob',
-      'password'
+      'password',
     );
     const sellers = await sellerService.allSellers();
     expect(sellers.length).toBe(1);
@@ -48,7 +48,7 @@ describe('Seller Service', () => {
       expect.objectContaining({
         name: 'alice',
         cash: 100,
-      })
+      }),
     );
   });
 
@@ -63,7 +63,7 @@ describe('Seller Service', () => {
       expect.objectContaining({
         name: 'alice',
         cash: -50,
-      })
+      }),
     );
   });
 
@@ -78,7 +78,7 @@ describe('Seller Service', () => {
       expect.objectContaining({
         name: 'alice',
         cash: -50,
-      })
+      }),
     );
   });
 
@@ -108,7 +108,7 @@ describe('Seller Service', () => {
         name: 'alice',
         cash: 100,
         online: false,
-      })
+      }),
     );
   });
 
@@ -120,7 +120,7 @@ describe('Seller Service', () => {
       alice,
       { total: 100.12345 },
       { total: 100.12 },
-      0
+      0,
     );
 
     const allSellers = await sellerService.allSellers();
@@ -128,7 +128,7 @@ describe('Seller Service', () => {
       expect.objectContaining({
         name: 'alice',
         cash: 100.12,
-      })
+      }),
     );
   });
 
@@ -185,13 +185,13 @@ describe('Seller Service', () => {
 
     const isAuthorizedWhenValidPassword = await sellerService.isAuthorized(
       'travis',
-      'pacman'
+      'pacman',
     );
     expect(isAuthorizedWhenValidPassword).toEqual(true);
 
     const isAuthorizedWhenInvalidPassword = await sellerService.isAuthorized(
       'travis',
-      'vlad'
+      'vlad',
     );
     expect(isAuthorizedWhenInvalidPassword).toEqual(false);
   });

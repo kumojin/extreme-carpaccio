@@ -229,7 +229,7 @@ describe('Seller Controller', () => {
           expect(registerMock).toHaveBeenCalledWith(
             body.url,
             body.name,
-            body.password
+            body.password,
           );
           expect(response.statusCode).toBe(StatusCodes.OK);
         });

@@ -40,7 +40,7 @@ class Utils {
     path: string,
     body: any,
     onSuccess?: (res: IncomingMessage) => Promise<void>,
-    onError?: (err: Error) => void
+    onError?: (err: Error) => void,
   ) {
     const bodyStringified = this.stringify(body);
     const options: RequestOptions = {

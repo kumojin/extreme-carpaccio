@@ -21,14 +21,14 @@ export default class OrderService {
     seller: Seller,
     order: Order,
     cashUpdater: (response: IncomingMessage) => Promise<void>,
-    onError: () => void
+    onError: () => void,
   ) {
     logger.info(
       colors.grey(
         `Sending order ${utils.stringify(order)} to seller ${utils.stringify(
-          seller
-        )}`
-      )
+          seller,
+        )}`,
+      ),
     );
     utils.post(seller.url, '/order', order, cashUpdater, onError);
   }

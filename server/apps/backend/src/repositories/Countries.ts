@@ -12,7 +12,7 @@ const countryDistributionByWeight = _.reduce(
     }
     return distrib;
   },
-  []
+  [],
 );
 
 const defaultTaxRule = (name: string) => scale(europeanCountries[name][0]);
@@ -23,7 +23,7 @@ const countryMap: Record<string, Country> = _.reduce(
     ...map,
     [country]: new Country(country, defaultTaxRule(country)),
   }),
-  {}
+  {},
 );
 
 export default class Countries {

@@ -35,7 +35,7 @@ describe('Order Service', () => {
       buildWithDefaults({ url }),
       order,
       cashUpdater,
-      onError
+      onError,
     );
 
     expect(utils.post).toHaveBeenCalledWith(
@@ -43,7 +43,7 @@ describe('Order Service', () => {
       '/order',
       order,
       cashUpdater,
-      onError
+      onError,
     );
   });
 
@@ -66,13 +66,13 @@ describe('Order Service', () => {
 
   it('should create orders using specific reduction type', () => {
     expect(orderService.createOrder(Reductions.STANDARD).reduction).toContain(
-      Reductions.STANDARD.name
+      Reductions.STANDARD.name,
     );
     expect(
-      orderService.createOrder(Reductions.PAY_THE_PRICE).reduction
+      orderService.createOrder(Reductions.PAY_THE_PRICE).reduction,
     ).toContain(Reductions.PAY_THE_PRICE.name);
     expect(orderService.createOrder(Reductions.HALF_PRICE).reduction).toContain(
-      Reductions.HALF_PRICE.name
+      Reductions.HALF_PRICE.name,
     );
   });
 

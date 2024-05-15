@@ -49,7 +49,7 @@ describe('Utils', () => {
             'Content-Length': bodyStringified.length,
           },
         },
-        callback
+        callback,
       );
       expect(fakeRequest.write).toHaveBeenCalledWith(bodyStringified);
       expect(fakeRequest.end).toHaveBeenCalled();

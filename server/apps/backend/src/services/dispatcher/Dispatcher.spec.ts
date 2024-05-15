@@ -56,7 +56,7 @@ describe('Dispatcher', () => {
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.HALF_PRICE,
         1,
-        false
+        false,
       );
     });
     it('should send one of the reduction strategies when using an array', () => {
@@ -76,7 +76,7 @@ describe('Dispatcher', () => {
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.PAY_THE_PRICE,
         1,
-        false
+        false,
       );
     });
     it('should create a weighted array of reduction strategies when using a weight', () => {
@@ -111,7 +111,7 @@ describe('Dispatcher', () => {
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.PAY_THE_PRICE,
         1,
-        false
+        false,
       );
     });
     it('should send the STANDARD strategy when it does not recognize the strategy passed in config', () => {
@@ -131,7 +131,7 @@ describe('Dispatcher', () => {
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.STANDARD,
         1,
-        false
+        false,
       );
     });
     it('should send the STANDARD strategy when the provided strategy is undefined', () => {
@@ -151,7 +151,7 @@ describe('Dispatcher', () => {
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.STANDARD,
         1,
-        false
+        false,
       );
     });
   });
@@ -172,7 +172,7 @@ describe('Dispatcher', () => {
     expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
       Reductions.HALF_PRICE,
       2,
-      true
+      true,
     );
   });
 
@@ -202,13 +202,13 @@ describe('Dispatcher', () => {
       alice,
       order,
       expect.any(Function),
-      expect.any(Function)
+      expect.any(Function),
     );
     expect(orderService.sendOrder).toHaveBeenCalledWith(
       bob,
       order,
       expect.any(Function),
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 });

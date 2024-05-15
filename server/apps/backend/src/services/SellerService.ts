@@ -20,13 +20,13 @@ type Message = {
 export default class SellerService {
   constructor(
     private readonly sellers: Sellers,
-    private readonly configuration: Configuration
+    private readonly configuration: Configuration,
   ) {}
 
   public async addCash(
     seller: Seller,
     amount: Big,
-    currentIteration: number
+    currentIteration: number,
   ): Promise<void> {
     await this.sellers.updateCash(seller.name, amount, currentIteration);
   }
@@ -34,12 +34,12 @@ export default class SellerService {
   public async deductCash(
     seller: Seller,
     amount: Big,
-    currentIteration: number
+    currentIteration: number,
   ): Promise<void> {
     await this.sellers.updateCash(
       seller.name,
       amount.times(-1),
-      currentIteration
+      currentIteration,
     );
   }
 
@@ -79,7 +79,7 @@ export default class SellerService {
   public async register(
     sellerUrl: string,
     name: string,
-    password: string
+    password: string,
   ): Promise<void> {
     const parsedUrl = new URL(sellerUrl);
     const hash = await argon2.hash(password);
@@ -103,11 +103,11 @@ export default class SellerService {
     seller: Seller,
     expectedBill: Bill,
     actualBill: Bill | undefined,
-    currentIteration: number
+    currentIteration: number,
   ): Promise<void> {
     if (this.configuration.all().cashFreeze) {
       logger.info(
-        'Cash was not updated because cashFreeze config parameter is true'
+        'Cash was not updated because cashFreeze config parameter is true',
       );
       return;
     }
@@ -128,7 +128,7 @@ export default class SellerService {
           await this.addCash(
             seller,
             new Big(totalExpectedBill),
-            currentIteration
+            currentIteration,
           );
           this.notify(seller, {
             type: 'INFO',
@@ -162,13 +162,13 @@ export default class SellerService {
   public async setOffline(
     seller: Seller,
     offlinePenalty: number,
-    currentIteration: number
+    currentIteration: number,
   ): Promise<void> {
     await this.sellers.setOffline(seller.name);
 
     if (offlinePenalty !== 0) {
       logger.info(
-        `Seller ${seller.name} is offline: a penalty of ${offlinePenalty} is applied.`
+        `Seller ${seller.name} is offline: a penalty of ${offlinePenalty} is applied.`,
       );
       await this.deductCash(seller, new Big(offlinePenalty), currentIteration);
     }
