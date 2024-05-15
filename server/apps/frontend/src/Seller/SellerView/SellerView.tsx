@@ -80,7 +80,7 @@ export const SellerView = ({ sellers, salesHistory }: SellerViewProps) => (
               <tr>
                 <th>Name</th>
                 <th>Cash</th>
-                <th> </th>
+                <th aria-label="Offline warning"> </th>
               </tr>
             </thead>
             <tbody>
