@@ -21,7 +21,7 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const AlertIcon = () => (
@@ -85,7 +85,7 @@ export const SellerView = ({ sellers, salesHistory }: SellerViewProps) => (
             </thead>
             <tbody>
               {getArraySeller({ sellers }).map(
-                (sellerContent) => sellerContent
+                (sellerContent) => sellerContent,
               )}
             </tbody>
           </table>

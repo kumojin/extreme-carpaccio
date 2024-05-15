@@ -101,7 +101,7 @@ class BadRequest {
     sellerService: SellerService,
     seller: Seller,
     expectedBill: Bill,
-    currentIteration: number
+    currentIteration: number,
   ): (response: IncomingMessage) => Promise<void> {
     return async (response: IncomingMessage) => {
       const amount = expectedBill.total;

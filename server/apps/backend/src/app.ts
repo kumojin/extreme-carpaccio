@@ -12,7 +12,7 @@ const startGame = (dispatcher: Dispatcher) => {
 
 export const setup = async () => {
   const configuration = new Configuration(
-    path.join(__dirname, '..', process.env.CONFIGURATION_FILE ?? '')
+    path.join(__dirname, '..', process.env.CONFIGURATION_FILE ?? ''),
   );
   const sellers = await Sellers.create();
   const sellerService = new SellerService(sellers, configuration);

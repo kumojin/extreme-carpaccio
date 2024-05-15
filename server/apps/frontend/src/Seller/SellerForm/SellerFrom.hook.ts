@@ -7,7 +7,7 @@ export type ErrorFormType = {
   message: string;
 };
 export const useForm = (
-  addSeller: AddSellerType
+  addSeller: AddSellerType,
 ): {
   nameRef: RefObject<HTMLInputElement>;
   passwordRef: RefObject<HTMLInputElement>;
@@ -29,7 +29,7 @@ export const useForm = (
     fetch('/seller', {
       method: 'POST',
       body: new URLSearchParams(newSeller),
-    })
+    }),
   );
 
   const handleSubmit = (event: FormEvent): void => {
@@ -80,7 +80,7 @@ export const useForm = (
             message: `An error occured during registration: ${err}`,
           });
         },
-      }
+      },
     );
 
     nameRef.current.value = '';

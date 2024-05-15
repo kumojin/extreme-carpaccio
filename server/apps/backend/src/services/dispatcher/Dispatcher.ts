@@ -27,7 +27,7 @@ class Dispatcher {
   constructor(
     private readonly sellerService: SellerService,
     private readonly orderService: OrderService,
-    private readonly configuration: Configuration
+    private readonly configuration: Configuration,
   ) {
     this.offlinePenalty = 0;
     this.badRequest = new BadRequest(configuration);
@@ -37,7 +37,7 @@ class Dispatcher {
   public async sendOrderToSellers(
     reduction: Reduction,
     currentIteration: number,
-    badRequest: boolean
+    badRequest: boolean,
   ) {
     const self = this;
     let order = self.orderService.createOrder(reduction);
@@ -58,20 +58,20 @@ class Dispatcher {
           self.sellerService,
           seller,
           expectedBill,
-          currentIteration
+          currentIteration,
         );
       } else {
         cashUpdater = self.sellerCashUpdater.doUpdate(
           seller,
           expectedBill,
-          currentIteration
+          currentIteration,
         );
       }
 
       const errorCallback = this.putSellerOffline(
         self,
         seller,
-        currentIteration
+        currentIteration,
       );
       self.orderService.sendOrder(seller, order, cashUpdater, errorCallback);
     });
@@ -99,7 +99,7 @@ class Dispatcher {
     this.scheduleNextIteration(
       this,
       nextIteration,
-      period.shoppingIntervalInMillis
+      period.shoppingIntervalInMillis,
     );
     return nextIteration;
   }
@@ -116,11 +116,11 @@ class Dispatcher {
   }
 
   public getWeightedReduction(
-    reductionStrategy: WeightedReduction[]
+    reductionStrategy: WeightedReduction[],
   ): string[] {
     return reductionStrategy
       .map((strategy) =>
-        Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction)
+        Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction),
       )
       .flat();
   }
@@ -128,19 +128,19 @@ class Dispatcher {
   private putSellerOffline(
     self: Dispatcher,
     seller: Seller,
-    currentIteration: number
+    currentIteration: number,
   ): () => Promise<void> {
     return async () => {
       logger.error(
-        colors.red(`Could not reach seller ${utils.stringify(seller)}`)
+        colors.red(`Could not reach seller ${utils.stringify(seller)}`),
       );
       let { offlinePenalty } = self.getConfiguration(self);
 
       if (!_.isNumber(offlinePenalty)) {
         logger.warn(
           colors.yellow(
-            'Offline penalty is missing or is not a number. Using 0.'
-          )
+            'Offline penalty is missing or is not a number. Using 0.',
+          ),
         );
         offlinePenalty = 0;
       }
@@ -148,16 +148,16 @@ class Dispatcher {
       await self.sellerService.setOffline(
         seller,
         offlinePenalty,
-        currentIteration
+        currentIteration,
       );
     };
   }
 
   private isWeightedReduction(
-    reduction: string[] | WeightedReduction[]
+    reduction: string[] | WeightedReduction[],
   ): reduction is WeightedReduction[] {
     return (reduction as WeightedReduction[]).every(
-      (strategy) => strategy.weight !== undefined
+      (strategy) => strategy.weight !== undefined,
     );
   }
 
@@ -179,8 +179,8 @@ class Dispatcher {
     if (reductionStrategy !== 'STANDARD') {
       logger.warn(
         colors.yellow(
-          `Unknown reduction strategy ${reductionStrategy}. Using STANDARD.`
-        )
+          `Unknown reduction strategy ${reductionStrategy}. Using STANDARD.`,
+        ),
       );
     }
 
@@ -190,7 +190,7 @@ class Dispatcher {
   private scheduleNextIteration(
     self: Dispatcher,
     nextIteration: number,
-    intervalInMillis: number
+    intervalInMillis: number,
   ) {
     setTimeout(async () => {
       await self.startBuying(nextIteration);

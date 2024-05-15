@@ -30,14 +30,14 @@ describe("Seller's cash updater", () => {
     await sellerCashUpdater.doUpdate(
       bob,
       { total: 100 },
-      -1
+      -1,
     )({ statusCode: 400 } as IncomingMessage);
 
     expect(sellerService.updateCash).toHaveBeenCalledWith(
       bob,
       { total: 100 },
       undefined,
-      -1
+      -1,
     );
   });
 
@@ -51,7 +51,7 @@ describe("Seller's cash updater", () => {
     sellerCashUpdater.doUpdate(
       bob,
       { total: 100 },
-      -1
+      -1,
     )({ statusCode: 404 } as IncomingMessage);
 
     expect(sellerService.updateCash).not.toHaveBeenCalled();

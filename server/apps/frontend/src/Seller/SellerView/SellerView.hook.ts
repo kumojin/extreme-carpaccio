@@ -44,7 +44,7 @@ type GetDataHistoryReturned = {
 
 export const getDataHistory = (
   sellers: Seller[],
-  salesHistory: SalesHistory
+  salesHistory: SalesHistory,
 ): GetDataHistoryReturned => {
   let labels: string[] = [];
   const datasets: {

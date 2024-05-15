@@ -95,7 +95,7 @@ describe('BadRequest', () => {
       sellerService,
       seller,
       expectedBill,
-      currentIteration
+      currentIteration,
     );
 
     fun({ statusCode: 200 } as IncomingMessage);
@@ -103,7 +103,7 @@ describe('BadRequest', () => {
     expect(sellerService.deductCash).toHaveBeenCalledWith(
       seller,
       new Big(23.5),
-      currentIteration
+      currentIteration,
     );
   });
 
@@ -118,7 +118,7 @@ describe('BadRequest', () => {
       sellerService,
       seller,
       expectedBill,
-      currentIteration
+      currentIteration,
     );
 
     fun({ statusCode: 400 } as IncomingMessage);
@@ -126,7 +126,7 @@ describe('BadRequest', () => {
     expect(sellerService.addCash).toHaveBeenCalledWith(
       seller,
       new Big(47),
-      currentIteration
+      currentIteration,
     );
   });
 });

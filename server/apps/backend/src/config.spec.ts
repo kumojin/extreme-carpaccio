@@ -30,7 +30,7 @@ describe('Configuration', () => {
       };
       config.load(callback);
     },
-    TIMEOUT_1000_MILLIS
+    TIMEOUT_1000_MILLIS,
   );
 
   it(
@@ -49,6 +49,6 @@ describe('Configuration', () => {
 
       fs.writeFileSync(configFilepath, '{"reduction": "HALF PIPE"}');
     },
-    TIMEOUT_1000_MILLIS
+    TIMEOUT_1000_MILLIS,
   );
 });
