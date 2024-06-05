@@ -4,7 +4,7 @@ import {
   registerSeller,
   sellersHistory,
 } from './SellerController';
-import { SellerService } from './services';
+import type { SellerService } from './services';
 
 const routes = (sellerService: SellerService) => {
   const router = express.Router();

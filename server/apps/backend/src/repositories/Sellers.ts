@@ -1,9 +1,9 @@
 import path from 'node:path';
 import Big from 'big.js';
 import _ from 'lodash';
-import { Database, open } from 'sqlite';
+import { type Database, open } from 'sqlite';
 import sqlite3 from 'sqlite3';
-import { Seller } from './Seller';
+import type { Seller } from './Seller';
 
 type SellerRow = {
   name: string;
@@ -17,7 +17,7 @@ type SellerRow = {
 export default class Sellers {
   private constructor(private readonly db: Database) {}
 
-  public static async create(inMemory: boolean = false) {
+  public static async create(inMemory = false) {
     const db = await open({
       filename: inMemory ? ':memory:' : path.join(__dirname, '..', 'backup.db'),
       driver: sqlite3.cached.Database,
@@ -35,10 +35,10 @@ export default class Sellers {
     );
 
     return (rows || []).reduce(
-      (acc, currentValue) => ({
-        ...acc,
-        [currentValue.name]: JSON.parse(currentValue.cash_history),
-      }),
+      (acc: Record<string, number[]>, currentValue) => {
+        acc[currentValue.name] = JSON.parse(currentValue.cash_history);
+        return acc;
+      },
       {},
     );
   }
@@ -195,7 +195,7 @@ export default class Sellers {
 
   private mapSellerRowToSeller(row: SellerRow): Seller;
   private mapSellerRowToSeller(row: SellerRow | undefined): Seller | undefined;
-  private mapSellerRowToSeller(row: any) {
+  private mapSellerRowToSeller(row: SellerRow | undefined) {
     if (!row) {
       return undefined;
     }

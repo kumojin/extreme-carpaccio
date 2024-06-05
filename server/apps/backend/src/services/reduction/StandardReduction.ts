@@ -1,5 +1,5 @@
 import Big from 'big.js';
-import { Reduction } from './Reduction';
+import type { Reduction } from './Reduction';
 
 type ReductionStep = {
   sum: number;

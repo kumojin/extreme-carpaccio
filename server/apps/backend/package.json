@@ -5,8 +5,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "dev": "tsup src/main.ts --watch --onSuccess \"node dist/main.js\"",
-    "build": "tsup src/main.ts",
-    "start": "node dist/main.js",
+    "build": "tsc && tsup src/main.ts",
+    "start": "tscnode dist/main.js",
     "test": "jest",
     "format:check": "biome format src",
     "format:fix": "biome format --write src",

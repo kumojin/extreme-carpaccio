@@ -1,7 +1,7 @@
 import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
-import Configuration from '../config';
+import type Configuration from '../config';
 import logger from '../logger';
 import { scale } from './countries-utils';
 

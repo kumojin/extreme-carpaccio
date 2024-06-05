@@ -1,4 +1,4 @@
-import http, { ClientRequest } from 'node:http';
+import http, { type ClientRequest } from 'node:http';
 import https from 'node:https';
 import utils, { isValidUrl } from './utils';
 

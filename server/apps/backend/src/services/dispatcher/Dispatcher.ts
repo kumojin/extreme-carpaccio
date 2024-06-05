@@ -1,14 +1,15 @@
-import { IncomingMessage } from 'node:http';
+import type { IncomingMessage } from 'node:http';
 import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
-import Configuration, { WeightedReduction } from '../../config';
+import type Configuration from '../../config';
+import type { WeightedReduction } from '../../config';
 import logger from '../../logger';
-import { Seller } from '../../repositories';
+import type { Seller } from '../../repositories';
 import utils from '../../utils';
-import OrderService from '../OrderService';
-import Reductions, { Reduction } from '../reduction';
-import SellerService from '../SellerService';
+import type OrderService from '../OrderService';
+import Reductions, { type Reduction } from '../reduction';
+import type SellerService from '../SellerService';
 import BadRequest from './BadRequest';
 import SellerCashUpdater from './SellerCashUpdater';
 
@@ -39,29 +40,28 @@ class Dispatcher {
     currentIteration: number,
     badRequest: boolean,
   ) {
-    const self = this;
-    let order = self.orderService.createOrder(reduction);
-    const expectedBill = self.orderService.bill(order, reduction);
+    let order = this.orderService.createOrder(reduction);
+    const expectedBill = this.orderService.bill(order, reduction);
 
     if (badRequest) {
-      // Force any to be able to corrupt data
-      order = self.badRequest.corruptOrder(order) as any;
+      // biome-ignore lint/suspicious/noExplicitAny: force any to be able to corrupt data
+      order = this.badRequest.corruptOrder(order) as any;
     }
 
-    const allSellers = await self.sellerService.allSellers();
-    allSellers.forEach((seller) => {
-      self.sellerService.addCash(seller, new Big(0), currentIteration);
+    const allSellers = await this.sellerService.allSellers();
+    for (const seller of allSellers) {
+      this.sellerService.addCash(seller, new Big(0), currentIteration);
       let cashUpdater: (response: IncomingMessage) => Promise<void>;
 
       if (badRequest) {
-        cashUpdater = self.badRequest.updateSellersCash(
-          self.sellerService,
+        cashUpdater = this.badRequest.updateSellersCash(
+          this.sellerService,
           seller,
           expectedBill,
           currentIteration,
         );
       } else {
-        cashUpdater = self.sellerCashUpdater.doUpdate(
+        cashUpdater = this.sellerCashUpdater.doUpdate(
           seller,
           expectedBill,
           currentIteration,
@@ -69,12 +69,12 @@ class Dispatcher {
       }
 
       const errorCallback = this.putSellerOffline(
-        self,
+        this,
         seller,
         currentIteration,
       );
-      self.orderService.sendOrder(seller, order, cashUpdater, errorCallback);
-    });
+      this.orderService.sendOrder(seller, order, cashUpdater, errorCallback);
+    }
   }
 
   public async startBuying(iteration: number) {
@@ -118,11 +118,9 @@ class Dispatcher {
   public getWeightedReduction(
     reductionStrategy: WeightedReduction[],
   ): string[] {
-    return reductionStrategy
-      .map((strategy) =>
-        Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction),
-      )
-      .flat();
+    return reductionStrategy.flatMap((strategy) =>
+      Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction),
+    );
   }
 
   private putSellerOffline(

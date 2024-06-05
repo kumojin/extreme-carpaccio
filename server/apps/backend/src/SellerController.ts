@@ -1,8 +1,8 @@
-import { Request, Response } from 'express-serve-static-core';
+import type { Request, Response } from 'express-serve-static-core';
 import { StatusCodes } from 'http-status-codes';
 import Joi from 'joi';
 import { messageFromValidationError } from './error-utils';
-import { SellerService } from './services';
+import type { SellerService } from './services';
 import { isValidUrl } from './utils';
 
 export const listSellers =

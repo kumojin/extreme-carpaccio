@@ -2,12 +2,12 @@ import { URL } from 'node:url';
 import argon2 from 'argon2';
 import Big from 'big.js';
 import _ from 'lodash';
-import Configuration from '../config';
+import type Configuration from '../config';
 import { messageFromError } from '../error-utils';
 import logger from '../logger';
-import { Seller, Sellers } from '../repositories';
+import type { Seller, Sellers } from '../repositories';
 import utils from '../utils';
-import { Bill } from './Bill';
+import type { Bill } from './Bill';
 
 export type CashHistory = {
   history: Record<Seller['name'], Seller['cash'][]>;
@@ -46,9 +46,9 @@ export default class SellerService {
   public async getCashHistory(chunk: number): Promise<CashHistory> {
     const cashHistory = await this.sellers.getCashHistory();
     const cashHistoryReduced: Record<string, number[]> = {};
-    let lastIteration: number = 0;
+    let lastIteration = 0;
 
-    Object.keys(cashHistory).forEach((seller) => {
+    for (const seller of Object.keys(cashHistory)) {
       cashHistoryReduced[seller] = [];
 
       let i = 0;
@@ -63,7 +63,7 @@ export default class SellerService {
       }
 
       lastIteration = i;
-    });
+    }
 
     return { history: cashHistoryReduced, lastIteration };
   }
@@ -113,7 +113,7 @@ export default class SellerService {
     }
     try {
       const totalExpectedBill = utils.fixPrecision(expectedBill.total, 2);
-      let message;
+      let message: string;
       let loss: Big;
 
       if (_.isEmpty(actualBill)) {
