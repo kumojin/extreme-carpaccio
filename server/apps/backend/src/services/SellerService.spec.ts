@@ -1,6 +1,6 @@
 import { URL } from 'node:url';
 import argon2 from 'argon2';
-import Configuration, { Settings } from '../config';
+import Configuration, { type Settings } from '../config';
 import { buildWithDefaults } from '../fixtures';
 import { Sellers } from '../repositories';
 import utils from '../utils';

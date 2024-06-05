@@ -48,7 +48,7 @@ class Configuration {
       this.props = this.readContent();
     }
 
-    return this.props!;
+    return this.props as Settings;
   }
 
   public watch(callback: Callback, watchOnce: boolean, interval: number) {

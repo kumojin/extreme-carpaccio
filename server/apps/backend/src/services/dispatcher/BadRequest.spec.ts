@@ -1,4 +1,4 @@
-import { IncomingMessage } from 'node:http';
+import type { IncomingMessage } from 'node:http';
 import Big from 'big.js';
 import Configuration, { BadRequestMode } from '../../config';
 import { buildWithDefaults } from '../../fixtures';

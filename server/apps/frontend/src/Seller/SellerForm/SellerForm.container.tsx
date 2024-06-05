@@ -1,4 +1,4 @@
-import { AddSellerType } from '../Seller.hook';
+import type { AddSellerType } from '../Seller.hook';
 import { SellerForm } from './SellerForm';
 import { useForm } from './SellerFrom.hook';
 

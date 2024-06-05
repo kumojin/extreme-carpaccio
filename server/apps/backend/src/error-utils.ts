@@ -1,4 +1,4 @@
-import { ValidationError } from 'joi';
+import type { ValidationError } from 'joi';
 
 const hasMessage = (error: unknown): error is Error => {
   if (typeof error === 'object' && error) {

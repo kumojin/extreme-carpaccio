@@ -1,7 +1,10 @@
-import { Request, Response } from 'express-serve-static-core';
+import type { Request, Response } from 'express-serve-static-core';
 import { StatusCodes } from 'http-status-codes';
 import { when } from 'jest-when';
-import httpMocks, { MockRequest, MockResponse } from 'node-mocks-http';
+import httpMocks, {
+  type MockRequest,
+  type MockResponse,
+} from 'node-mocks-http';
 import Configuration from './config';
 import {
   cashHistory,
@@ -13,7 +16,7 @@ import {
 } from './fixtures';
 import { Sellers } from './repositories';
 import {
-  MaybeRegisterSellerRequest,
+  type MaybeRegisterSellerRequest,
   listSellers,
   registerSeller,
   sellersHistory,
@@ -194,6 +197,7 @@ describe('Seller Controller', () => {
       ['http', 'http://localhost'],
       ['https', 'https://localhost'],
     ])('when body has all required fields and valid url (%s)', (_, url) => {
+      // biome-ignore lint/suspicious/noDuplicateTestHooks: false positive due to describe.each
       beforeEach(() => {
         body = validSellerRequestWithUrl(url);
         request = httpMocks.createRequest({
@@ -204,6 +208,7 @@ describe('Seller Controller', () => {
       describe('when seller is not authorized', () => {
         beforeEach(() => {
           when(jest.spyOn(sellerService, 'isAuthorized'))
+            // biome-ignore lint/style/noNonNullAssertion: we know that name and password are defined
             .calledWith(body.name!, body.password!)
             .mockResolvedValue(false);
         });
@@ -219,6 +224,7 @@ describe('Seller Controller', () => {
       describe('when seller is authorized', () => {
         beforeEach(() => {
           when(jest.spyOn(sellerService, 'isAuthorized'))
+            // biome-ignore lint/style/noNonNullAssertion: we know that name and password are defined
             .calledWith(body.name!, body.password!)
             .mockResolvedValue(true);
         });

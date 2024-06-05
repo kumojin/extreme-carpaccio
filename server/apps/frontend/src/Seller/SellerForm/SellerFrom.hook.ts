@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import React, { FormEvent, RefObject } from 'react';
-import { AddSellerType, SellerForm } from '../Seller.hook';
+import React, { type FormEvent, type RefObject } from 'react';
+import type { AddSellerType, SellerForm } from '../Seller.hook';
 
 export type ErrorFormType = {
   hasError: boolean;

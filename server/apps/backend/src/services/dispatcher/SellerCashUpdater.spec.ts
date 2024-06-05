@@ -1,4 +1,4 @@
-import { IncomingMessage } from 'node:http';
+import type { IncomingMessage } from 'node:http';
 import Configuration from '../../config';
 import { buildWithDefaults } from '../../fixtures';
 import { Sellers } from '../../repositories';
