@@ -12,12 +12,12 @@ describe('Seller Service', () => {
   let configurationData: Settings;
 
   beforeEach(async () => {
-    jest.spyOn(utils, 'post').mockImplementation(jest.fn());
+    vi.spyOn(utils, 'post').mockImplementation(vi.fn());
     sellersRepository = await Sellers.create(true);
 
     configurationData = { cashFreeze: false } as Settings;
     const configuration = new Configuration();
-    jest.spyOn(configuration, 'all').mockReturnValue(configurationData);
+    vi.spyOn(configuration, 'all').mockReturnValue(configurationData);
 
     sellerService = new SellerService(sellersRepository, configuration);
   });
@@ -148,9 +148,9 @@ describe('Seller Service', () => {
   });
 
   it("should get seller's cash history reduced in chunks of N iterations", async () => {
-    jest
-      .spyOn(sellersRepository, 'getCashHistory')
-      .mockResolvedValue({ bob: [0, 0, 10, 10, 10] });
+    vi.spyOn(sellersRepository, 'getCashHistory').mockResolvedValue({
+      bob: [0, 0, 10, 10, 10],
+    });
 
     const cashHistory = await sellerService.getCashHistory(5);
 
@@ -158,9 +158,9 @@ describe('Seller Service', () => {
   });
 
   it("should get seller's cash history reduced in chunks of N iterations and add remaining iterations when last chunk is not completed", async () => {
-    jest
-      .spyOn(sellersRepository, 'getCashHistory')
-      .mockResolvedValue({ bob: [0, 0, 10, 10, 10, 10, 10] });
+    vi.spyOn(sellersRepository, 'getCashHistory').mockResolvedValue({
+      bob: [0, 0, 10, 10, 10, 10, 10],
+    });
 
     const cashHistory = await sellerService.getCashHistory(3);
 

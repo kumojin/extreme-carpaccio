@@ -20,7 +20,7 @@ describe('BadRequest', () => {
   });
 
   it('should suggest bad request periodically', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({
+    vi.spyOn(configuration, 'all').mockReturnValue({
       badRequest: {
         active: true,
         period: 3,
@@ -37,7 +37,7 @@ describe('BadRequest', () => {
   });
 
   it('should not suggest bad request if not activated', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({
+    vi.spyOn(configuration, 'all').mockReturnValue({
       badRequest: {
         active: false,
         period: 3,
@@ -66,7 +66,7 @@ describe('BadRequest', () => {
     BadRequestMode.NO_REDUCTION,
     BadRequestMode.NULL,
   ])('should corrupt order using mode %s', (mode) => {
-    jest.spyOn(configuration, 'all').mockReturnValue({
+    vi.spyOn(configuration, 'all').mockReturnValue({
       badRequest: {
         modes: [mode],
       },
@@ -88,8 +88,8 @@ describe('BadRequest', () => {
     const seller = buildWithDefaults({ name: 'alice', cash: 200 });
     const expectedBill = { total: 47 };
     const currentIteration = 17;
-    jest.spyOn(sellerService, 'deductCash').mockImplementation(jest.fn());
-    jest.spyOn(sellerService, 'notify').mockImplementation(jest.fn());
+    vi.spyOn(sellerService, 'deductCash').mockImplementation(vi.fn());
+    vi.spyOn(sellerService, 'notify').mockImplementation(vi.fn());
 
     const fun = badRequest.updateSellersCash(
       sellerService,
@@ -111,8 +111,8 @@ describe('BadRequest', () => {
     const seller = buildWithDefaults({ name: 'alice', cash: 200 });
     const expectedBill = { total: 47 };
     const currentIteration = 17;
-    jest.spyOn(sellerService, 'addCash').mockImplementation(jest.fn());
-    jest.spyOn(sellerService, 'notify').mockImplementation(jest.fn());
+    vi.spyOn(sellerService, 'addCash').mockImplementation(vi.fn());
+    vi.spyOn(sellerService, 'notify').mockImplementation(vi.fn());
 
     const fun = badRequest.updateSellersCash(
       sellerService,

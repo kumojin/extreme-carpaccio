@@ -24,8 +24,8 @@ describe("Seller's cash updater", () => {
     const bob = buildWithDefaults({
       name: 'bob',
     });
-    jest.spyOn(sellerService, 'setOnline').mockImplementation(jest.fn());
-    jest.spyOn(sellerService, 'updateCash').mockImplementation(jest.fn());
+    vi.spyOn(sellerService, 'setOnline').mockImplementation(vi.fn());
+    vi.spyOn(sellerService, 'updateCash').mockImplementation(vi.fn());
 
     await sellerCashUpdater.doUpdate(
       bob,
@@ -45,8 +45,8 @@ describe("Seller's cash updater", () => {
     const bob = buildWithDefaults({
       name: 'bob',
     });
-    jest.spyOn(sellerService, 'setOnline').mockImplementation(jest.fn());
-    jest.spyOn(sellerService, 'updateCash').mockImplementation(jest.fn());
+    vi.spyOn(sellerService, 'setOnline').mockImplementation(vi.fn());
+    vi.spyOn(sellerService, 'updateCash').mockImplementation(vi.fn());
 
     sellerCashUpdater.doUpdate(
       bob,
