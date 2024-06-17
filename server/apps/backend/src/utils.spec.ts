@@ -29,9 +29,9 @@ describe('Utils', () => {
         on() {},
         end() {},
       } as unknown as ClientRequest;
-      jest.spyOn(networkModule, 'request').mockReturnValue(fakeRequest);
-      jest.spyOn(fakeRequest, 'write');
-      jest.spyOn(fakeRequest, 'end');
+      vi.spyOn(networkModule, 'request').mockReturnValue(fakeRequest);
+      vi.spyOn(fakeRequest, 'write');
+      vi.spyOn(fakeRequest, 'end');
       const body = { content: 'some content' };
       const callback = () => Promise.resolve();
 

@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express-serve-static-core';
 import { StatusCodes } from 'http-status-codes';
-import { when } from 'jest-when';
 import httpMocks, {
   type MockRequest,
   type MockResponse,
@@ -36,7 +35,7 @@ describe('Seller Controller', () => {
       const request = httpMocks.createRequest({});
       const response = httpMocks.createResponse();
 
-      jest.spyOn(sellerService, 'allSellers').mockResolvedValue(sellers);
+      vi.spyOn(sellerService, 'allSellers').mockResolvedValue(sellers);
 
       await listSellers(sellerService)(request, response);
 
@@ -64,9 +63,9 @@ describe('Seller Controller', () => {
           },
         });
         const response = httpMocks.createResponse();
-        when(jest.spyOn(sellerService, 'getCashHistory'))
-          .calledWith(42)
-          .mockResolvedValue(cashHistory);
+        vi.spyOn(sellerService, 'getCashHistory').mockResolvedValue(
+          cashHistory,
+        );
 
         await sellersHistory(sellerService)(request, response);
 
@@ -82,9 +81,9 @@ describe('Seller Controller', () => {
           },
         });
         const response = httpMocks.createResponse();
-        when(jest.spyOn(sellerService, 'getCashHistory'))
-          .calledWith(10)
-          .mockResolvedValue(cashHistory);
+        vi.spyOn(sellerService, 'getCashHistory').mockResolvedValue(
+          cashHistory,
+        );
 
         await sellersHistory(sellerService)(request, response);
 
@@ -98,9 +97,9 @@ describe('Seller Controller', () => {
           query: {},
         });
         const response = httpMocks.createResponse();
-        when(jest.spyOn(sellerService, 'getCashHistory'))
-          .calledWith(10)
-          .mockResolvedValue(cashHistory);
+        vi.spyOn(sellerService, 'getCashHistory').mockResolvedValue(
+          cashHistory,
+        );
 
         await sellersHistory(sellerService)(request, response);
 
@@ -113,11 +112,11 @@ describe('Seller Controller', () => {
     let body: MaybeRegisterSellerRequest;
     let request: MockRequest<Request>;
     let response: MockResponse<Response>;
-    const registerMock = jest.fn();
+    const registerMock = vi.fn();
 
     beforeEach(() => {
       response = httpMocks.createResponse();
-      jest.spyOn(sellerService, 'register').mockImplementation(registerMock);
+      vi.spyOn(sellerService, 'register').mockImplementation(registerMock);
     });
 
     describe('when invalid input body', () => {
@@ -207,10 +206,7 @@ describe('Seller Controller', () => {
 
       describe('when seller is not authorized', () => {
         beforeEach(() => {
-          when(jest.spyOn(sellerService, 'isAuthorized'))
-            // biome-ignore lint/style/noNonNullAssertion: we know that name and password are defined
-            .calledWith(body.name!, body.password!)
-            .mockResolvedValue(false);
+          vi.spyOn(sellerService, 'isAuthorized').mockResolvedValue(false);
         });
 
         it('should return a unauthorized', async () => {
@@ -223,10 +219,7 @@ describe('Seller Controller', () => {
 
       describe('when seller is authorized', () => {
         beforeEach(() => {
-          when(jest.spyOn(sellerService, 'isAuthorized'))
-            // biome-ignore lint/style/noNonNullAssertion: we know that name and password are defined
-            .calledWith(body.name!, body.password!)
-            .mockResolvedValue(true);
+          vi.spyOn(sellerService, 'isAuthorized').mockResolvedValue(true);
         });
 
         it('should return a success', async () => {

@@ -15,40 +15,42 @@ describe('Configuration', () => {
 
   it(
     'should load configuration from file',
-    (done) => {
-      const callback = (err: NodeJS.ErrnoException | null) => {
-        try {
-          expect(err).toBeNull(); // Arnauld a voulu faire ce test, parce qu'il trouve que c'est une bonne idee!
+    () =>
+      new Promise<void>((done, reject) => {
+        const callback = (err: NodeJS.ErrnoException | null) => {
+          try {
+            expect(err).toBeNull(); // Arnauld a voulu faire ce test, parce qu'il trouve que c'est une bonne idee!
 
-          const properties = config.all();
-          expect(properties).toEqual({ reduction: 'STANDARD' });
+            const properties = config.all();
+            expect(properties).toEqual({ reduction: 'STANDARD' });
 
-          done();
-        } catch (e) {
-          done(e as Error);
-        }
-      };
-      config.load(callback);
-    },
+            done();
+          } catch (e) {
+            reject(e as Error);
+          }
+        };
+        config.load(callback);
+      }),
     TIMEOUT_1000_MILLIS,
   );
 
   it(
     'should reload configuration on the fly',
-    (done) => {
-      const callback = () => {
-        try {
-          const properties = config.all();
-          expect(properties).toEqual({ reduction: 'HALF PIPE' });
-          done();
-        } catch (e) {
-          done(e as Error);
-        }
-      };
-      config.watch(callback, true, TIMEOUT_200_MILLIS);
+    () =>
+      new Promise<void>((done, reject) => {
+        const callback = () => {
+          try {
+            const properties = config.all();
+            expect(properties).toEqual({ reduction: 'HALF PIPE' });
+            done();
+          } catch (e) {
+            reject(e as Error);
+          }
+        };
+        config.watch(callback, true, TIMEOUT_200_MILLIS);
 
-      fs.writeFileSync(configFilepath, '{"reduction": "HALF PIPE"}');
-    },
+        fs.writeFileSync(configFilepath, '{"reduction": "HALF PIPE"}');
+      }),
     TIMEOUT_1000_MILLIS,
   );
 });

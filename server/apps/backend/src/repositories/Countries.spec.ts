@@ -13,7 +13,7 @@ describe('Countries', () => {
   });
 
   it('should get the corresponding tax for a given country', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({});
+    vi.spyOn(configuration, 'all').mockReturnValue({});
     expect(countries.taxRule('DE').applyTax(new Big(1))).toStrictEqual(
       new Big(1.2),
     );
@@ -101,7 +101,7 @@ describe('Countries', () => {
   });
 
   it('should get the updated tax for a given country', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({});
+    vi.spyOn(configuration, 'all').mockReturnValue({});
     const newTaxRule = (total: number) => {
       if (total > 100) return total * 1.2;
       return total * 1.2 + 100;
@@ -119,7 +119,7 @@ describe('Countries', () => {
   });
 
   it('should return random country according to its frequency', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({});
+    vi.spyOn(configuration, 'all').mockReturnValue({});
     const mostImportantPopulation = 200000;
     const samples = _.times(mostImportantPopulation * 10, countries.randomOne);
 
@@ -132,7 +132,7 @@ describe('Countries', () => {
   });
 
   it('should return tax modified from configuration - percentage case', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({
+    vi.spyOn(configuration, 'all').mockReturnValue({
       taxes: {
         LU: 3.44,
       },
@@ -146,7 +146,7 @@ describe('Countries', () => {
   });
 
   it('should return tax modified from configuration - function case', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({
+    vi.spyOn(configuration, 'all').mockReturnValue({
       taxes: {
         CY: 'function(price) { return 1234; }',
       },
@@ -158,7 +158,7 @@ describe('Countries', () => {
   });
 
   it('should keep tax unchanged when it fails to read it from configuration - invalid function case', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({
+    vi.spyOn(configuration, 'all').mockReturnValue({
       taxes: {
         EE: 'funn(price) {return unprobableVariable*7;}',
         LV: 'function(price) return 4',
@@ -178,7 +178,7 @@ describe('Countries', () => {
   });
 
   it('should keep tax unchanged when it fails to execute evaluation from configuration', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({
+    vi.spyOn(configuration, 'all').mockReturnValue({
       taxes: {
         EE: "function(price) {throw {error:'oops'};}",
       },
