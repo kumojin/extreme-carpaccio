@@ -6,14 +6,14 @@
     "@formatjs/intl-numberformat": "8.14.6",
     "@tanstack/react-query": "5.62.3",
     "@types/node": "20.17.9",
-    "@types/react": "18.3.14",
-    "@types/react-dom": "18.3.2",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.1",
     "bootstrap": "5.3.3",
     "chart.js": "4.4.7",
-    "react": "18.3.1",
+    "react": "19.0.0",
     "react-bootstrap": "2.10.6",
     "react-chartjs-2": "5.2.0",
-    "react-dom": "18.3.1"
+    "react-dom": "19.0.0"
   },
   "scripts": {
     "build": "tsc && vite build",
@@ -37,8 +37,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "18.3.14",
-    "@types/react-dom": "18.3.2",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.1",
     "@vitejs/plugin-react": "4.3.4",
     "typescript": "5.7.2",
     "vite": "5.4.11"
