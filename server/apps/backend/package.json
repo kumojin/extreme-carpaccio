@@ -38,7 +38,7 @@
     "@types/node": "20.17.9",
     "@types/supertest": "6.0.2",
     "bower": "1.8.14",
-    "node-mocks-http": "1.16.1",
+    "node-mocks-http": "1.16.2",
     "supertest": "7.0.0",
     "tsup": "8.3.5",
     "typescript": "5.7.2",
