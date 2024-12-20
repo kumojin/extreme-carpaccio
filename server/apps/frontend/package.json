@@ -6,7 +6,7 @@
     "@formatjs/intl-numberformat": "8.15.1",
     "@tanstack/react-query": "5.62.7",
     "@types/node": "20.17.10",
-    "@types/react": "18.3.17",
+    "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "bootstrap": "5.3.3",
     "chart.js": "4.4.7",
@@ -37,7 +37,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "18.3.17",
+    "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "@vitejs/plugin-react": "4.3.4",
     "typescript": "5.7.2",
