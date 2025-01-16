@@ -35,7 +35,7 @@
   "devDependencies": {
     "@swc/core": "1.10.7",
     "@tsconfig/node20": "20.1.4",
-    "@types/node": "20.17.13",
+    "@types/node": "20.17.14",
     "@types/supertest": "6.0.2",
     "bower": "1.8.14",
     "node-mocks-http": "1.16.2",
