@@ -1,8 +1,8 @@
-import { Request, Response } from 'express-serve-static-core';
+import type { Request, Response } from 'express-serve-static-core';
 import { StatusCodes } from 'http-status-codes';
 import Joi from 'joi';
 import { messageFromValidationError } from './error-utils';
-import { SellerService } from './services';
+import type { SellerService } from './services';
 import { isValidUrl } from './utils';
 
 export const listSellers =
@@ -21,7 +21,7 @@ export const sellersHistory =
   (sellerService: SellerService) =>
   async (request: Request, response: Response) => {
     const { error, value } = sellersHistoryValidator.validate(
-      request.query.chunk
+      request.query.chunk,
     );
     const chunk = !error ? value : 10;
     const cashHistory = await sellerService.getCashHistory(chunk);
@@ -58,7 +58,7 @@ export const registerSeller =
     const { name: sellerName, url: sellerUrl, password: sellerPwd } = value;
     const isAuthorized = await sellerService.isAuthorized(
       sellerName,
-      sellerPwd
+      sellerPwd,
     );
     if (!isAuthorized) {
       response

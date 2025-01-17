@@ -1,4 +1,4 @@
-import http, { IncomingMessage, RequestOptions } from 'node:http';
+import http, { type IncomingMessage, type RequestOptions } from 'node:http';
 import https from 'node:https';
 import { URL } from 'node:url';
 import Big from 'big.js';
@@ -15,7 +15,7 @@ export const isValidUrl = (value: string): boolean => {
 };
 
 class Utils {
-  public stringify(value: any) {
+  public stringify(value: unknown) {
     return JSON.stringify(value);
   }
 
@@ -38,9 +38,9 @@ class Utils {
   public post(
     url: URL,
     path: string,
-    body: any,
+    body: unknown,
     onSuccess?: (res: IncomingMessage) => Promise<void>,
-    onError?: (err: Error) => void
+    onError?: (err: Error) => void,
   ) {
     const bodyStringified = this.stringify(body);
     const options: RequestOptions = {

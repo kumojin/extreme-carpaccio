@@ -1,13 +1,13 @@
-import React, { FormEvent, RefObject } from 'react';
-import { useMutation } from 'react-query';
-import { AddSellerType, SellerForm } from '../Seller.hook';
+import { useMutation } from '@tanstack/react-query';
+import React, { type FormEvent, type RefObject } from 'react';
+import type { AddSellerType, SellerForm } from '../Seller.hook';
 
 export type ErrorFormType = {
   hasError: boolean;
   message: string;
 };
 export const useForm = (
-  addSeller: AddSellerType
+  addSeller: AddSellerType,
 ): {
   nameRef: RefObject<HTMLInputElement>;
   passwordRef: RefObject<HTMLInputElement>;
@@ -25,12 +25,13 @@ export const useForm = (
   const [errorForm, setErrorForm] =
     React.useState<ErrorFormType>(initErrorFormState);
 
-  const addSellerMutation = useMutation(async (newSeller: SellerForm) =>
-    fetch('/seller', {
-      method: 'POST',
-      body: new URLSearchParams(newSeller),
-    })
-  );
+  const addSellerMutation = useMutation({
+    mutationFn: async (newSeller: SellerForm) =>
+      fetch('/seller', {
+        method: 'POST',
+        body: new URLSearchParams(newSeller),
+      }),
+  });
 
   const handleSubmit = (event: FormEvent): void => {
     const name = nameRef.current?.value;
@@ -80,7 +81,7 @@ export const useForm = (
             message: `An error occured during registration: ${err}`,
           });
         },
-      }
+      },
     );
 
     nameRef.current.value = '';

@@ -1,5 +1,5 @@
-import { FormEvent, RefObject } from 'react';
-import { ErrorFormType } from './SellerFrom.hook';
+import type { FormEvent, RefObject } from 'react';
+import type { ErrorFormType } from './SellerFrom.hook';
 
 type SellerFormProps = {
   handleSubmit: (event: FormEvent) => void;

@@ -1,4 +1,4 @@
-import { SalesHistory, Seller } from '../Seller.hook';
+import type { SalesHistory, Seller } from '../Seller.hook';
 import { SellerView } from './SellerView';
 
 type SellerViewContainerProps = {

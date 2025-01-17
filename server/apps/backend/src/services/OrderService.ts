@@ -1,14 +1,14 @@
-import { IncomingMessage } from 'node:http';
+import type { IncomingMessage } from 'node:http';
 import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
-import Configuration from '../config';
+import type Configuration from '../config';
 import logger from '../logger';
-import { Countries, Seller } from '../repositories';
+import { Countries, type Seller } from '../repositories';
 import utils from '../utils';
 import { isBill } from './Bill';
-import { Order } from './Order';
-import { Reduction } from './reduction';
+import type { Order } from './Order';
+import type { Reduction } from './reduction';
 
 export default class OrderService {
   private readonly countries: Countries;
@@ -21,14 +21,14 @@ export default class OrderService {
     seller: Seller,
     order: Order,
     cashUpdater: (response: IncomingMessage) => Promise<void>,
-    onError: () => void
+    onError: () => void,
   ) {
     logger.info(
       colors.grey(
         `Sending order ${utils.stringify(order)} to seller ${utils.stringify(
-          seller
-        )}`
-      )
+          seller,
+        )}`,
+      ),
     );
     utils.post(seller.url, '/order', order, cashUpdater, onError);
   }

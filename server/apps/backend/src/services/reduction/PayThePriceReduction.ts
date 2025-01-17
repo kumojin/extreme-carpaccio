@@ -1,5 +1,5 @@
-import Big from 'big.js';
-import { Reduction } from './Reduction';
+import type Big from 'big.js';
+import type { Reduction } from './Reduction';
 
 class PayThePriceReduction implements Reduction {
   get name(): string {

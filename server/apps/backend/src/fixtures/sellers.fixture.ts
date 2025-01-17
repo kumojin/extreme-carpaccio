@@ -1,6 +1,6 @@
 import { URL } from 'node:url';
-import { Seller } from '../repositories';
-import { CashHistory } from '../services/SellerService';
+import type { Seller } from '../repositories';
+import type { CashHistory } from '../services/SellerService';
 
 export const seller1: Seller = {
   name: 'John',

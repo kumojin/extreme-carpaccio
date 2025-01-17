@@ -1,7 +1,7 @@
 import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
-import Configuration from '../config';
+import type Configuration from '../config';
 import logger from '../logger';
 import { scale } from './countries-utils';
 
@@ -10,7 +10,7 @@ const customEval = (s: string) => new Function(`return ${s}`)();
 
 const lookupForOverridenDefinition = (
   configuration: Configuration,
-  country: string
+  country: string,
 ): ((price: number) => number) | null => {
   const conf = configuration.all();
   if (!conf.taxes || !conf.taxes[country]) {
@@ -21,8 +21,8 @@ const lookupForOverridenDefinition = (
   if (_.isNumber(def)) {
     logger.info(
       colors.blue(
-        `Tax rule for country ${country} changed to scale factor ${def}`
-      )
+        `Tax rule for country ${country} changed to scale factor ${def}`,
+      ),
     );
     return scale(def);
   }
@@ -33,22 +33,22 @@ const lookupForOverridenDefinition = (
       if (_.isFunction(taxRule)) {
         logger.info(
           colors.blue(
-            `Tax rule for country ${country} changed to function ${def}`
-          )
+            `Tax rule for country ${country} changed to function ${def}`,
+          ),
         );
         return taxRule;
       }
       logger.error(
         colors.red(
-          `Failed to evaluate tax rule for country ${country} from ${def}, result is not a function`
-        )
+          `Failed to evaluate tax rule for country ${country} from ${def}, result is not a function`,
+        ),
       );
       return null;
     } catch (e) {
       logger.error(
         colors.red(
-          `Failed to evaluate tax rule for country ${country} from ${def}, got: ${e}`
-        )
+          `Failed to evaluate tax rule for country ${country} from ${def}, got: ${e}`,
+        ),
       );
       return null;
     }
@@ -68,7 +68,7 @@ export default class Country {
 
   constructor(
     private readonly name: string,
-    taxRule: (price: number) => number
+    taxRule: (price: number) => number,
   ) {
     this._taxRule = taxRule;
   }
@@ -94,8 +94,8 @@ export default class Country {
     } catch (e) {
       logger.error(
         colors.red(
-          `Failed to evaluate tax rule for country ${this.name} falling back to original value, got:${e}`
-        )
+          `Failed to evaluate tax rule for country ${this.name} falling back to original value, got:${e}`,
+        ),
       );
       return new Big(this._taxRule(sum.toNumber()));
     }

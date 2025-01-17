@@ -1,4 +1,4 @@
-import { SalesHistory, Seller } from '../Seller.hook';
+import type { SalesHistory, Seller } from '../Seller.hook';
 
 export const stringToColor = (str: string): string => {
   let hash = 0;
@@ -44,7 +44,7 @@ type GetDataHistoryReturned = {
 
 export const getDataHistory = (
   sellers: Seller[],
-  salesHistory: SalesHistory
+  salesHistory: SalesHistory,
 ): GetDataHistoryReturned => {
   let labels: string[] = [];
   const datasets: {
@@ -57,7 +57,7 @@ export const getDataHistory = (
   if (salesHistory?.history) {
     const { lastIteration } = salesHistory;
 
-    Object.keys(salesHistory.history).forEach((seller) => {
+    for (const seller of Object.keys(salesHistory.history)) {
       const color = stringToColor(seller);
       datasets.push({
         label: seller,
@@ -65,7 +65,7 @@ export const getDataHistory = (
         backgroundColor: color,
         data: salesHistory.history[seller].slice(-10),
       });
-    });
+    }
 
     for (let i = 0; i < lastIteration; i += 10) {
       labels.push(`${i}`);

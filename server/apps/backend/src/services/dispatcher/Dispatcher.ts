@@ -1,14 +1,15 @@
-import { IncomingMessage } from 'node:http';
+import type { IncomingMessage } from 'node:http';
 import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
-import Configuration, { WeightedReduction } from '../../config';
+import type Configuration from '../../config';
+import type { WeightedReduction } from '../../config';
 import logger from '../../logger';
-import { Seller } from '../../repositories';
+import type { Seller } from '../../repositories';
 import utils from '../../utils';
-import OrderService from '../OrderService';
-import Reductions, { Reduction } from '../reduction';
-import SellerService from '../SellerService';
+import type OrderService from '../OrderService';
+import Reductions, { type Reduction } from '../reduction';
+import type SellerService from '../SellerService';
 import BadRequest from './BadRequest';
 import SellerCashUpdater from './SellerCashUpdater';
 
@@ -27,7 +28,7 @@ class Dispatcher {
   constructor(
     private readonly sellerService: SellerService,
     private readonly orderService: OrderService,
-    private readonly configuration: Configuration
+    private readonly configuration: Configuration,
   ) {
     this.offlinePenalty = 0;
     this.badRequest = new BadRequest(configuration);
@@ -37,44 +38,43 @@ class Dispatcher {
   public async sendOrderToSellers(
     reduction: Reduction,
     currentIteration: number,
-    badRequest: boolean
+    badRequest: boolean,
   ) {
-    const self = this;
-    let order = self.orderService.createOrder(reduction);
-    const expectedBill = self.orderService.bill(order, reduction);
+    let order = this.orderService.createOrder(reduction);
+    const expectedBill = this.orderService.bill(order, reduction);
 
     if (badRequest) {
-      // Force any to be able to corrupt data
-      order = self.badRequest.corruptOrder(order) as any;
+      // biome-ignore lint/suspicious/noExplicitAny: force any to be able to corrupt data
+      order = this.badRequest.corruptOrder(order) as any;
     }
 
-    const allSellers = await self.sellerService.allSellers();
-    allSellers.forEach((seller) => {
-      self.sellerService.addCash(seller, new Big(0), currentIteration);
+    const allSellers = await this.sellerService.allSellers();
+    for (const seller of allSellers) {
+      this.sellerService.addCash(seller, new Big(0), currentIteration);
       let cashUpdater: (response: IncomingMessage) => Promise<void>;
 
       if (badRequest) {
-        cashUpdater = self.badRequest.updateSellersCash(
-          self.sellerService,
+        cashUpdater = this.badRequest.updateSellersCash(
+          this.sellerService,
           seller,
           expectedBill,
-          currentIteration
+          currentIteration,
         );
       } else {
-        cashUpdater = self.sellerCashUpdater.doUpdate(
+        cashUpdater = this.sellerCashUpdater.doUpdate(
           seller,
           expectedBill,
-          currentIteration
+          currentIteration,
         );
       }
 
       const errorCallback = this.putSellerOffline(
-        self,
+        this,
         seller,
-        currentIteration
+        currentIteration,
       );
-      self.orderService.sendOrder(seller, order, cashUpdater, errorCallback);
-    });
+      this.orderService.sendOrder(seller, order, cashUpdater, errorCallback);
+    }
   }
 
   public async startBuying(iteration: number) {
@@ -99,7 +99,7 @@ class Dispatcher {
     this.scheduleNextIteration(
       this,
       nextIteration,
-      period.shoppingIntervalInMillis
+      period.shoppingIntervalInMillis,
     );
     return nextIteration;
   }
@@ -116,31 +116,29 @@ class Dispatcher {
   }
 
   public getWeightedReduction(
-    reductionStrategy: WeightedReduction[]
+    reductionStrategy: WeightedReduction[],
   ): string[] {
-    return reductionStrategy
-      .map((strategy) =>
-        Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction)
-      )
-      .flat();
+    return reductionStrategy.flatMap((strategy) =>
+      Array(Math.ceil(strategy.weight * 100)).fill(strategy.reduction),
+    );
   }
 
   private putSellerOffline(
     self: Dispatcher,
     seller: Seller,
-    currentIteration: number
+    currentIteration: number,
   ): () => Promise<void> {
     return async () => {
       logger.error(
-        colors.red(`Could not reach seller ${utils.stringify(seller)}`)
+        colors.red(`Could not reach seller ${utils.stringify(seller)}`),
       );
       let { offlinePenalty } = self.getConfiguration(self);
 
       if (!_.isNumber(offlinePenalty)) {
         logger.warn(
           colors.yellow(
-            'Offline penalty is missing or is not a number. Using 0.'
-          )
+            'Offline penalty is missing or is not a number. Using 0.',
+          ),
         );
         offlinePenalty = 0;
       }
@@ -148,16 +146,16 @@ class Dispatcher {
       await self.sellerService.setOffline(
         seller,
         offlinePenalty,
-        currentIteration
+        currentIteration,
       );
     };
   }
 
   private isWeightedReduction(
-    reduction: string[] | WeightedReduction[]
+    reduction: string[] | WeightedReduction[],
   ): reduction is WeightedReduction[] {
     return (reduction as WeightedReduction[]).every(
-      (strategy) => strategy.weight !== undefined
+      (strategy) => strategy.weight !== undefined,
     );
   }
 
@@ -179,8 +177,8 @@ class Dispatcher {
     if (reductionStrategy !== 'STANDARD') {
       logger.warn(
         colors.yellow(
-          `Unknown reduction strategy ${reductionStrategy}. Using STANDARD.`
-        )
+          `Unknown reduction strategy ${reductionStrategy}. Using STANDARD.`,
+        ),
       );
     }
 
@@ -190,7 +188,7 @@ class Dispatcher {
   private scheduleNextIteration(
     self: Dispatcher,
     nextIteration: number,
-    intervalInMillis: number
+    intervalInMillis: number,
   ) {
     setTimeout(async () => {
       await self.startBuying(nextIteration);

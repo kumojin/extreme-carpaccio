@@ -1,6 +1,6 @@
 import argon2 from 'argon2';
 import bodyParser from 'body-parser';
-import express, { Express } from 'express';
+import express, { type Express } from 'express';
 import request from 'supertest';
 import Configuration from './config';
 import { buildWithDefaults } from './fixtures';

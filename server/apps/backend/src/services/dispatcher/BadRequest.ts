@@ -1,13 +1,14 @@
-import { IncomingMessage } from 'node:http';
+import type { IncomingMessage } from 'node:http';
 import Big from 'big.js';
 import colors from 'colors';
 import _ from 'lodash';
-import Configuration, { BadRequestMode } from '../../config';
+import type Configuration from '../../config';
+import { BadRequestMode } from '../../config';
 import logger from '../../logger';
-import { Seller } from '../../repositories';
-import { Bill } from '../Bill';
-import { Order } from '../Order';
-import SellerService from '../SellerService';
+import type { Seller } from '../../repositories';
+import type { Bill } from '../Bill';
+import type { Order } from '../Order';
+import type SellerService from '../SellerService';
 
 class BadRequest {
   constructor(private readonly configuration: Configuration) {}
@@ -22,23 +23,23 @@ class BadRequest {
     );
   }
 
-  public corruptOrder(order: Order) {
+  public corruptOrder(order: Order): unknown {
     const mode = _.sample(this.getConfiguration()?.modes);
 
     logger.info(colors.blue(`corrupt mode ${mode}`));
-    let copy: Order;
+    let copy: unknown;
     switch (mode) {
       case BadRequestMode.EMPTY_OBJECT:
-        copy = {} as any;
+        copy = {};
         break;
       case BadRequestMode.ARRAY_BOOLEANS:
-        copy = _.range(17).map((i) => i % 2 === 0) as any;
+        copy = _.range(17).map((i) => i % 2 === 0);
         break;
       case BadRequestMode.ERROR_QUANTITIES:
         copy = {
           ...order,
           quantities: { error: 'datacenter unreachable' },
-        } as any;
+        };
         break;
       case BadRequestMode.MISSING_QUANTITIES:
         copy = {
@@ -62,35 +63,35 @@ class BadRequest {
         const { country, ...orderWithoutCountry } = order;
         copy = {
           ...orderWithoutCountry,
-        } as any;
+        };
         break;
       }
       case BadRequestMode.NO_PRICES: {
         const { prices, ...orderWithoutPrices } = order;
         copy = {
           ...orderWithoutPrices,
-        } as any;
+        };
         break;
       }
       case BadRequestMode.NO_QUANTITIES: {
         const { quantities, ...orderWithoutQuantities } = order;
         copy = {
           ...orderWithoutQuantities,
-        } as any;
+        };
         break;
       }
       case BadRequestMode.NO_REDUCTION: {
         const { reduction, ...orderWithoutReduction } = order;
         copy = {
           ...orderWithoutReduction,
-        } as any;
+        };
         break;
       }
       case BadRequestMode.NULL:
-        copy = null as any;
+        copy = null;
         break;
       default:
-        copy = {} as any;
+        copy = {};
         break;
     }
 
@@ -101,11 +102,11 @@ class BadRequest {
     sellerService: SellerService,
     seller: Seller,
     expectedBill: Bill,
-    currentIteration: number
+    currentIteration: number,
   ): (response: IncomingMessage) => Promise<void> {
     return async (response: IncomingMessage) => {
       const amount = expectedBill.total;
-      let message;
+      let message: string;
 
       if (response.statusCode !== 400) {
         const loss = new Big(amount).times(0.5);

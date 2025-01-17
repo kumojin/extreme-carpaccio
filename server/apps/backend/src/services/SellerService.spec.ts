@@ -1,6 +1,6 @@
 import { URL } from 'node:url';
 import argon2 from 'argon2';
-import Configuration, { Settings } from '../config';
+import Configuration, { type Settings } from '../config';
 import { buildWithDefaults } from '../fixtures';
 import { Sellers } from '../repositories';
 import utils from '../utils';
@@ -12,12 +12,12 @@ describe('Seller Service', () => {
   let configurationData: Settings;
 
   beforeEach(async () => {
-    jest.spyOn(utils, 'post').mockImplementation(jest.fn());
+    vi.spyOn(utils, 'post').mockImplementation(vi.fn());
     sellersRepository = await Sellers.create(true);
 
     configurationData = { cashFreeze: false } as Settings;
     const configuration = new Configuration();
-    jest.spyOn(configuration, 'all').mockReturnValue(configurationData);
+    vi.spyOn(configuration, 'all').mockReturnValue(configurationData);
 
     sellerService = new SellerService(sellersRepository, configuration);
   });
@@ -26,7 +26,7 @@ describe('Seller Service', () => {
     await sellerService.register(
       'http://localhost:3000/path',
       'bob',
-      'password'
+      'password',
     );
     const sellers = await sellerService.allSellers();
     expect(sellers.length).toBe(1);
@@ -48,7 +48,7 @@ describe('Seller Service', () => {
       expect.objectContaining({
         name: 'alice',
         cash: 100,
-      })
+      }),
     );
   });
 
@@ -63,7 +63,7 @@ describe('Seller Service', () => {
       expect.objectContaining({
         name: 'alice',
         cash: -50,
-      })
+      }),
     );
   });
 
@@ -78,7 +78,7 @@ describe('Seller Service', () => {
       expect.objectContaining({
         name: 'alice',
         cash: -50,
-      })
+      }),
     );
   });
 
@@ -108,7 +108,7 @@ describe('Seller Service', () => {
         name: 'alice',
         cash: 100,
         online: false,
-      })
+      }),
     );
   });
 
@@ -120,7 +120,7 @@ describe('Seller Service', () => {
       alice,
       { total: 100.12345 },
       { total: 100.12 },
-      0
+      0,
     );
 
     const allSellers = await sellerService.allSellers();
@@ -128,7 +128,7 @@ describe('Seller Service', () => {
       expect.objectContaining({
         name: 'alice',
         cash: 100.12,
-      })
+      }),
     );
   });
 
@@ -148,9 +148,9 @@ describe('Seller Service', () => {
   });
 
   it("should get seller's cash history reduced in chunks of N iterations", async () => {
-    jest
-      .spyOn(sellersRepository, 'getCashHistory')
-      .mockResolvedValue({ bob: [0, 0, 10, 10, 10] });
+    vi.spyOn(sellersRepository, 'getCashHistory').mockResolvedValue({
+      bob: [0, 0, 10, 10, 10],
+    });
 
     const cashHistory = await sellerService.getCashHistory(5);
 
@@ -158,9 +158,9 @@ describe('Seller Service', () => {
   });
 
   it("should get seller's cash history reduced in chunks of N iterations and add remaining iterations when last chunk is not completed", async () => {
-    jest
-      .spyOn(sellersRepository, 'getCashHistory')
-      .mockResolvedValue({ bob: [0, 0, 10, 10, 10, 10, 10] });
+    vi.spyOn(sellersRepository, 'getCashHistory').mockResolvedValue({
+      bob: [0, 0, 10, 10, 10, 10, 10],
+    });
 
     const cashHistory = await sellerService.getCashHistory(3);
 
@@ -185,13 +185,13 @@ describe('Seller Service', () => {
 
     const isAuthorizedWhenValidPassword = await sellerService.isAuthorized(
       'travis',
-      'pacman'
+      'pacman',
     );
     expect(isAuthorizedWhenValidPassword).toEqual(true);
 
     const isAuthorizedWhenInvalidPassword = await sellerService.isAuthorized(
       'travis',
-      'vlad'
+      'vlad',
     );
     expect(isAuthorizedWhenInvalidPassword).toEqual(false);
   });

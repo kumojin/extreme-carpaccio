@@ -20,7 +20,7 @@ describe('Order Service', () => {
   });
 
   it('should send order to seller', () => {
-    jest.spyOn(utils, 'post').mockImplementation(jest.fn());
+    vi.spyOn(utils, 'post').mockImplementation(vi.fn());
     const order = {
       quantities: [1, 2, 3],
       prices: [12.1, 10, 11],
@@ -35,7 +35,7 @@ describe('Order Service', () => {
       buildWithDefaults({ url }),
       order,
       cashUpdater,
-      onError
+      onError,
     );
 
     expect(utils.post).toHaveBeenCalledWith(
@@ -43,7 +43,7 @@ describe('Order Service', () => {
       '/order',
       order,
       cashUpdater,
-      onError
+      onError,
     );
   });
 
@@ -66,18 +66,18 @@ describe('Order Service', () => {
 
   it('should create orders using specific reduction type', () => {
     expect(orderService.createOrder(Reductions.STANDARD).reduction).toContain(
-      Reductions.STANDARD.name
+      Reductions.STANDARD.name,
     );
     expect(
-      orderService.createOrder(Reductions.PAY_THE_PRICE).reduction
+      orderService.createOrder(Reductions.PAY_THE_PRICE).reduction,
     ).toContain(Reductions.PAY_THE_PRICE.name);
     expect(orderService.createOrder(Reductions.HALF_PRICE).reduction).toContain(
-      Reductions.HALF_PRICE.name
+      Reductions.HALF_PRICE.name,
     );
   });
 
   it('should calculate the sum of the order using PAY_THE_PRICE reduction', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({});
+    vi.spyOn(configuration, 'all').mockReturnValue({});
     const order = {
       prices: [1000, 50],
       quantities: [1, 2],
@@ -94,7 +94,7 @@ describe('Order Service', () => {
   });
 
   it('should calculate the sum of the order using STANDARD reduction', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({});
+    vi.spyOn(configuration, 'all').mockReturnValue({});
     const order = {
       prices: [1000, 50],
       quantities: [1, 2],
@@ -116,7 +116,7 @@ describe('Order Service', () => {
   });
 
   it('should calculate the sum of the order using HALF_PRICE reduction', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({});
+    vi.spyOn(configuration, 'all').mockReturnValue({});
     const order = {
       prices: [1000, 50],
       quantities: [1, 2],

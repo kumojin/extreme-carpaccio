@@ -6,7 +6,7 @@ import Reductions from '../reduction';
 import SellerService from '../SellerService';
 import Dispatcher from './Dispatcher';
 
-jest.useFakeTimers();
+vi.useFakeTimers();
 
 describe('Dispatcher', () => {
   let dispatcher: Dispatcher;
@@ -23,7 +23,7 @@ describe('Dispatcher', () => {
   });
 
   it('should not send request to sellers when active config is set to false', async () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({
+    vi.spyOn(configuration, 'all').mockReturnValue({
       reduction: 'STANDARD',
       badRequest: {
         active: true,
@@ -31,7 +31,7 @@ describe('Dispatcher', () => {
       },
       active: false,
     });
-    jest.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(jest.fn());
+    vi.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(vi.fn());
 
     const nextIteration = await dispatcher.startBuying(1);
     expect(nextIteration).toEqual(1);
@@ -40,43 +40,39 @@ describe('Dispatcher', () => {
 
   describe('when loading configuration for reductions', () => {
     it('should send the specified reduction when it is a string', () => {
-      jest.spyOn(configuration, 'all').mockReturnValue({
+      vi.spyOn(configuration, 'all').mockReturnValue({
         reduction: 'HALF PRICE',
         badRequest: {
           active: false,
         },
         active: true,
       });
-      jest
-        .spyOn(dispatcher, 'sendOrderToSellers')
-        .mockImplementation(jest.fn());
+      vi.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(vi.fn());
 
       dispatcher.startBuying(1);
 
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.HALF_PRICE,
         1,
-        false
+        false,
       );
     });
     it('should send one of the reduction strategies when using an array', () => {
-      jest.spyOn(configuration, 'all').mockReturnValue({
+      vi.spyOn(configuration, 'all').mockReturnValue({
         reduction: ['PAY THE PRICE'],
         badRequest: {
           active: false,
         },
         active: true,
       });
-      jest
-        .spyOn(dispatcher, 'sendOrderToSellers')
-        .mockImplementation(jest.fn());
+      vi.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(vi.fn());
 
       dispatcher.startBuying(1);
 
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.PAY_THE_PRICE,
         1,
-        false
+        false,
       );
     });
     it('should create a weighted array of reduction strategies when using a weight', () => {
@@ -95,69 +91,63 @@ describe('Dispatcher', () => {
       expect(returnedArray).toEqual(weightedArray);
     });
     it('should send one of the reduction strategies when using a weight', () => {
-      jest.spyOn(configuration, 'all').mockReturnValue({
+      vi.spyOn(configuration, 'all').mockReturnValue({
         reduction: [{ reduction: 'PAY THE PRICE', weight: 0.1 }],
         badRequest: {
           active: false,
         },
         active: true,
       });
-      jest
-        .spyOn(dispatcher, 'sendOrderToSellers')
-        .mockImplementation(jest.fn());
+      vi.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(vi.fn());
 
       dispatcher.startBuying(1);
 
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.PAY_THE_PRICE,
         1,
-        false
+        false,
       );
     });
     it('should send the STANDARD strategy when it does not recognize the strategy passed in config', () => {
-      jest.spyOn(configuration, 'all').mockReturnValue({
+      vi.spyOn(configuration, 'all').mockReturnValue({
         reduction: 'UNKNOWN STRATEGY',
         badRequest: {
           active: false,
         },
         active: true,
       });
-      jest
-        .spyOn(dispatcher, 'sendOrderToSellers')
-        .mockImplementation(jest.fn());
+      vi.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(vi.fn());
 
       dispatcher.startBuying(1);
 
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.STANDARD,
         1,
-        false
+        false,
       );
     });
     it('should send the STANDARD strategy when the provided strategy is undefined', () => {
-      jest.spyOn(configuration, 'all').mockReturnValue({
+      vi.spyOn(configuration, 'all').mockReturnValue({
         reduction: undefined,
         badRequest: {
           active: false,
         },
         active: true,
       });
-      jest
-        .spyOn(dispatcher, 'sendOrderToSellers')
-        .mockImplementation(jest.fn());
+      vi.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(vi.fn());
 
       dispatcher.startBuying(1);
 
       expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
         Reductions.STANDARD,
         1,
-        false
+        false,
       );
     });
   });
 
   it('should broadcast a bad request', () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({
+    vi.spyOn(configuration, 'all').mockReturnValue({
       reduction: 'HALF PRICE',
       badRequest: {
         active: true,
@@ -165,35 +155,35 @@ describe('Dispatcher', () => {
       },
       active: true,
     });
-    jest.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(jest.fn());
+    vi.spyOn(dispatcher, 'sendOrderToSellers').mockImplementation(vi.fn());
 
     dispatcher.startBuying(2);
 
     expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
       Reductions.HALF_PRICE,
       2,
-      true
+      true,
     );
   });
 
   it('should send the same order to each seller using reduction', async () => {
-    jest.spyOn(configuration, 'all').mockReturnValue({});
+    vi.spyOn(configuration, 'all').mockReturnValue({});
     const alice = buildWithDefaults({
       name: 'alice',
     });
     const bob = buildWithDefaults({
       name: 'bob',
     });
-    jest.spyOn(sellerService, 'addCash').mockImplementation(jest.fn());
-    jest.spyOn(sellerService, 'allSellers').mockResolvedValue([alice, bob]);
+    vi.spyOn(sellerService, 'addCash').mockImplementation(vi.fn());
+    vi.spyOn(sellerService, 'allSellers').mockResolvedValue([alice, bob]);
     const order = {
       prices: [100, 50],
       quantities: [1, 2],
       country: 'IT',
       reduction: 'STANDARD',
     };
-    jest.spyOn(orderService, 'createOrder').mockReturnValue(order);
-    jest.spyOn(orderService, 'sendOrder').mockImplementation(jest.fn());
+    vi.spyOn(orderService, 'createOrder').mockReturnValue(order);
+    vi.spyOn(orderService, 'sendOrder').mockImplementation(vi.fn());
 
     await dispatcher.sendOrderToSellers(Reductions.STANDARD, 0, false);
 
@@ -202,13 +192,13 @@ describe('Dispatcher', () => {
       alice,
       order,
       expect.any(Function),
-      expect.any(Function)
+      expect.any(Function),
     );
     expect(orderService.sendOrder).toHaveBeenCalledWith(
       bob,
       order,
       expect.any(Function),
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 });

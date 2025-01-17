@@ -1,4 +1,4 @@
-import { URL } from 'node:url';
+import type { URL } from 'node:url';
 
 export type Seller = {
   name: string;

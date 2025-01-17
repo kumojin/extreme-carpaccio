@@ -1,4 +1,4 @@
-import { IncomingMessage } from 'node:http';
+import type { IncomingMessage } from 'node:http';
 import Configuration from '../../config';
 import { buildWithDefaults } from '../../fixtures';
 import { Sellers } from '../../repositories';
@@ -24,20 +24,20 @@ describe("Seller's cash updater", () => {
     const bob = buildWithDefaults({
       name: 'bob',
     });
-    jest.spyOn(sellerService, 'setOnline').mockImplementation(jest.fn());
-    jest.spyOn(sellerService, 'updateCash').mockImplementation(jest.fn());
+    vi.spyOn(sellerService, 'setOnline').mockImplementation(vi.fn());
+    vi.spyOn(sellerService, 'updateCash').mockImplementation(vi.fn());
 
     await sellerCashUpdater.doUpdate(
       bob,
       { total: 100 },
-      -1
+      -1,
     )({ statusCode: 400 } as IncomingMessage);
 
     expect(sellerService.updateCash).toHaveBeenCalledWith(
       bob,
       { total: 100 },
       undefined,
-      -1
+      -1,
     );
   });
 
@@ -45,13 +45,13 @@ describe("Seller's cash updater", () => {
     const bob = buildWithDefaults({
       name: 'bob',
     });
-    jest.spyOn(sellerService, 'setOnline').mockImplementation(jest.fn());
-    jest.spyOn(sellerService, 'updateCash').mockImplementation(jest.fn());
+    vi.spyOn(sellerService, 'setOnline').mockImplementation(vi.fn());
+    vi.spyOn(sellerService, 'updateCash').mockImplementation(vi.fn());
 
     sellerCashUpdater.doUpdate(
       bob,
       { total: 100 },
-      -1
+      -1,
     )({ statusCode: 404 } as IncomingMessage);
 
     expect(sellerService.updateCash).not.toHaveBeenCalled();

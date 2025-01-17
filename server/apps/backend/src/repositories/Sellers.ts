@@ -1,9 +1,9 @@
 import path from 'node:path';
 import Big from 'big.js';
 import _ from 'lodash';
-import { Database, open } from 'sqlite';
+import { type Database, open } from 'sqlite';
 import sqlite3 from 'sqlite3';
-import { Seller } from './Seller';
+import type { Seller } from './Seller';
 
 type SellerRow = {
   name: string;
@@ -17,7 +17,7 @@ type SellerRow = {
 export default class Sellers {
   private constructor(private readonly db: Database) {}
 
-  public static async create(inMemory: boolean = false) {
+  public static async create(inMemory = false) {
     const db = await open({
       filename: inMemory ? ':memory:' : path.join(__dirname, '..', 'backup.db'),
       driver: sqlite3.cached.Database,
@@ -31,21 +31,21 @@ export default class Sellers {
 
   public async getCashHistory(): Promise<Record<string, number[]>> {
     const rows = await this.db.all<SellerRow[]>(
-      'SELECT * FROM Seller ORDER BY cash DESC'
+      'SELECT * FROM Seller ORDER BY cash DESC',
     );
 
     return (rows || []).reduce(
-      (acc, currentValue) => ({
-        ...acc,
-        [currentValue.name]: JSON.parse(currentValue.cash_history),
-      }),
-      {}
+      (acc: Record<string, number[]>, currentValue) => {
+        acc[currentValue.name] = JSON.parse(currentValue.cash_history);
+        return acc;
+      },
+      {},
     );
   }
 
   public async all(): Promise<Seller[]> {
     const rows = await this.db.all<SellerRow[]>(
-      'SELECT * FROM Seller ORDER BY cash DESC'
+      'SELECT * FROM Seller ORDER BY cash DESC',
     );
 
     return (rows || []).map((row) => this.mapSellerRowToSeller(row));
@@ -63,7 +63,7 @@ export default class Sellers {
   public async get(sellerName: string): Promise<Seller | undefined> {
     const row = await this.db.get<SellerRow>(
       'SELECT * FROM Seller WHERE name = ?',
-      sellerName
+      sellerName,
     );
     return this.mapSellerRowToSeller(row);
   }
@@ -71,7 +71,7 @@ export default class Sellers {
   public async updateCash(
     sellerName: string,
     amount: Big,
-    currentIteration: number
+    currentIteration: number,
   ) {
     const seller = await this.get(sellerName);
 
@@ -83,7 +83,7 @@ export default class Sellers {
     await this.db.run(
       'UPDATE Seller SET cash = ? WHERE name = ?',
       seller.cash,
-      sellerName
+      sellerName,
     );
 
     await this.updateCashHistory(seller, currentIteration);
@@ -93,7 +93,7 @@ export default class Sellers {
     return this.db.run(
       'UPDATE Seller SET online = ? WHERE name = ?',
       false,
-      sellerName
+      sellerName,
     );
   }
 
@@ -101,7 +101,7 @@ export default class Sellers {
     return this.db.run(
       'UPDATE Seller SET online = ? WHERE name = ?',
       true,
-      sellerName
+      sellerName,
     );
   }
 
@@ -113,7 +113,7 @@ export default class Sellers {
       seller.url.toString(),
       seller.cash,
       seller.online,
-      JSON.stringify([])
+      JSON.stringify([]),
     );
   }
 
@@ -121,13 +121,13 @@ export default class Sellers {
     return this.db.run(
       'UPDATE Seller SET url = ? WHERE name = ?',
       seller.url.toString(),
-      seller.name
+      seller.name,
     );
   }
 
   private getLastRecordedCashAmount(
     currentSellersCashHistory: number[],
-    lastRecordedIteration: number
+    lastRecordedIteration: number,
   ) {
     let lastRecordedValue =
       currentSellersCashHistory[lastRecordedIteration - 1];
@@ -146,7 +146,7 @@ export default class Sellers {
 
   private fillMissingIterations(
     currentIteration: number,
-    currentSellersCashHistory: number[]
+    currentSellersCashHistory: number[],
   ) {
     const lastRecordedIteration = currentSellersCashHistory.length;
 
@@ -156,17 +156,17 @@ export default class Sellers {
 
     const newSellersCashHistory = this.enlargeHistory(
       currentIteration,
-      currentSellersCashHistory
+      currentSellersCashHistory,
     );
     const lastRecordedValue = this.getLastRecordedCashAmount(
       currentSellersCashHistory,
-      lastRecordedIteration
+      lastRecordedIteration,
     );
     return _.fill(
       newSellersCashHistory,
       lastRecordedValue,
       lastRecordedIteration,
-      currentIteration
+      currentIteration,
     );
   }
 
@@ -174,28 +174,28 @@ export default class Sellers {
     const currentSellersCashHistory = await this.getSellerCashHistory(seller);
     const newSellersCashHistory = this.fillMissingIterations(
       currentIteration,
-      currentSellersCashHistory
+      currentSellersCashHistory,
     );
     newSellersCashHistory[currentIteration] = seller.cash;
 
     await this.db.run(
       'UPDATE Seller SET cash_history = ? WHERE name = ?',
       JSON.stringify(newSellersCashHistory),
-      seller.name
+      seller.name,
     );
   }
 
   private async getSellerCashHistory(seller: Seller): Promise<number[]> {
     const row = await this.db.get<{ cash_history: string }>(
       'SELECT cash_history FROM Seller WHERE name = ?',
-      seller.name
+      seller.name,
     );
     return row ? JSON.parse(row.cash_history) : [];
   }
 
   private mapSellerRowToSeller(row: SellerRow): Seller;
   private mapSellerRowToSeller(row: SellerRow | undefined): Seller | undefined;
-  private mapSellerRowToSeller(row: any) {
+  private mapSellerRowToSeller(row: SellerRow | undefined) {
     if (!row) {
       return undefined;
     }

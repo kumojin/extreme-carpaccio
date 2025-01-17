@@ -2,12 +2,12 @@ import { URL } from 'node:url';
 import argon2 from 'argon2';
 import Big from 'big.js';
 import _ from 'lodash';
-import Configuration from '../config';
+import type Configuration from '../config';
 import { messageFromError } from '../error-utils';
 import logger from '../logger';
-import { Seller, Sellers } from '../repositories';
+import type { Seller, Sellers } from '../repositories';
 import utils from '../utils';
-import { Bill } from './Bill';
+import type { Bill } from './Bill';
 
 export type CashHistory = {
   history: Record<Seller['name'], Seller['cash'][]>;
@@ -20,13 +20,13 @@ type Message = {
 export default class SellerService {
   constructor(
     private readonly sellers: Sellers,
-    private readonly configuration: Configuration
+    private readonly configuration: Configuration,
   ) {}
 
   public async addCash(
     seller: Seller,
     amount: Big,
-    currentIteration: number
+    currentIteration: number,
   ): Promise<void> {
     await this.sellers.updateCash(seller.name, amount, currentIteration);
   }
@@ -34,21 +34,21 @@ export default class SellerService {
   public async deductCash(
     seller: Seller,
     amount: Big,
-    currentIteration: number
+    currentIteration: number,
   ): Promise<void> {
     await this.sellers.updateCash(
       seller.name,
       amount.times(-1),
-      currentIteration
+      currentIteration,
     );
   }
 
   public async getCashHistory(chunk: number): Promise<CashHistory> {
     const cashHistory = await this.sellers.getCashHistory();
     const cashHistoryReduced: Record<string, number[]> = {};
-    let lastIteration: number = 0;
+    let lastIteration = 0;
 
-    Object.keys(cashHistory).forEach((seller) => {
+    for (const seller of Object.keys(cashHistory)) {
       cashHistoryReduced[seller] = [];
 
       let i = 0;
@@ -63,7 +63,7 @@ export default class SellerService {
       }
 
       lastIteration = i;
-    });
+    }
 
     return { history: cashHistoryReduced, lastIteration };
   }
@@ -79,7 +79,7 @@ export default class SellerService {
   public async register(
     sellerUrl: string,
     name: string,
-    password: string
+    password: string,
   ): Promise<void> {
     const parsedUrl = new URL(sellerUrl);
     const hash = await argon2.hash(password);
@@ -103,17 +103,17 @@ export default class SellerService {
     seller: Seller,
     expectedBill: Bill,
     actualBill: Bill | undefined,
-    currentIteration: number
+    currentIteration: number,
   ): Promise<void> {
     if (this.configuration.all().cashFreeze) {
       logger.info(
-        'Cash was not updated because cashFreeze config parameter is true'
+        'Cash was not updated because cashFreeze config parameter is true',
       );
       return;
     }
     try {
       const totalExpectedBill = utils.fixPrecision(expectedBill.total, 2);
-      let message;
+      let message: string;
       let loss: Big;
 
       if (_.isEmpty(actualBill)) {
@@ -128,7 +128,7 @@ export default class SellerService {
           await this.addCash(
             seller,
             new Big(totalExpectedBill),
-            currentIteration
+            currentIteration,
           );
           this.notify(seller, {
             type: 'INFO',
@@ -162,13 +162,13 @@ export default class SellerService {
   public async setOffline(
     seller: Seller,
     offlinePenalty: number,
-    currentIteration: number
+    currentIteration: number,
   ): Promise<void> {
     await this.sellers.setOffline(seller.name);
 
     if (offlinePenalty !== 0) {
       logger.info(
-        `Seller ${seller.name} is offline: a penalty of ${offlinePenalty} is applied.`
+        `Seller ${seller.name} is offline: a penalty of ${offlinePenalty} is applied.`,
       );
       await this.deductCash(seller, new Big(offlinePenalty), currentIteration);
     }

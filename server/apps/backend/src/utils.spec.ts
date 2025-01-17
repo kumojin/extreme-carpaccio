@@ -1,4 +1,4 @@
-import http, { ClientRequest } from 'node:http';
+import http, { type ClientRequest } from 'node:http';
 import https from 'node:https';
 import utils, { isValidUrl } from './utils';
 
@@ -29,9 +29,9 @@ describe('Utils', () => {
         on() {},
         end() {},
       } as unknown as ClientRequest;
-      jest.spyOn(networkModule, 'request').mockReturnValue(fakeRequest);
-      jest.spyOn(fakeRequest, 'write');
-      jest.spyOn(fakeRequest, 'end');
+      vi.spyOn(networkModule, 'request').mockReturnValue(fakeRequest);
+      vi.spyOn(fakeRequest, 'write');
+      vi.spyOn(fakeRequest, 'end');
       const body = { content: 'some content' };
       const callback = () => Promise.resolve();
 
@@ -49,7 +49,7 @@ describe('Utils', () => {
             'Content-Length': bodyStringified.length,
           },
         },
-        callback
+        callback,
       );
       expect(fakeRequest.write).toHaveBeenCalledWith(bodyStringified);
       expect(fakeRequest.end).toHaveBeenCalled();
