@@ -18,13 +18,17 @@ describe('SellerForm', () => {
         passwordRef={passwordRef}
         urlRef={urlRef}
         errorForm={{ hasError: false, message: '' }}
-      />
+      />,
     );
 
     expect(screen.getByPlaceholderText('your name')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('your password')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('http://192.168.1.1:3000')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /register/i })).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText('http://192.168.1.1:3000'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /register/i }),
+    ).toBeInTheDocument();
   });
 
   it('should call handleSubmit on form submission', async () => {
@@ -35,12 +39,18 @@ describe('SellerForm', () => {
         passwordRef={passwordRef}
         urlRef={urlRef}
         errorForm={{ hasError: false, message: '' }}
-      />
+      />,
     );
 
-    fireEvent.change(screen.getByPlaceholderText('your name'), { target: { value: 'John' } });
-    fireEvent.change(screen.getByPlaceholderText('your password'), { target: { value: 'password123' } });
-    fireEvent.change(screen.getByPlaceholderText('http://192.168.1.1:3000'), { target: { value: 'http://localhost:3000' } });
+    fireEvent.change(screen.getByPlaceholderText('your name'), {
+      target: { value: 'John' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('your password'), {
+      target: { value: 'password123' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('http://192.168.1.1:3000'), {
+      target: { value: 'http://localhost:3000' },
+    });
 
     fireEvent.submit(screen.getByRole('button'));
 
@@ -50,7 +60,10 @@ describe('SellerForm', () => {
   });
 
   it('should display error message when errorForm hasError is true', () => {
-    const errorForm: ErrorFormType = { hasError: true, message: 'Invalid form submission' };
+    const errorForm: ErrorFormType = {
+      hasError: true,
+      message: 'Invalid form submission',
+    };
 
     render(
       <SellerForm
@@ -59,10 +72,12 @@ describe('SellerForm', () => {
         passwordRef={passwordRef}
         urlRef={urlRef}
         errorForm={errorForm}
-      />
+      />,
     );
 
-    expect(screen.getByRole('alert')).toHaveTextContent('Invalid form submission');
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Invalid form submission',
+    );
   });
 
   it('should pass correct values to refs when form is filled', () => {
@@ -73,12 +88,18 @@ describe('SellerForm', () => {
         passwordRef={passwordRef}
         urlRef={urlRef}
         errorForm={{ hasError: false, message: '' }}
-      />
+      />,
     );
 
-    fireEvent.change(screen.getByPlaceholderText('your name'), { target: { value: 'John' } });
-    fireEvent.change(screen.getByPlaceholderText('your password'), { target: { value: 'password123' } });
-    fireEvent.change(screen.getByPlaceholderText('http://192.168.1.1:3000'), { target: { value: 'http://localhost:3000' } });
+    fireEvent.change(screen.getByPlaceholderText('your name'), {
+      target: { value: 'John' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('your password'), {
+      target: { value: 'password123' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('http://192.168.1.1:3000'), {
+      target: { value: 'http://localhost:3000' },
+    });
 
     expect(nameRef.current?.value).toBe('John');
     expect(passwordRef.current?.value).toBe('password123');
