@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { ErrorFormType } from './SellerFrom.hook';
+import type { ErrorFormType } from './SellerFrom.hook';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { SellerForm } from './SellerForm';
 
