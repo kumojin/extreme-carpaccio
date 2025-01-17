@@ -21,4 +21,15 @@ If you are a **facilitator**, go to [server/](./server/README.md) and find out h
 Have fun :D
 
 ## People running Extreme Carpaccio
+
 - Find out what people are saying about Extreme Carpaccio on [Twitter](https://twitter.com/search?vertical=default&q=%22extreme%20carpaccio%22%20OR%20%22Xtreme%20carpaccio%22%20OR%20%23ExtremeCarpaccio&src=typd)
+
+  cypress11:
+    image: cypress/included:cypress-12.5.1-node-16.18.1-chrome-110.0.5481.96-1-ff-109.0-edge-110.0.1587.41-1
+    entrypoint: /bin/sh -c "cd ./apps/frontend && npm install esbuild-wasm && CYPRESS_BASE_URL=<http://127.0.0.1> cypress run --headless --browser chrome"
+    depends_on:
+      - front
+    working_dir: /test
+    volumes:
+      - ./:/test
+      - /tmp/.X11-unix:/tmp/.X11-unix
