@@ -26,3 +26,5 @@ jobs:
         run: npm ci
       - name: Build
         run: npx turbo format:check lint:check test build
+      - name: Test
+        run: npx turbo run test

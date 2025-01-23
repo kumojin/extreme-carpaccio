@@ -8,10 +8,10 @@
     "build": "tsc && tsup src/main.ts",
     "start": "tscnode dist/main.js",
     "test": "vitest --run",
-    "format:check": "biome format src",
-    "format:fix": "biome format --write src",
-    "lint:check": "biome lint src",
-    "lint:fix": "biome lint --write src"
+    "format:check": "npx biome format src",
+    "format:fix": "npx biome format --write src",
+    "lint:check": "npx biome lint src",
+    "lint:fix": "npx biome lint --write src"
   },
   "dependencies": {
     "@types/big.js": "6.2.2",

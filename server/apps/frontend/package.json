@@ -18,11 +18,14 @@
   "scripts": {
     "build": "tsc && vite build",
     "clean": "rimraf dist",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
     "dev": "vite build --watch",
-    "format:check": "biome format src",
-    "format:fix": "biome format --write src",
-    "lint:check": "biome lint src",
-    "lint:fix": "biome lint --write src"
+    "format:check": "npx biome format src",
+    "format:fix": "npx biome format --write src",
+    "lint:check": "npx biome lint src",
+    "lint:fix": "npx biome lint --write src"
   },
   "browserslist": {
     "production": [
@@ -37,10 +40,15 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.2.0",
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "@vitejs/plugin-react": "4.3.4",
+    "@vitest/coverage-v8": "3.0.2",
+    "jsdom": "26.0.0",
     "typescript": "5.7.3",
-    "vite": "6.0.11"
+    "vite": "6.0.11",
+    "vitest": "3.0.2"
   }
 }
