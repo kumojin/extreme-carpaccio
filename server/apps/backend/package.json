@@ -40,7 +40,7 @@
     "bower": "1.8.14",
     "node-mocks-http": "1.16.2",
     "supertest": "7.0.0",
-    "tsup": "8.3.6",
+    "tsup": "8.4.0",
     "typescript": "5.7.3",
     "vitest": "3.0.7"
   }
