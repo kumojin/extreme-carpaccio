@@ -16,7 +16,7 @@
   "dependencies": {
     "@types/big.js": "6.2.2",
     "@types/body-parser": "1.19.5",
-    "@types/express": "5.0.1",
+    "@types/express": "5.0.2",
     "@types/lodash": "4.17.16",
     "argon2": "0.43.0",
     "big.js": "7.0.1",
