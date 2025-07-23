@@ -17,18 +17,6 @@
     },
     "test": {
       "outputs": []
-    },
-    "format:check": {
-      "outputs": []
-    },
-    "format:fix": {
-      "outputs": []
-    },
-    "lint:check": {
-      "outputs": []
-    },
-    "lint:fix": {
-      "outputs": []
     }
   }
 }
