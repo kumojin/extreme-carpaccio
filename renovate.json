@@ -10,7 +10,7 @@
     ":automergeDigest",
     "customManagers:biomeVersions"
   ],
-  "ignorePaths": ["clients/**"],
+  "ignorePaths": ["./clients/**"],
   "labels": ["dependencies"],
   "forkProcessing": "enabled"
 }
