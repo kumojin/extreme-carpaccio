@@ -66,8 +66,7 @@ const normalizePort = (val: string) => {
   });
   server.on('listening', () => {
     const addr = server.address();
-    const bind =
-      typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
+    const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
     logger.debug(`Listening on ${bind}`);
     start();
   });

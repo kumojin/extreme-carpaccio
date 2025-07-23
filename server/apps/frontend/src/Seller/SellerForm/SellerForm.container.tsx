@@ -7,8 +7,7 @@ type SellerFormContainerProps = {
 };
 
 const SellerFormContainer = ({ addSeller }: SellerFormContainerProps) => {
-  const { nameRef, passwordRef, urlRef, handleSubmit, errorForm } =
-    useForm(addSeller);
+  const { nameRef, passwordRef, urlRef, handleSubmit, errorForm } = useForm(addSeller);
 
   return (
     <SellerForm

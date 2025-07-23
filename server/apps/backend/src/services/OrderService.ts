@@ -23,13 +23,7 @@ export default class OrderService {
     cashUpdater: (response: IncomingMessage) => Promise<void>,
     onError: () => void,
   ) {
-    logger.info(
-      colors.grey(
-        `Sending order ${utils.stringify(order)} to seller ${utils.stringify(
-          seller,
-        )}`,
-      ),
-    );
+    logger.info(colors.grey(`Sending order ${utils.stringify(order)} to seller ${utils.stringify(seller)}`));
     utils.post(seller.url, '/order', order, cashUpdater, onError);
   }
 

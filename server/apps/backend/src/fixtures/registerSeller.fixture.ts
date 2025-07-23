@@ -1,7 +1,4 @@
-import type {
-  MaybeRegisterSellerRequest,
-  RegisterSellerRequest,
-} from '../SellerController';
+import type { MaybeRegisterSellerRequest, RegisterSellerRequest } from '../SellerController';
 
 export const validSellerRequest: RegisterSellerRequest = {
   name: 'John',
@@ -9,9 +6,7 @@ export const validSellerRequest: RegisterSellerRequest = {
   url: 'http://192.168.0.1',
 };
 
-export const validSellerRequestWithUrl = (
-  url: string,
-): MaybeRegisterSellerRequest => ({
+export const validSellerRequestWithUrl = (url: string): MaybeRegisterSellerRequest => ({
   name: 'John',
   password: '12345',
   url,

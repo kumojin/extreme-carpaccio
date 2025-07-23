@@ -23,11 +23,7 @@ describe('Seller Service', () => {
   });
 
   it('should register new seller', async () => {
-    await sellerService.register(
-      'http://localhost:3000/path',
-      'bob',
-      'password',
-    );
+    await sellerService.register('http://localhost:3000/path', 'bob', 'password');
     const sellers = await sellerService.allSellers();
     expect(sellers.length).toBe(1);
     const actual = sellers.shift();
@@ -116,12 +112,7 @@ describe('Seller Service', () => {
     const alice = buildWithDefaults({ name: 'alice', cash: 0 });
     await sellersRepository.save(alice);
 
-    await sellerService.updateCash(
-      alice,
-      { total: 100.12345 },
-      { total: 100.12 },
-      0,
-    );
+    await sellerService.updateCash(alice, { total: 100.12345 }, { total: 100.12 }, 0);
 
     const allSellers = await sellerService.allSellers();
     expect(allSellers).toContainEqual(
@@ -183,16 +174,10 @@ describe('Seller Service', () => {
     });
     await sellersRepository.save(travis);
 
-    const isAuthorizedWhenValidPassword = await sellerService.isAuthorized(
-      'travis',
-      'pacman',
-    );
+    const isAuthorizedWhenValidPassword = await sellerService.isAuthorized('travis', 'pacman');
     expect(isAuthorizedWhenValidPassword).toEqual(true);
 
-    const isAuthorizedWhenInvalidPassword = await sellerService.isAuthorized(
-      'travis',
-      'vlad',
-    );
+    const isAuthorizedWhenInvalidPassword = await sellerService.isAuthorized('travis', 'vlad');
     expect(isAuthorizedWhenInvalidPassword).toEqual(false);
   });
 });

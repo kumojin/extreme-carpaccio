@@ -31,5 +31,4 @@ export const europeanCountries: Record<string, [number, number]> = {
   MT: [1.2, 1],
 };
 
-export const scale = (factor: number) => (price: number) =>
-  new Big(price).times(factor).toNumber();
+export const scale = (factor: number) => (price: number) => new Big(price).times(factor).toNumber();

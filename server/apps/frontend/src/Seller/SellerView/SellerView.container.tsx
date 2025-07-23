@@ -6,10 +6,7 @@ type SellerViewContainerProps = {
   salesHistory: SalesHistory;
 };
 
-const SellerViewContainer = ({
-  sellers,
-  salesHistory,
-}: SellerViewContainerProps) => (
+const SellerViewContainer = ({ sellers, salesHistory }: SellerViewContainerProps) => (
   <SellerView sellers={sellers} salesHistory={salesHistory} />
 );
 

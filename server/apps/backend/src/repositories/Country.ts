@@ -19,11 +19,7 @@ const lookupForOverridenDefinition = (
 
   const def = conf.taxes[country];
   if (_.isNumber(def)) {
-    logger.info(
-      colors.blue(
-        `Tax rule for country ${country} changed to scale factor ${def}`,
-      ),
-    );
+    logger.info(colors.blue(`Tax rule for country ${country} changed to scale factor ${def}`));
     return scale(def);
   }
 
@@ -31,25 +27,15 @@ const lookupForOverridenDefinition = (
     try {
       const taxRule = customEval(def);
       if (_.isFunction(taxRule)) {
-        logger.info(
-          colors.blue(
-            `Tax rule for country ${country} changed to function ${def}`,
-          ),
-        );
+        logger.info(colors.blue(`Tax rule for country ${country} changed to function ${def}`));
         return taxRule;
       }
       logger.error(
-        colors.red(
-          `Failed to evaluate tax rule for country ${country} from ${def}, result is not a function`,
-        ),
+        colors.red(`Failed to evaluate tax rule for country ${country} from ${def}, result is not a function`),
       );
       return null;
     } catch (e) {
-      logger.error(
-        colors.red(
-          `Failed to evaluate tax rule for country ${country} from ${def}, got: ${e}`,
-        ),
-      );
+      logger.error(colors.red(`Failed to evaluate tax rule for country ${country} from ${def}, got: ${e}`));
       return null;
     }
   }
@@ -93,9 +79,7 @@ export default class Country {
       return new Big(newRule(sum.toNumber()));
     } catch (e) {
       logger.error(
-        colors.red(
-          `Failed to evaluate tax rule for country ${this.name} falling back to original value, got:${e}`,
-        ),
+        colors.red(`Failed to evaluate tax rule for country ${this.name} falling back to original value, got:${e}`),
       );
       return new Big(this._taxRule(sum.toNumber()));
     }

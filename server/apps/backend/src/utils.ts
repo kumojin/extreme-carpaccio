@@ -26,7 +26,7 @@ class Utils {
 
     try {
       return JSON.parse(value);
-    } catch (exception) {
+    } catch {
       throw new Error(`The object "${value}" is not a valid json object`);
     }
   }

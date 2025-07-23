@@ -9,13 +9,7 @@ type SellerFormProps = {
   errorForm: ErrorFormType;
 };
 
-export const SellerForm = ({
-  handleSubmit,
-  nameRef,
-  passwordRef,
-  urlRef,
-  errorForm,
-}: SellerFormProps) => (
+export const SellerForm = ({ handleSubmit, nameRef, passwordRef, urlRef, errorForm }: SellerFormProps) => (
   <div className="App">
     <div className="container-fluid text-sm-center p-5 mb-5 bg-light">
       <h2 className="p-3">Hello, Seller!</h2>

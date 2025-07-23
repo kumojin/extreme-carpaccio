@@ -42,10 +42,7 @@ type GetDataHistoryReturned = {
   }>;
 };
 
-export const getDataHistory = (
-  sellers: Seller[],
-  salesHistory: SalesHistory,
-): GetDataHistoryReturned => {
+export const getDataHistory = (_sellers: Seller[], salesHistory: SalesHistory): GetDataHistoryReturned => {
   let labels: string[] = [];
   const datasets: {
     label: string;

@@ -91,20 +91,11 @@ describe('BadRequest', () => {
     vi.spyOn(sellerService, 'deductCash').mockImplementation(vi.fn());
     vi.spyOn(sellerService, 'notify').mockImplementation(vi.fn());
 
-    const fun = badRequest.updateSellersCash(
-      sellerService,
-      seller,
-      expectedBill,
-      currentIteration,
-    );
+    const fun = badRequest.updateSellersCash(sellerService, seller, expectedBill, currentIteration);
 
     fun({ statusCode: 200 } as IncomingMessage);
 
-    expect(sellerService.deductCash).toHaveBeenCalledWith(
-      seller,
-      new Big(23.5),
-      currentIteration,
-    );
+    expect(sellerService.deductCash).toHaveBeenCalledWith(seller, new Big(23.5), currentIteration);
   });
 
   it('should add cash if response status is "bad request"', () => {
@@ -114,19 +105,10 @@ describe('BadRequest', () => {
     vi.spyOn(sellerService, 'addCash').mockImplementation(vi.fn());
     vi.spyOn(sellerService, 'notify').mockImplementation(vi.fn());
 
-    const fun = badRequest.updateSellersCash(
-      sellerService,
-      seller,
-      expectedBill,
-      currentIteration,
-    );
+    const fun = badRequest.updateSellersCash(sellerService, seller, expectedBill, currentIteration);
 
     fun({ statusCode: 400 } as IncomingMessage);
 
-    expect(sellerService.addCash).toHaveBeenCalledWith(
-      seller,
-      new Big(47),
-      currentIteration,
-    );
+    expect(sellerService.addCash).toHaveBeenCalledWith(seller, new Big(47), currentIteration);
   });
 });

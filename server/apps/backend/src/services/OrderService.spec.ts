@@ -31,20 +31,9 @@ describe('Order Service', () => {
     const onError = () => {};
 
     const url = new URL('https://localhost:3000/test');
-    orderService.sendOrder(
-      buildWithDefaults({ url }),
-      order,
-      cashUpdater,
-      onError,
-    );
+    orderService.sendOrder(buildWithDefaults({ url }), order, cashUpdater, onError);
 
-    expect(utils.post).toHaveBeenCalledWith(
-      url,
-      '/order',
-      order,
-      cashUpdater,
-      onError,
-    );
+    expect(utils.post).toHaveBeenCalledWith(url, '/order', order, cashUpdater, onError);
   });
 
   it('should create an order with maximum 10 items', () => {
@@ -65,15 +54,9 @@ describe('Order Service', () => {
   });
 
   it('should create orders using specific reduction type', () => {
-    expect(orderService.createOrder(Reductions.STANDARD).reduction).toContain(
-      Reductions.STANDARD.name,
-    );
-    expect(
-      orderService.createOrder(Reductions.PAY_THE_PRICE).reduction,
-    ).toContain(Reductions.PAY_THE_PRICE.name);
-    expect(orderService.createOrder(Reductions.HALF_PRICE).reduction).toContain(
-      Reductions.HALF_PRICE.name,
-    );
+    expect(orderService.createOrder(Reductions.STANDARD).reduction).toContain(Reductions.STANDARD.name);
+    expect(orderService.createOrder(Reductions.PAY_THE_PRICE).reduction).toContain(Reductions.PAY_THE_PRICE.name);
+    expect(orderService.createOrder(Reductions.HALF_PRICE).reduction).toContain(Reductions.HALF_PRICE.name);
   });
 
   it('should calculate the sum of the order using PAY_THE_PRICE reduction', () => {
@@ -107,11 +90,7 @@ describe('Order Service', () => {
     const price = new Big(1000).add(new Big(50).times(2));
     const reduction = new Big(1).minus(new Big(0.03));
     expect(bill).toEqual({
-      total: countries
-        .taxRule('IT')
-        .applyTax(price)
-        .times(reduction)
-        .toNumber(),
+      total: countries.taxRule('IT').applyTax(price).times(reduction).toNumber(),
     });
   });
 

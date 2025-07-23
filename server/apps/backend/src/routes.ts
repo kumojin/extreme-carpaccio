@@ -1,9 +1,5 @@
 import express from 'express';
-import {
-  listSellers,
-  registerSeller,
-  sellersHistory,
-} from './SellerController';
+import { listSellers, registerSeller, sellersHistory } from './SellerController';
 import type { SellerService } from './services';
 
 const routes = (sellerService: SellerService) => {
