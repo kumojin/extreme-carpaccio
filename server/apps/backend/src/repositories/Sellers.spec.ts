@@ -1,7 +1,7 @@
 import { URL } from 'node:url';
+import Big from 'big.js';
 import { buildWithDefaults } from '../fixtures';
 import Sellers from './Sellers';
-import Big from 'big.js';
 
 describe('Sellers', () => {
   let sellers: Sellers;

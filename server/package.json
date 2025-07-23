@@ -11,13 +11,12 @@
     "build": "turbo run build",
     "start": "turbo run start",
     "test": "turbo run test",
-    "format:check": "turbo run format:check",
-    "format:fix": "turbo run format:fix",
-    "lint:check": "turbo run lint:check",
-    "lint:fix": "turbo run lint:fix"
+    "lint:fix": "biome check --write --no-errors-on-unmatched .",
+    "lint:check": "biome check --no-errors-on-unmatched .",
+    "lint:ci": "biome ci --no-errors-on-unmatched ."
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.1.2",
     "rimraf": "6.0.1",
     "turbo": "2.5.5"
   },

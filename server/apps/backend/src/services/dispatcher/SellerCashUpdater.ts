@@ -28,19 +28,12 @@ class SellerCashUpdater {
         });
 
         response.on('data', (sellerResponse) => {
-          logger.info(
-            colors.grey(`${seller.name} replied "${sellerResponse}"`),
-          );
+          logger.info(colors.grey(`${seller.name} replied "${sellerResponse}"`));
 
           try {
             const actualBill = utils.jsonify(sellerResponse);
             this.orderService.validateBill(actualBill);
-            this.sellerService.updateCash(
-              seller,
-              expectedBill,
-              actualBill,
-              currentIteration,
-            );
+            this.sellerService.updateCash(seller, expectedBill, actualBill, currentIteration);
           } catch (exception) {
             this.sellerService.notify(seller, {
               type: 'ERROR',
@@ -50,17 +43,10 @@ class SellerCashUpdater {
         });
       } else if (response.statusCode === 404) {
         await this.sellerService.setOnline(seller);
-        logger.info(
-          colors.grey(`${seller.name} replied 404. Everything is fine.`),
-        );
+        logger.info(colors.grey(`${seller.name} replied 404. Everything is fine.`));
       } else {
         await this.sellerService.setOnline(seller);
-        await this.sellerService.updateCash(
-          seller,
-          expectedBill,
-          undefined,
-          currentIteration,
-        );
+        await this.sellerService.updateCash(seller, expectedBill, undefined, currentIteration);
       }
     };
   }

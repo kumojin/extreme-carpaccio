@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import type Configuration from '../config';
-import { europeanCountries, scale } from './countries-utils';
 import Country from './Country';
+import { europeanCountries, scale } from './countries-utils';
 
 const countryDistributionByWeight = _.reduce(
   europeanCountries,

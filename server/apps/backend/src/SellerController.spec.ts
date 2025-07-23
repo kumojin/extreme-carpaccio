@@ -1,9 +1,6 @@
 import type { Request, Response } from 'express-serve-static-core';
 import { StatusCodes } from 'http-status-codes';
-import httpMocks, {
-  type MockRequest,
-  type MockResponse,
-} from 'node-mocks-http';
+import httpMocks, { type MockRequest, type MockResponse } from 'node-mocks-http';
 import Configuration from './config';
 import {
   cashHistory,
@@ -14,12 +11,7 @@ import {
   validSellerRequestWithUrl,
 } from './fixtures';
 import { Sellers } from './repositories';
-import {
-  type MaybeRegisterSellerRequest,
-  listSellers,
-  registerSeller,
-  sellersHistory,
-} from './SellerController';
+import { listSellers, type MaybeRegisterSellerRequest, registerSeller, sellersHistory } from './SellerController';
 import { SellerService } from './services';
 
 describe('Seller Controller', () => {
@@ -63,9 +55,7 @@ describe('Seller Controller', () => {
           },
         });
         const response = httpMocks.createResponse();
-        vi.spyOn(sellerService, 'getCashHistory').mockResolvedValue(
-          cashHistory,
-        );
+        vi.spyOn(sellerService, 'getCashHistory').mockResolvedValue(cashHistory);
 
         await sellersHistory(sellerService)(request, response);
 
@@ -81,9 +71,7 @@ describe('Seller Controller', () => {
           },
         });
         const response = httpMocks.createResponse();
-        vi.spyOn(sellerService, 'getCashHistory').mockResolvedValue(
-          cashHistory,
-        );
+        vi.spyOn(sellerService, 'getCashHistory').mockResolvedValue(cashHistory);
 
         await sellersHistory(sellerService)(request, response);
 
@@ -97,9 +85,7 @@ describe('Seller Controller', () => {
           query: {},
         });
         const response = httpMocks.createResponse();
-        vi.spyOn(sellerService, 'getCashHistory').mockResolvedValue(
-          cashHistory,
-        );
+        vi.spyOn(sellerService, 'getCashHistory').mockResolvedValue(cashHistory);
 
         await sellersHistory(sellerService)(request, response);
 
@@ -196,7 +182,6 @@ describe('Seller Controller', () => {
       ['http', 'http://localhost'],
       ['https', 'https://localhost'],
     ])('when body has all required fields and valid url (%s)', (_, url) => {
-      // biome-ignore lint/suspicious/noDuplicateTestHooks: false positive due to describe.each
       beforeEach(() => {
         body = validSellerRequestWithUrl(url);
         request = httpMocks.createRequest({
@@ -225,11 +210,7 @@ describe('Seller Controller', () => {
         it('should return a success', async () => {
           await registerSeller(sellerService)(request, response);
 
-          expect(registerMock).toHaveBeenCalledWith(
-            body.url,
-            body.name,
-            body.password,
-          );
+          expect(registerMock).toHaveBeenCalledWith(body.url, body.name, body.password);
           expect(response.statusCode).toBe(StatusCodes.OK);
         });
       });

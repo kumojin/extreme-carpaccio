@@ -27,18 +27,9 @@ describe("Seller's cash updater", () => {
     vi.spyOn(sellerService, 'setOnline').mockImplementation(vi.fn());
     vi.spyOn(sellerService, 'updateCash').mockImplementation(vi.fn());
 
-    await sellerCashUpdater.doUpdate(
-      bob,
-      { total: 100 },
-      -1,
-    )({ statusCode: 400 } as IncomingMessage);
+    await sellerCashUpdater.doUpdate(bob, { total: 100 }, -1)({ statusCode: 400 } as IncomingMessage);
 
-    expect(sellerService.updateCash).toHaveBeenCalledWith(
-      bob,
-      { total: 100 },
-      undefined,
-      -1,
-    );
+    expect(sellerService.updateCash).toHaveBeenCalledWith(bob, { total: 100 }, undefined, -1);
   });
 
   it("should NOT deduct a penalty when the sellers's response is 404", () => {
@@ -48,11 +39,7 @@ describe("Seller's cash updater", () => {
     vi.spyOn(sellerService, 'setOnline').mockImplementation(vi.fn());
     vi.spyOn(sellerService, 'updateCash').mockImplementation(vi.fn());
 
-    sellerCashUpdater.doUpdate(
-      bob,
-      { total: 100 },
-      -1,
-    )({ statusCode: 404 } as IncomingMessage);
+    sellerCashUpdater.doUpdate(bob, { total: 100 }, -1)({ statusCode: 404 } as IncomingMessage);
 
     expect(sellerService.updateCash).not.toHaveBeenCalled();
   });

@@ -4,8 +4,8 @@ import {
   CategoryScale,
   Chart as ChartJS,
   Legend,
-  LineElement,
   LinearScale,
+  LineElement,
   PointElement,
   Title,
   Tooltip,
@@ -14,15 +14,7 @@ import { Line } from 'react-chartjs-2';
 import type { SalesHistory, Seller } from '../Seller.hook';
 import { getDataHistory, options, stringToColor } from './SellerView.hook';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const AlertIcon = () => (
   <svg
@@ -49,11 +41,7 @@ const getArraySeller = ({ sellers }: SellerContentProps) =>
     }).format(seller.cash);
 
     const sellerColor = stringToColor(seller.name);
-    const showOfflineWarning = !seller.online ? (
-      <AlertIcon key={`${seller.name}-alert`} />
-    ) : (
-      ''
-    );
+    const showOfflineWarning = !seller.online ? <AlertIcon key={`${seller.name}-alert`} /> : '';
     return (
       <tr key={seller.name}>
         <td className="col-md-6">
@@ -88,11 +76,7 @@ export const SellerView = ({ sellers, salesHistory }: SellerViewProps) => (
                 <th aria-label="Offline warning"> </th>
               </tr>
             </thead>
-            <tbody>
-              {getArraySeller({ sellers }).map(
-                (sellerContent) => sellerContent,
-              )}
-            </tbody>
+            <tbody>{getArraySeller({ sellers }).map((sellerContent) => sellerContent)}</tbody>
           </table>
         </div>
       </div>

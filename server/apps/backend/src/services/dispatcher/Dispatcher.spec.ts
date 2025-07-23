@@ -51,11 +51,7 @@ describe('Dispatcher', () => {
 
       dispatcher.startBuying(1);
 
-      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
-        Reductions.HALF_PRICE,
-        1,
-        false,
-      );
+      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(Reductions.HALF_PRICE, 1, false);
     });
     it('should send one of the reduction strategies when using an array', () => {
       vi.spyOn(configuration, 'all').mockReturnValue({
@@ -69,23 +65,14 @@ describe('Dispatcher', () => {
 
       dispatcher.startBuying(1);
 
-      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
-        Reductions.PAY_THE_PRICE,
-        1,
-        false,
-      );
+      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(Reductions.PAY_THE_PRICE, 1, false);
     });
     it('should create a weighted array of reduction strategies when using a weight', () => {
       const reductionStrategy = [
         { reduction: 'PAY THE PRICE', weight: 0.03 },
         { reduction: 'STANDARD', weight: 0.01 },
       ];
-      const weightedArray = [
-        'PAY THE PRICE',
-        'PAY THE PRICE',
-        'PAY THE PRICE',
-        'STANDARD',
-      ];
+      const weightedArray = ['PAY THE PRICE', 'PAY THE PRICE', 'PAY THE PRICE', 'STANDARD'];
       const returnedArray = dispatcher.getWeightedReduction(reductionStrategy);
 
       expect(returnedArray).toEqual(weightedArray);
@@ -102,11 +89,7 @@ describe('Dispatcher', () => {
 
       dispatcher.startBuying(1);
 
-      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
-        Reductions.PAY_THE_PRICE,
-        1,
-        false,
-      );
+      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(Reductions.PAY_THE_PRICE, 1, false);
     });
     it('should send the STANDARD strategy when it does not recognize the strategy passed in config', () => {
       vi.spyOn(configuration, 'all').mockReturnValue({
@@ -120,11 +103,7 @@ describe('Dispatcher', () => {
 
       dispatcher.startBuying(1);
 
-      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
-        Reductions.STANDARD,
-        1,
-        false,
-      );
+      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(Reductions.STANDARD, 1, false);
     });
     it('should send the STANDARD strategy when the provided strategy is undefined', () => {
       vi.spyOn(configuration, 'all').mockReturnValue({
@@ -138,11 +117,7 @@ describe('Dispatcher', () => {
 
       dispatcher.startBuying(1);
 
-      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
-        Reductions.STANDARD,
-        1,
-        false,
-      );
+      expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(Reductions.STANDARD, 1, false);
     });
   });
 
@@ -159,11 +134,7 @@ describe('Dispatcher', () => {
 
     dispatcher.startBuying(2);
 
-    expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(
-      Reductions.HALF_PRICE,
-      2,
-      true,
-    );
+    expect(dispatcher.sendOrderToSellers).toHaveBeenCalledWith(Reductions.HALF_PRICE, 2, true);
   });
 
   it('should send the same order to each seller using reduction', async () => {
@@ -188,17 +159,7 @@ describe('Dispatcher', () => {
     await dispatcher.sendOrderToSellers(Reductions.STANDARD, 0, false);
 
     expect(orderService.createOrder).toHaveBeenCalledWith(Reductions.STANDARD);
-    expect(orderService.sendOrder).toHaveBeenCalledWith(
-      alice,
-      order,
-      expect.any(Function),
-      expect.any(Function),
-    );
-    expect(orderService.sendOrder).toHaveBeenCalledWith(
-      bob,
-      order,
-      expect.any(Function),
-      expect.any(Function),
-    );
+    expect(orderService.sendOrder).toHaveBeenCalledWith(alice, order, expect.any(Function), expect.any(Function));
+    expect(orderService.sendOrder).toHaveBeenCalledWith(bob, order, expect.any(Function), expect.any(Function));
   });
 });

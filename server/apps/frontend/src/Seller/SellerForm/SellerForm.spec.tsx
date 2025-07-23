@@ -1,8 +1,8 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import type { ErrorFormType } from './SellerFrom.hook';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { SellerForm } from './SellerForm';
+import type { ErrorFormType } from './SellerFrom.hook';
 
 const handleSubmitMock = vi.fn();
 const nameRef = createRef<HTMLInputElement>();
@@ -23,12 +23,8 @@ describe('SellerForm', () => {
 
     expect(screen.getByPlaceholderText('your name')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('your password')).toBeInTheDocument();
-    expect(
-      screen.getByPlaceholderText('http://192.168.1.1:3000'),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /register/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('http://192.168.1.1:3000')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /register/i })).toBeInTheDocument();
   });
 
   it('should call handleSubmit on form submission', async () => {
@@ -75,9 +71,7 @@ describe('SellerForm', () => {
       />,
     );
 
-    expect(screen.getByRole('alert')).toHaveTextContent(
-      'Invalid form submission',
-    );
+    expect(screen.getByRole('alert')).toHaveTextContent('Invalid form submission');
   });
 
   it('should pass correct values to refs when form is filled', () => {

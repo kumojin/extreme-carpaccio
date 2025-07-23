@@ -22,8 +22,7 @@ export const useForm = (
     hasError: false,
     message: '',
   };
-  const [errorForm, setErrorForm] =
-    React.useState<ErrorFormType>(initErrorFormState);
+  const [errorForm, setErrorForm] = React.useState<ErrorFormType>(initErrorFormState);
 
   const addSellerMutation = useMutation({
     mutationFn: async (newSeller: SellerForm) =>

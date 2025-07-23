@@ -17,9 +17,7 @@ class BadRequest {
     const badRequestConfig = this.getConfiguration();
     return (
       !badRequestConfig ||
-      (badRequestConfig.active &&
-        badRequestConfig.period &&
-        iteration % badRequestConfig.period === 0)
+      (badRequestConfig.active && badRequestConfig.period && iteration % badRequestConfig.period === 0)
     );
   }
 
