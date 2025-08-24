@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Configure Turbo Cache
-        uses: rharkor/caching-for-turbo@082a29e0e9b1b26b27cc1c00d6497ad30f1b01d5 # v2.2.5
+        uses: rharkor/caching-for-turbo@86f0bb5dfb358176840ff5fb204ada1aee1657a2 # v2.3.0
         with:
           provider: github
       - name: Lint
