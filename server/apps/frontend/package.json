@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@formatjs/intl-numberformat": "8.15.4",
-    "@tanstack/react-query": "5.89.0",
+    "@tanstack/react-query": "5.90.1",
     "@types/node": "22.18.6",
     "@types/react": "18.3.24",
     "@types/react-dom": "18.3.7",
