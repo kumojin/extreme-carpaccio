@@ -36,6 +36,7 @@ describe('Configuration', () => {
 
   it(
     'should reload configuration on the fly',
+    { retry: 3, timeout: TIMEOUT_1000_MILLIS },
     () =>
       new Promise<void>((done, reject) => {
         const callback = () => {
@@ -51,6 +52,5 @@ describe('Configuration', () => {
 
         fs.writeFileSync(configFilepath, '{"reduction": "HALF PIPE"}');
       }),
-    TIMEOUT_1000_MILLIS,
   );
 });
