@@ -33,7 +33,7 @@
     "winston": "3.18.3"
   },
   "devDependencies": {
-    "@swc/core": "1.15.2",
+    "@swc/core": "1.15.3",
     "@tsconfig/node24": "24.0.3",
     "@types/node": "24.10.1",
     "@types/supertest": "6.0.3",
