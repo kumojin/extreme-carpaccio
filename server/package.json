@@ -20,5 +20,5 @@
     "rimraf": "6.1.2",
     "turbo": "2.6.3"
   },
-  "packageManager": "npm@11.6.4"
+  "packageManager": "npm@11.7.0"
 }
