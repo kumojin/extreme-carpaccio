@@ -20,7 +20,7 @@
     "@types/lodash": "4.17.21",
     "argon2": "0.44.0",
     "big.js": "7.0.1",
-    "body-parser": "2.2.1",
+    "body-parser": "2.2.2",
     "colors": "1.4.0",
     "cross-env": "10.1.0",
     "dotenv": "17.2.3",
