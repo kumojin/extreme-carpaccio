@@ -16,7 +16,7 @@
     "lint:ci": "biome ci --no-errors-on-unmatched ."
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.12",
+    "@biomejs/biome": "2.3.13",
     "rimraf": "6.1.2",
     "turbo": "2.7.6"
   },
