@@ -18,7 +18,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
     "rimraf": "6.1.2",
-    "turbo": "2.8.1"
+    "turbo": "2.8.2"
   },
   "packageManager": "npm@11.8.0"
 }
