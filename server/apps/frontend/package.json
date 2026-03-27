@@ -45,10 +45,10 @@
     "@types/react": "18.3.28",
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "5.2.0",
-    "@vitest/coverage-v8": "4.1.0",
+    "@vitest/coverage-v8": "4.1.1",
     "jsdom": "27.4.0",
     "typescript": "5.9.3",
     "vite": "7.3.1",
-    "vitest": "4.1.0"
+    "vitest": "4.1.1"
   }
 }
